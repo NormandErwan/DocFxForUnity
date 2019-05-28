@@ -1,0 +1,24 @@
+{
+   "metadata": [
+    {
+      "src": [
+        {
+          "src": "Unity/Projects/CSharp/",
+          "files": [ "*.csproj" ]
+        }
+      ],
+      "dest": "api/"
+    }
+  ],
+  "build": {
+    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
+    "content": [
+      {
+        "src": "api/",
+        "files": [ "*.yml" ],
+        "dest": "api/"
+      }
+    ],
+    "dest": "_site"
+  }
+}
