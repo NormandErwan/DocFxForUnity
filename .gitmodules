@@ -1,0 +1,4 @@
+[submodule "Unity"]
+	path = Unity
+	url = https://github.com/Unity-Technologies/UnityCsReference
+	ignore = dirty
