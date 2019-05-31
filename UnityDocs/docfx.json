@@ -3,10 +3,13 @@
     {
       "src": [
         {
-          "src": "Unity/Projects/CSharp/",
-          "files": [ "*.csproj" ]
+          "src": "Unity/",
+          "files": [ "**/*.cs" ]
         }
       ],
+      "properties": {
+        "TargetFramework": "net35"
+      },
       "dest": "api/"
     }
   ],
