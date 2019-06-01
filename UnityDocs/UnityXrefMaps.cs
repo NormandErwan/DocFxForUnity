@@ -55,7 +55,7 @@ namespace NormandErwan.DocFxForUnity
         /// </summary>
         private static void Main()
         {
-            // Clone this repo
+            // Clone this repo to its gh-branch
             if (!Directory.Exists(GhPagesRepoPath))
             {
                 Repository.Clone(GhPagesRepoUrl, GhPagesRepoPath, new CloneOptions { BranchName = GhPagesRepoBranch });
@@ -67,25 +67,19 @@ namespace NormandErwan.DocFxForUnity
                 var ghPagesBranch = ghPagesRepo.Branches[GhPagesRepoBranch];
                 Commands.Checkout(ghPagesRepo, ghPagesBranch);
 
-                // Get xref maps from Unity repo
                 using (var unityRepo = new Repository(UnityRepoPath))
                 {
+                    // Get xref maps of each Unity version
                     foreach (var tag in unityRepo.Tags)
                     {
                         string output = GetAndCopyXrefMap(unityRepo, tag.FriendlyName, GhPagesRepoPath);
                         Console.WriteLine(output);
                     }
+
+                    // TODO #1
                 }
 
-                // Commit gh-pages branch
-                if (ghPagesRepo.RetrieveStatus().IsDirty)
-                {
-                    Commands.Stage(ghPagesRepo, "*");
-
-                    var author = new Signature(CommitIdentity, DateTime.Now);
-                    var committer = author;
-                    ghPagesRepo.Commit("Xrefmaps update", author, committer);
-                }
+                CommitAndPush(ghPagesRepo);
             }
         }
 
@@ -132,6 +126,24 @@ namespace NormandErwan.DocFxForUnity
             }
 
             return output;
+        }
+
+        /// <summary>
+        /// Add, commit and push all changes on the specified repository.
+        /// </summary>
+        /// <param name="repo">The repository to add, command and push changes.</param>
+        private static void CommitAndPush(Repository repo)
+        {
+            if (repo.RetrieveStatus().IsDirty)
+            {
+                Commands.Stage(repo, "*");
+
+                var author = new Signature(CommitIdentity, DateTime.Now);
+                var committer = author;
+                repo.Commit("Xrefmaps update", author, committer);
+
+                // TODO push
+            }
         }
 
         /// <summary>
