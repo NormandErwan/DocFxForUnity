@@ -4,21 +4,50 @@ using System.IO;
 using System.Linq;
 using LibGit2Sharp;
 
-namespace UnityDocs
+namespace NormandErwan.DocFxForUnity
 {
     /// <summary>
-    /// Generates xrefmap from all Unity versions then commit them to https://github.com/NormandErwan/DocFxForUnity.
+    /// Generates xref map from all Unity versions then commit them to `gh-pages` branch of
+    /// https://github.com/NormandErwan/DocFxForUnity.
+    ///
+    /// Usage: UnityXrefMaps
     /// </summary>
+    /// <remarks>.NET Core 2.x, Git and DocFx must be installed on your system.</remarks>
     class Program
     {
-        private const string GhPagesRepoUrl = "https://github.com/NormandErwan/DocFxForUnity.git";
-        private const string GhPagesRepoPath = "gh-pages";
-        private const string GhPagesRepoBranch = "gh-pages";
-
+        /// <summary>
+        /// File path where the documentation of the Unity repo will be generated.
+        /// </summary>
         private const string GeneratedDocsPath = "_site";
 
+        /// <summary>
+        /// Url of the repository where to commit the xref maps.
+        /// </summary>
+        private const string GhPagesRepoUrl = "https://github.com/NormandErwan/DocFxForUnity.git";
+
+        /// <summary>
+        /// File path of the repository where to commit the xref maps.
+        /// </summary>
+        private const string GhPagesRepoPath = "gh-pages";
+
+        /// <summary>
+        /// Name of the branch where to commit the xref maps.
+        /// </summary>
+        private const string GhPagesRepoBranch = "gh-pages";
+
+        /// <summary>
+        /// The identity to use to commit to the gh-pages branch.
+        /// </summary>
+        private static readonly Identity CommitIdentity = new Identity("Erwan Normand", "normand.erwan@protonmail.com");
+
+        /// <summary>
+        /// File path of the Unity repository.
+        /// </summary>
         private const string UnityRepoPath = "Unity";
 
+        /// <summary>
+        /// Filename of a xref map file.
+        /// </summary>
         private const string XrefMapFileName = "xrefmap.yml";
 
         /// <summary>
@@ -53,7 +82,7 @@ namespace UnityDocs
                 {
                     Commands.Stage(ghPagesRepo, "*");
 
-                    var author = new Signature("Erwan Normand", "@NormandErwan", DateTime.Now);
+                    var author = new Signature(CommitIdentity, DateTime.Now);
                     var committer = author;
                     ghPagesRepo.Commit("Xrefmaps update", author, committer);
                 }
@@ -62,7 +91,7 @@ namespace UnityDocs
 
         /// <summary>
         /// Generate documentation with DocFx of a specified repository and commit then copies the generated xrefmap
-        /// to a  specified directory.
+        /// to a specified directory.
         /// </summary>
         /// <param name="repo">The repository to generate docs from.</param>
         /// <param name="commit">The commit to generate docs from.</param>
