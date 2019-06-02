@@ -58,6 +58,7 @@ namespace NormandErwan.DocFxForUnity
             // Clone this repo to its gh-branch
             if (!Directory.Exists(GhPagesRepoPath))
             {
+                Console.WriteLine($"Clonning {GhPagesRepoUrl} to {GhPagesRepoPath}.");
                 Repository.Clone(GhPagesRepoUrl, GhPagesRepoPath, new CloneOptions { BranchName = GhPagesRepoBranch });
             }
 
@@ -72,8 +73,7 @@ namespace NormandErwan.DocFxForUnity
                     // Get xref maps of each Unity version
                     foreach (var tag in unityRepo.Tags)
                     {
-                        string output = GetAndCopyXrefMap(unityRepo, tag.FriendlyName, GhPagesRepoPath);
-                        Console.WriteLine(output);
+                        GetAndCopyXrefMap(unityRepo, tag.FriendlyName, GhPagesRepoPath);
                     }
 
                     // TODO #1
@@ -94,17 +94,21 @@ namespace NormandErwan.DocFxForUnity
         /// The directory where the docs will be generated (`output` property of `docfx build`).
         /// </param>
         /// <returns>The output of the DocFx documentation generation.</returns>
-        private static string GetAndCopyXrefMap(Repository repo, string commit, string outputDirectoryPath,
+        private static void GetAndCopyXrefMap(Repository repo, string commit, string outputDirectoryPath,
             string generatedDocsPath = GeneratedDocsPath)
         {
-            string output = "";
-
             string xrefMapDirectoryPath = Path.Combine(outputDirectoryPath, commit);
             string xrefMapPath = Path.Combine(xrefMapDirectoryPath, XrefMapFileName);
 
-            if (!File.Exists(xrefMapPath))
+            if (File.Exists(xrefMapPath))
+            {
+                Console.WriteLine($"Skip generating Unity {commit} docs: corresponding xrefmap already present on the repo.");
+            }
+            else
             {
                 // Generate Xref Map
+                Console.WriteLine($"Generating Unity {commit} docs.");
+
                 repo.Reset(ResetMode.Hard, commit);
 
                 if (Directory.Exists(generatedDocsPath))
@@ -112,7 +116,7 @@ namespace NormandErwan.DocFxForUnity
                     Directory.Delete(generatedDocsPath, recursive: true);
                 }
 
-                output = RunCommand($"docfx");
+                Console.WriteLine(RunCommand($"docfx"));
 
                 // Copy Xref Map
                 Directory.CreateDirectory(xrefMapDirectoryPath);
@@ -120,12 +124,6 @@ namespace NormandErwan.DocFxForUnity
                 string sourceXrefMapPath = Path.Combine(generatedDocsPath, XrefMapFileName);
                 File.Copy(sourceXrefMapPath, xrefMapPath, overwrite: true);
             }
-            else
-            {
-                output = $"Skip generating {commit} docs. Corresponding xrefmap already commited on the repo.";
-            }
-
-            return output;
         }
 
         /// <summary>
@@ -136,6 +134,8 @@ namespace NormandErwan.DocFxForUnity
         {
             if (repo.RetrieveStatus().IsDirty)
             {
+                Console.WriteLine($"Add, commit and push all changes on {GhPagesRepoPath}.");
+
                 Commands.Stage(repo, "*");
 
                 var author = new Signature(CommitIdentity, DateTime.Now);
@@ -143,6 +143,10 @@ namespace NormandErwan.DocFxForUnity
                 repo.Commit("Xrefmaps update", author, committer);
 
                 // TODO push
+            }
+            else
+            {
+                Console.WriteLine($"Nothing to commit on {GhPagesRepoPath}.");
             }
         }
 
