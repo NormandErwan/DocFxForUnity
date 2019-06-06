@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using LibGit2Sharp;
 
 namespace NormandErwan.DocFxForUnity
@@ -58,7 +59,7 @@ namespace NormandErwan.DocFxForUnity
             // Clone this repo to its gh-branch
             if (!Directory.Exists(GhPagesRepoPath))
             {
-                Console.WriteLine($"Clonning {GhPagesRepoUrl} to {GhPagesRepoPath}.");
+                Console.WriteLine($"Clonning {GhPagesRepoUrl} to {GhPagesRepoPath}");
                 Repository.Clone(GhPagesRepoUrl, GhPagesRepoPath, new CloneOptions { BranchName = GhPagesRepoBranch });
             }
 
@@ -70,13 +71,8 @@ namespace NormandErwan.DocFxForUnity
 
                 using (var unityRepo = new Repository(UnityRepoPath))
                 {
-                    // Get xref maps of each Unity version
-                    foreach (var tag in unityRepo.Tags)
-                    {
-                        GetAndCopyXrefMap(unityRepo, tag.FriendlyName, GhPagesRepoPath);
-                    }
-
-                    // TODO #1
+                    GenerateReleaseXrefMaps(unityRepo);
+                    GenerateVersionXrefMaps(unityRepo);
                 }
 
                 CommitAndPush(ghPagesRepo);
@@ -84,46 +80,106 @@ namespace NormandErwan.DocFxForUnity
         }
 
         /// <summary>
-        /// Generate documentation with DocFx of a specified repository and commit then copies the generated xrefmap
-        /// to a specified directory.
+        /// Copy a source xref map to a destination folder. Intermediate folders will be automatically created.
         /// </summary>
-        /// <param name="repo">The repository to generate docs from.</param>
-        /// <param name="commit">The commit to generate docs from.</param>
-        /// <param name="outputDirectoryPath">The path of the directory where to copy the xrefmap.</param>
+        /// <param name="sourceXrefMapPath">The source xref map file path to copy.</param>
+        /// <param name="destXrefMapPath">The destination file path of the xref map to copy.</param>
+        private static void CopyXrefMap(string sourceXrefMapPath, string destXrefMapPath)
+        {
+            var destDirectoryPath = Path.GetDirectoryName(destXrefMapPath);
+            Directory.CreateDirectory(destDirectoryPath);
+
+            File.Copy(sourceXrefMapPath, destXrefMapPath, overwrite: true);
+        }
+
+        /// <summary>
+        /// Generates xref map of each Unity release.
+        /// </summary>
+        /// <param name="repository">The Unity repository.</param>
+        private static void GenerateReleaseXrefMaps(Repository repository)
+        {
+            foreach (var tag in repository.Tags)
+            {
+                string release = tag.FriendlyName;
+                string destXrefMapPath = GetXrefMapPath(release);
+
+                if (File.Exists(destXrefMapPath))
+                {
+                    Console.WriteLine($"Skip generating Unity {release} docs: corresponding xrefmap"
+                        + " already present on the repo");
+                }
+                else
+                {
+                    Console.WriteLine($"Generating Unity {release} docs.");
+                    string sourceXrefMapPath = GenerateXrefMap(repository, release, GhPagesRepoPath);
+
+                    Console.WriteLine($"Copy {sourceXrefMapPath} to {destXrefMapPath}");
+                    CopyXrefMap(sourceXrefMapPath, destXrefMapPath);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Copies the xref map of each Unity version from the latest corresponding release.
+        /// </summary>
+        /// <param name="repository">The Unity repository.</param>
+        private static void GenerateVersionXrefMaps(Repository repository)
+        {
+            var versions = repository.Tags
+                .OrderByDescending(tag => (tag.Target as Commit).Author.When)
+                .Select(tag =>
+                {
+                    string release = tag.FriendlyName;
+                    string name = Regex.Split(release, "[abfp]")[0];
+                    return (name, release);
+                })
+                .GroupBy(version => version.name)
+                .Select(g => g.First());
+
+            foreach (var version in versions)
+            {
+                string sourceXrefMapPath = GetXrefMapPath(version.release);
+                string destXrefMapPath = GetXrefMapPath(version.name);
+
+                Console.WriteLine($"Copy {sourceXrefMapPath} to {destXrefMapPath}");
+                CopyXrefMap(sourceXrefMapPath, destXrefMapPath);
+            }
+        }
+
+        /// <summary>
+        /// Generate documentation and returns the associated xref map of a specified repository with DocFx.
+        /// </summary>
+        /// <param name="repository">The repository to generate docs from.</param>
+        /// <param name="commit">The commit of the <param name="repository"> to generate the docs from.</param>
         /// <param name="generatedDocsPath">
         /// The directory where the docs will be generated (`output` property of `docfx build`).
         /// </param>
-        /// <returns>The output of the DocFx documentation generation.</returns>
-        private static void GetAndCopyXrefMap(Repository repo, string commit, string outputDirectoryPath,
+        /// <returns>The file path of the generated xrefmap.</returns>
+        private static string GenerateXrefMap(Repository repository, string commit,
             string generatedDocsPath = GeneratedDocsPath)
         {
-            string xrefMapDirectoryPath = Path.Combine(outputDirectoryPath, commit);
-            string xrefMapPath = Path.Combine(xrefMapDirectoryPath, XrefMapFileName);
+            repository.Reset(ResetMode.Hard, commit);
 
-            if (File.Exists(xrefMapPath))
+            if (Directory.Exists(generatedDocsPath))
             {
-                Console.WriteLine($"Skip generating Unity {commit} docs: corresponding xrefmap already present on the repo.");
+                Directory.Delete(generatedDocsPath, recursive: true);
             }
-            else
-            {
-                // Generate Xref Map
-                Console.WriteLine($"Generating Unity {commit} docs.");
 
-                repo.Reset(ResetMode.Hard, commit);
+            RunCommand($"docfx");
 
-                if (Directory.Exists(generatedDocsPath))
-                {
-                    Directory.Delete(generatedDocsPath, recursive: true);
-                }
+            return Path.Combine(GeneratedDocsPath, XrefMapFileName);
+        }
 
-                Console.WriteLine(RunCommand($"docfx"));
-
-                // Copy Xref Map
-                Directory.CreateDirectory(xrefMapDirectoryPath);
-
-                string sourceXrefMapPath = Path.Combine(generatedDocsPath, XrefMapFileName);
-                File.Copy(sourceXrefMapPath, xrefMapPath, overwrite: true);
-            }
+        /// <summary>
+        /// Returns the file path of a generated xref map of a specified commit of a repository.
+        /// </summary>
+        /// <param name="commit">The commit of the xref map.</param>
+        /// <param name="directoryPath">The directory where the commit has been generated.</param>
+        /// <returns>The file path of the xref map.</returns>
+        private static string GetXrefMapPath(string commit, string directoryPath = GhPagesRepoPath)
+        {
+            string xrefMapsDirectoryPath = Path.Combine(directoryPath, commit);
+            return Path.Combine(xrefMapsDirectoryPath, XrefMapFileName);
         }
 
         /// <summary>
