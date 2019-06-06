@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -67,6 +68,7 @@ namespace NormandErwan.DocFxForUnity
                 {
                     GenerateReleaseXrefMaps(unityRepo);
                     GenerateVersionXrefMaps(unityRepo);
+                    GenerateMajorVersionXrefMaps(unityRepo);
                 }
 
                 CommitAndPush(ghPagesRepo);
@@ -166,22 +168,26 @@ namespace NormandErwan.DocFxForUnity
         }
 
         /// <summary>
-        /// Copies the xref map of each Unity version from the latest corresponding release.
+        /// Copies the xref map of each Unity version (`YYYY.X.Y`) from the latest corresponding release.
         /// </summary>
         /// <param name="repository">The Unity repository.</param>
         private static void GenerateVersionXrefMaps(Repository repository)
         {
-            var versions = repository.Tags
-                .OrderByDescending(tag => (tag.Target as Commit).Author.When)
-                .Select(tag =>
-                {
-                    string release = tag.FriendlyName;
-                    string name = Regex.Split(release, "[abfp]")[0];
-                    return (name, release);
-                })
-                .GroupBy(version => version.name)
-                .Select(g => g.First());
+            var versions = GetLatestReleases(repository, @"[abfp]");
+            foreach (var version in versions)
+            {
+                Console.WriteLine($"Copy {version.release}/xrefmap.yml to {version.name}/");
+                CopyXrefMap(version.release, version.name);
+            }
+        }
 
+        /// <summary>
+        /// Copies the xref map of each major Unity version (`YYYY.X`) from the latest corresponding release.
+        /// </summary>
+        /// <param name="repository">The Unity repository.</param>
+        private static void GenerateMajorVersionXrefMaps(Repository repository)
+        {
+            var versions = GetLatestReleases(repository, @"\.\d+[abfp]");
             foreach (var version in versions)
             {
                 Console.WriteLine($"Copy {version.release}/xrefmap.yml to {version.name}/");
@@ -208,6 +214,33 @@ namespace NormandErwan.DocFxForUnity
             }
 
             RunCommand($"docfx");
+        }
+
+        /// <summary>
+        /// Returns a collection of the latest tags of a specified repository grouped by a matching regex pattern.
+        /// </summary>
+        /// <param name="repository">The repository to use.</param>
+        /// <param name="splitPattern">
+        /// The regex pattern to apply to each repository tag. The left part of the split will be used as version's
+        /// name.
+        /// </param>
+        /// <returns>
+        /// A collection of tuples containing the left part of the split as version's name and the latest tag's name
+        /// matching this version.
+        /// </returns>
+        private static IEnumerable<(string name, string release)> GetLatestReleases(Repository repository,
+            string splitPattern)
+        {
+            return repository.Tags
+                .OrderByDescending(tag => (tag.Target as Commit).Author.When)
+                .Select(tag =>
+                {
+                    string release = tag.FriendlyName;
+                    string name = Regex.Split(release, splitPattern)[0];
+                    return (name, release);
+                })
+                .GroupBy(version => version.name)
+                .Select(g => g.First());
         }
 
         /// <summary>
