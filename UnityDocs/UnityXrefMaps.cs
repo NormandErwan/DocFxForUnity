@@ -9,12 +9,15 @@ using LibGit2Sharp;
 namespace NormandErwan.DocFxForUnity
 {
     /// <summary>
-    /// Generates xref map from all Unity versions then commit them to `gh-pages` branch of
+    /// Generates the xref map of all Unity versions then commit them to the `gh-pages` branch of
     /// https://github.com/NormandErwan/DocFxForUnity.
     ///
     /// Usage: UnityXrefMaps
     /// </summary>
-    /// <remarks>.NET Core 2.x, Git and DocFx must be installed on your system.</remarks>
+    /// <remarks>
+    /// .NET Core 2.x (https://dotnet.microsoft.com), Git (https://git-scm.com/) and
+    /// DocFx (https://dotnet.github.io/docfx/) must be installed on your system.
+    /// </remarks>
     class Program
     {
         /// <summary>
@@ -66,9 +69,9 @@ namespace NormandErwan.DocFxForUnity
             {
                 using (var unityRepo = GetSyncRepository(UnityRepoUrl, UnityRepoPath))
                 {
-                    GenerateReleaseXrefMaps(unityRepo);
-                    GenerateVersionXrefMaps(unityRepo);
-                    GenerateMajorVersionXrefMaps(unityRepo);
+                    GenerateXrefMaps(unityRepo);
+                    CopyVersionXrefMaps(unityRepo);
+                    CopyMajorVersionXrefMaps(unityRepo);
                 }
 
                 CommitAndPush(ghPagesRepo);
@@ -140,10 +143,10 @@ namespace NormandErwan.DocFxForUnity
         }
 
         /// <summary>
-        /// Generates xref map of each Unity release.
+        /// Generates the xref map of each Unity release.
         /// </summary>
-        /// <param name="repository">The Unity repository.</param>
-        private static void GenerateReleaseXrefMaps(Repository repository)
+        /// <param name="repository">The Unity repository to use.</param>
+        private static void GenerateXrefMaps(Repository repository)
         {
             foreach (var tag in repository.Tags)
             {
@@ -152,12 +155,11 @@ namespace NormandErwan.DocFxForUnity
 
                 if (File.Exists(destXrefMapPath))
                 {
-                    Console.WriteLine($"Skip generating Unity {release} docs: corresponding xrefmap"
-                        + " already present on the repo");
+                    Console.WriteLine($"Skip generating Unity {release} xref: already present on the gh-branch");
                 }
                 else
                 {
-                    Console.WriteLine($"Generating Unity {release} docs");
+                    Console.WriteLine($"Generating Unity {release} xref");
                     GenerateXrefMap(repository, release);
 
                     string sourceXrefMapPath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
@@ -169,8 +171,8 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// Copies the xref map of each major Unity version (`YYYY.X`) from the latest corresponding release.
         /// </summary>
-        /// <param name="repository">The Unity repository.</param>
-        private static void GenerateMajorVersionXrefMaps(Repository repository)
+        /// <param name="repository">The Unity repository to use.</param>
+        private static void CopyMajorVersionXrefMaps(Repository repository)
         {
             var versions = GetLatestReleases(repository, @"\.\d+[abfp]");
             foreach (var version in versions)
@@ -183,8 +185,8 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// Copies the xref map of each Unity version (`YYYY.X.Y`) from the latest corresponding release.
         /// </summary>
-        /// <param name="repository">The Unity repository.</param>
-        private static void GenerateVersionXrefMaps(Repository repository)
+        /// <param name="repository">The Unity repository to use.</param>
+        private static void CopyVersionXrefMaps(Repository repository)
         {
             var versions = GetLatestReleases(repository, @"[abfp]");
             foreach (var version in versions)
@@ -195,7 +197,7 @@ namespace NormandErwan.DocFxForUnity
         }
 
         /// <summary>
-        /// Generate documentation and the associated xref map of a specified repository with DocFx.
+        /// Generate the documentation and the associated xref map of a specified repository with DocFx.
         /// </summary>
         /// <param name="repository">The repository to generate docs from.</param>
         /// <param name="commit">The commit of the <param name="repository"> to generate the docs from.</param>
@@ -216,16 +218,17 @@ namespace NormandErwan.DocFxForUnity
         }
 
         /// <summary>
-        /// Returns a collection of the latest tags of a specified repository grouped by a matching regex pattern.
+        /// Returns a collection of the latest tags of a specified repository grouped by with a regex pattern. Sort is
+        /// done by date of the tag's commit.
         /// </summary>
         /// <param name="repository">The repository to use.</param>
         /// <param name="splitPattern">
-        /// The regex pattern to apply to each repository tag. The left part of the split will be used as version's
+        /// The regex pattern to apply to each repository tag. The left part of the split will be used as tuple's
         /// name.
         /// </param>
         /// <returns>
-        /// A collection of tuples containing the left part of the split as version's name and the latest tag's name
-        /// matching this version.
+        /// A collection of tuples containing the left part of the split as tuple's name and the latest tag's name
+        /// matching this tuple's name.
         /// </returns>
         private static IEnumerable<(string name, string release)> GetLatestReleases(Repository repository,
             string splitPattern)
