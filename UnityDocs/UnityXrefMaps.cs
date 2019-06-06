@@ -22,9 +22,9 @@ namespace NormandErwan.DocFxForUnity
         private const string GeneratedDocsPath = "_site";
 
         /// <summary>
-        /// Url of the repository where to commit the xref maps.
+        /// Name of the branch where to commit the xref maps.
         /// </summary>
-        private const string GhPagesRepoUrl = "https://github.com/NormandErwan/DocFxForUnity.git";
+        private const string GhPagesRepoBranch = "gh-pages";
 
         /// <summary>
         /// File path of the repository where to commit the xref maps.
@@ -32,9 +32,9 @@ namespace NormandErwan.DocFxForUnity
         private const string GhPagesRepoPath = "gh-pages";
 
         /// <summary>
-        /// Name of the branch where to commit the xref maps.
+        /// Url of the repository where to commit the xref maps.
         /// </summary>
-        private const string GhPagesRepoBranch = "gh-pages";
+        private const string GhPagesRepoUrl = "https://github.com/NormandErwan/DocFxForUnity.git";
 
         /// <summary>
         /// The identity to use to commit to the gh-pages branch.
@@ -44,7 +44,12 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// File path of the Unity repository.
         /// </summary>
-        private const string UnityRepoPath = "Unity";
+        private const string UnityRepoPath = "UnityCsReference";
+
+        /// <summary>
+        /// Url of the repository of the Unity repository.
+        /// </summary>
+        private const string UnityRepoUrl = "https://github.com/Unity-Technologies/UnityCsReference.git";
 
         /// <summary>
         /// Filename of a xref map file.
@@ -56,20 +61,9 @@ namespace NormandErwan.DocFxForUnity
         /// </summary>
         private static void Main()
         {
-            // Clone this repo to its gh-branch
-            if (!Directory.Exists(GhPagesRepoPath))
+            using (var ghPagesRepo = GetSyncRepository(GhPagesRepoUrl, GhPagesRepoPath, GhPagesRepoBranch))
             {
-                Console.WriteLine($"Clonning {GhPagesRepoUrl} to {GhPagesRepoPath}");
-                Repository.Clone(GhPagesRepoUrl, GhPagesRepoPath, new CloneOptions { BranchName = GhPagesRepoBranch });
-            }
-
-            using (var ghPagesRepo = new Repository(GhPagesRepoPath))
-            {
-                // Force switch to gh-pages branch
-                var ghPagesBranch = ghPagesRepo.Branches[GhPagesRepoBranch];
-                Commands.Checkout(ghPagesRepo, ghPagesBranch);
-
-                using (var unityRepo = new Repository(UnityRepoPath))
+                using (var unityRepo = GetSyncRepository(UnityRepoUrl, UnityRepoPath))
                 {
                     GenerateReleaseXrefMaps(unityRepo);
                     GenerateVersionXrefMaps(unityRepo);
@@ -90,6 +84,44 @@ namespace NormandErwan.DocFxForUnity
             Directory.CreateDirectory(destDirectoryPath);
 
             File.Copy(sourceXrefMapPath, destXrefMapPath, overwrite: true);
+        }
+
+        /// <summary>
+        /// Fetches changes and hard resets the specified repository to the latest commit of a specified branch. If no
+        /// repository is found, it will be cloned before.
+        /// </summary>
+        /// <param name="sourceUrl">The url of the repository.</param>
+        /// <param name="path">The directory path where to find/clone the repository.</param>
+        /// <param name="branch">The branch use on the repository.</param>
+        /// <returns>The synced repository on the latest commit of the specified branch.</returns>
+        private static Repository GetSyncRepository(string sourceUrl, string path, string branch = "master")
+        {
+            // Clone this repo if it doesn't exist
+            bool clone = !Directory.Exists(path);
+            if (clone)
+            {
+                Console.WriteLine($"Clonning {sourceUrl} to {path}");
+                Repository.Clone(sourceUrl, path);
+            }
+
+            var repository = new Repository(path);
+
+            // Otherwise fetch changes
+            if (!clone)
+            {
+                Console.WriteLine($"Fetching changes from {sourceUrl} to {path}");
+
+                var remote = repository.Network.Remotes["origin"];
+                Commands.Fetch(repository, remote.Name, new string[0], null, null); // WTF is this API libgit2sharp?
+            }
+
+            // Reset to the specified branch
+            Console.WriteLine($"Hard reset {path} to {branch} branch");
+
+            var remoteBranch = repository.Branches[$"origin/{branch}"];
+            repository.Reset(ResetMode.Hard, remoteBranch.Tip);
+
+            return repository;
         }
 
         /// <summary>

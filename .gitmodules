@@ -1,4 +1,0 @@
-[submodule "UnityDocs/Unity"]
-	path = UnityDocs/Unity
-	url = https://github.com/Unity-Technologies/UnityCsReference.git
-	ignore = dirty
