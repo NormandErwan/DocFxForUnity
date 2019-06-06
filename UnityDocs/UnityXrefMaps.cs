@@ -71,7 +71,6 @@ namespace NormandErwan.DocFxForUnity
                 {
                     GenerateXrefMaps(unityRepo);
                     CopyVersionXrefMaps(unityRepo);
-                    CopyMajorVersionXrefMaps(unityRepo);
                 }
 
                 CommitAndPush(ghPagesRepo);
@@ -89,6 +88,30 @@ namespace NormandErwan.DocFxForUnity
             Directory.CreateDirectory(destDirectoryPath);
 
             File.Copy(sourcePath, destPath, overwrite: true);
+        }
+
+        /// <summary>
+        /// Copies the xref map of each Unity version (`YYYY.X.Y`), each major Unity version (`YYYY.X`) from the latest
+        /// corresponding release to their dedicated folder, and the latest release of the latest version to the root
+        /// folder.
+        /// </summary>
+        /// <param name="repository">The Unity repository to use.</param>
+        /// <param name="directoryPath">The directory where the xref maps have been generated.</param>
+        private static void CopyVersionXrefMaps(Repository repository, string directoryPath = GhPagesRepoPath)
+        {
+            var versions = GetLatestReleases(repository, @"[abfp]");
+            var majorVersions = GetLatestReleases(repository, @"\.\d+[abfp]");
+            var allVersions = versions.Union(majorVersions);
+
+            foreach (var version in allVersions)
+            {
+                Console.WriteLine($"Copy {version.release}/xrefmap.yml to {version.name}/");
+                CopyXrefMap(version.release, version.name, directoryPath);
+            }
+
+            var latestVersion = majorVersions.OrderByDescending(version => version.name).First();
+            Console.WriteLine($"Copy {latestVersion.release}/xrefmap.yml to {latestVersion.name}/");
+            CopyXrefMap(latestVersion.release, latestVersion.name, directoryPath);
         }
 
         /// <summary>
@@ -156,7 +179,7 @@ namespace NormandErwan.DocFxForUnity
 
                 if (File.Exists(destXrefMapPath))
                 {
-                    Console.WriteLine($"Skip generating Unity {release} xref: already present on the gh-branch");
+                    Console.WriteLine($"Skip generating Unity {release} xref: already present on the {directoryPath}");
                 }
                 else
                 {
@@ -166,36 +189,6 @@ namespace NormandErwan.DocFxForUnity
                     string sourceXrefMapPath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
                     CopyFile(sourceXrefMapPath, destXrefMapPath);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Copies the xref map of each major Unity version (`YYYY.X`) from the latest corresponding release.
-        /// </summary>
-        /// <param name="repository">The Unity repository to use.</param>
-        /// <param name="directoryPath">The directory where the xref maps have been generated.</param>
-        private static void CopyMajorVersionXrefMaps(Repository repository, string directoryPath = GeneratedDocsPath)
-        {
-            var versions = GetLatestReleases(repository, @"\.\d+[abfp]");
-            foreach (var version in versions)
-            {
-                Console.WriteLine($"Copy {version.release}/xrefmap.yml to {version.name}/");
-                CopyXrefMap(version.release, version.name, directoryPath);
-            }
-        }
-
-        /// <summary>
-        /// Copies the xref map of each Unity version (`YYYY.X.Y`) from the latest corresponding release.
-        /// </summary>
-        /// <param name="repository">The Unity repository to use.</param>
-        /// <param name="directoryPath">The directory where the xref maps have been generated.</param>
-        private static void CopyVersionXrefMaps(Repository repository, string directoryPath = GeneratedDocsPath)
-        {
-            var versions = GetLatestReleases(repository, @"[abfp]");
-            foreach (var version in versions)
-            {
-                Console.WriteLine($"Copy {version.release}/xrefmap.yml to {version.name}/");
-                CopyXrefMap(version.release, version.name, directoryPath);
             }
         }
 
