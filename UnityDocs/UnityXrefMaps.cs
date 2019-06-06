@@ -74,16 +74,16 @@ namespace NormandErwan.DocFxForUnity
         }
 
         /// <summary>
-        /// Copy a source xref map to a destination folder. Intermediate folders will be automatically created.
+        /// Copy a source file to a destination file. Intermediate folders will be automatically created.
         /// </summary>
-        /// <param name="sourceXrefMapPath">The source xref map file path to copy.</param>
-        /// <param name="destXrefMapPath">The destination file path of the xref map to copy.</param>
-        private static void CopyXrefMap(string sourceXrefMapPath, string destXrefMapPath)
+        /// <param name="sourcePath">The path of the source file to copy.</param>
+        /// <param name="destPath">The destination path of the copied file.</param>
+        private static void CopyFile(string sourcePath, string destPath)
         {
-            var destDirectoryPath = Path.GetDirectoryName(destXrefMapPath);
+            var destDirectoryPath = Path.GetDirectoryName(destPath);
             Directory.CreateDirectory(destDirectoryPath);
 
-            File.Copy(sourceXrefMapPath, destXrefMapPath, overwrite: true);
+            File.Copy(sourcePath, destPath, overwrite: true);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace NormandErwan.DocFxForUnity
                     string sourceXrefMapPath = GenerateXrefMap(repository, release, GhPagesRepoPath);
 
                     Console.WriteLine($"Copy {sourceXrefMapPath} to {destXrefMapPath}");
-                    CopyXrefMap(sourceXrefMapPath, destXrefMapPath);
+                    CopyFile(sourceXrefMapPath, destXrefMapPath);
                 }
             }
         }
@@ -174,7 +174,7 @@ namespace NormandErwan.DocFxForUnity
                 string destXrefMapPath = GetXrefMapPath(version.name);
 
                 Console.WriteLine($"Copy {sourceXrefMapPath} to {destXrefMapPath}");
-                CopyXrefMap(sourceXrefMapPath, destXrefMapPath);
+                CopyFile(sourceXrefMapPath, destXrefMapPath);
             }
         }
 
