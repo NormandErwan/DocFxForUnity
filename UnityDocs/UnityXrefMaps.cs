@@ -157,27 +157,12 @@ namespace NormandErwan.DocFxForUnity
                 }
                 else
                 {
-                    Console.WriteLine($"Generating Unity {release} docs.");
+                    Console.WriteLine($"Generating Unity {release} docs");
                     GenerateXrefMap(repository, release);
-                    string sourceXrefMapPath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
 
-                    Console.WriteLine($"Copy {sourceXrefMapPath} to {destXrefMapPath}");
+                    string sourceXrefMapPath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
                     CopyFile(sourceXrefMapPath, destXrefMapPath);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Copies the xref map of each Unity version (`YYYY.X.Y`) from the latest corresponding release.
-        /// </summary>
-        /// <param name="repository">The Unity repository.</param>
-        private static void GenerateVersionXrefMaps(Repository repository)
-        {
-            var versions = GetLatestReleases(repository, @"[abfp]");
-            foreach (var version in versions)
-            {
-                Console.WriteLine($"Copy {version.release}/xrefmap.yml to {version.name}/");
-                CopyXrefMap(version.release, version.name);
             }
         }
 
@@ -188,6 +173,20 @@ namespace NormandErwan.DocFxForUnity
         private static void GenerateMajorVersionXrefMaps(Repository repository)
         {
             var versions = GetLatestReleases(repository, @"\.\d+[abfp]");
+            foreach (var version in versions)
+            {
+                Console.WriteLine($"Copy {version.release}/xrefmap.yml to {version.name}/");
+                CopyXrefMap(version.release, version.name);
+            }
+        }
+
+        /// <summary>
+        /// Copies the xref map of each Unity version (`YYYY.X.Y`) from the latest corresponding release.
+        /// </summary>
+        /// <param name="repository">The Unity repository.</param>
+        private static void GenerateVersionXrefMaps(Repository repository)
+        {
+            var versions = GetLatestReleases(repository, @"[abfp]");
             foreach (var version in versions)
             {
                 Console.WriteLine($"Copy {version.release}/xrefmap.yml to {version.name}/");
