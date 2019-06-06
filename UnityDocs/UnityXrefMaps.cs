@@ -96,11 +96,11 @@ namespace NormandErwan.DocFxForUnity
         /// </summary>
         /// <param name="sourceCommit">The commit of the source xref map.</param>
         /// <param name="destCommit">The commit where to copy the source xref map.</param>
-        /// <param name="directoryPath">The directory where the commits have been generated.</param>
+        /// <param name="directoryPath">The directory where the xref maps have been generated.</param>
         private static void CopyXrefMap(string sourceCommit, string destCommit, string directoryPath = GhPagesRepoPath)
         {
-            string sourceXrefMapPath = GetXrefMapPath(sourceCommit);
-            string destXrefMapPath = GetXrefMapPath(destCommit);
+            string sourceXrefMapPath = GetXrefMapPath(sourceCommit, directoryPath);
+            string destXrefMapPath = GetXrefMapPath(destCommit, directoryPath);
             CopyFile(sourceXrefMapPath, destXrefMapPath);
         }
 
@@ -146,12 +146,13 @@ namespace NormandErwan.DocFxForUnity
         /// Generates the xref map of each Unity release.
         /// </summary>
         /// <param name="repository">The Unity repository to use.</param>
-        private static void GenerateXrefMaps(Repository repository)
+        /// <param name="directoryPath">The directory where to copy the generated xref maps.</param>
+        private static void GenerateXrefMaps(Repository repository, string directoryPath = GhPagesRepoPath)
         {
             foreach (var tag in repository.Tags)
             {
                 string release = tag.FriendlyName;
-                string destXrefMapPath = GetXrefMapPath(release);
+                string destXrefMapPath = GetXrefMapPath(release, directoryPath);
 
                 if (File.Exists(destXrefMapPath))
                 {
@@ -172,13 +173,14 @@ namespace NormandErwan.DocFxForUnity
         /// Copies the xref map of each major Unity version (`YYYY.X`) from the latest corresponding release.
         /// </summary>
         /// <param name="repository">The Unity repository to use.</param>
-        private static void CopyMajorVersionXrefMaps(Repository repository)
+        /// <param name="directoryPath">The directory where the xref maps have been generated.</param>
+        private static void CopyMajorVersionXrefMaps(Repository repository, string directoryPath = GeneratedDocsPath)
         {
             var versions = GetLatestReleases(repository, @"\.\d+[abfp]");
             foreach (var version in versions)
             {
                 Console.WriteLine($"Copy {version.release}/xrefmap.yml to {version.name}/");
-                CopyXrefMap(version.release, version.name);
+                CopyXrefMap(version.release, version.name, directoryPath);
             }
         }
 
@@ -186,13 +188,14 @@ namespace NormandErwan.DocFxForUnity
         /// Copies the xref map of each Unity version (`YYYY.X.Y`) from the latest corresponding release.
         /// </summary>
         /// <param name="repository">The Unity repository to use.</param>
-        private static void CopyVersionXrefMaps(Repository repository)
+        /// <param name="directoryPath">The directory where the xref maps have been generated.</param>
+        private static void CopyVersionXrefMaps(Repository repository, string directoryPath = GeneratedDocsPath)
         {
             var versions = GetLatestReleases(repository, @"[abfp]");
             foreach (var version in versions)
             {
                 Console.WriteLine($"Copy {version.release}/xrefmap.yml to {version.name}/");
-                CopyXrefMap(version.release, version.name);
+                CopyXrefMap(version.release, version.name, directoryPath);
             }
         }
 
@@ -202,7 +205,8 @@ namespace NormandErwan.DocFxForUnity
         /// <param name="repository">The repository to generate docs from.</param>
         /// <param name="commit">The commit of the <param name="repository"> to generate the docs from.</param>
         /// <param name="generatedDocsPath">
-        /// The directory where the docs will be generated (`output` property of `docfx build`).
+        /// The directory where the documentation will be generated (`output` property of `docfx build`, by default
+        /// `_site`).
         /// </param>
         private static void GenerateXrefMap(Repository repository, string commit,
             string generatedDocsPath = GeneratedDocsPath)
