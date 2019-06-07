@@ -28,17 +28,17 @@ namespace NormandErwan.DocFxForUnity
         private const string GeneratedDocsPath = "_site";
 
         /// <summary>
-        /// Name of the branch where to commit the xref maps.
+        /// Name of the branch to use on the <see cref="GhPagesRepoPath"/> repository.
         /// </summary>
         private const string GhPagesRepoBranch = "gh-pages";
 
         /// <summary>
-        /// File path of the repository where to commit the xref maps.
+        /// File path where to clone the <see cref="GhPagesRepoPath"/> repository.
         /// </summary>
         private const string GhPagesRepoPath = "gh-pages";
 
         /// <summary>
-        /// Url of the repository where to commit the xref maps.
+        /// Url of the <see cref="GhPagesRepoPath"/> repository.
         /// </summary>
         private const string GhPagesRepoUrl = "https://github.com/NormandErwan/DocFxForUnity.git";
 
@@ -61,6 +61,11 @@ namespace NormandErwan.DocFxForUnity
         /// Filename of a xref map file.
         /// </summary>
         private const string XrefMapFileName = "xrefmap.yml";
+
+        /// <summary>
+        /// Directory path where to copy the xref maps.
+        /// </summary>
+        private const string XrefMapsPath = "gh-pages/Unity";
 
         /// <summary>
         /// Entry point of this program.
@@ -122,7 +127,7 @@ namespace NormandErwan.DocFxForUnity
         /// </summary>
         /// <param name="repository">The Unity repository to use.</param>
         /// <param name="directoryPath">The directory where the xref maps have been generated.</param>
-        private static void CopyVersionXrefMaps(Repository repository, string directoryPath = GhPagesRepoPath)
+        private static void CopyVersionXrefMaps(Repository repository, string directoryPath = XrefMapsPath)
         {
             var versions = GetLatestReleases(repository, @"[abfp]");
 
@@ -138,7 +143,7 @@ namespace NormandErwan.DocFxForUnity
             versions = versions.OrderByDescending(version => version.name);
             foreach (var version in versions)
             {
-                Console.WriteLine($"Copy {version.release}/xrefmap.yml to {version.name}/");
+                Console.WriteLine($"Copy {directoryPath}/{version.release}/xrefmap.yml to {directoryPath}/{version.name}");
                 CopyXrefMap(version.release, version.name, directoryPath);
             }
         }
@@ -149,7 +154,7 @@ namespace NormandErwan.DocFxForUnity
         /// <param name="sourceCommit">The commit of the source xref map.</param>
         /// <param name="destCommit">The commit where to copy the source xref map.</param>
         /// <param name="directoryPath">The directory where the xref maps have been generated.</param>
-        private static void CopyXrefMap(string sourceCommit, string destCommit, string directoryPath = GhPagesRepoPath)
+        private static void CopyXrefMap(string sourceCommit, string destCommit, string directoryPath = XrefMapsPath)
         {
             string sourceXrefMapPath = GetXrefMapPath(sourceCommit, directoryPath);
             string destXrefMapPath = GetXrefMapPath(destCommit, directoryPath);
@@ -198,7 +203,7 @@ namespace NormandErwan.DocFxForUnity
         /// </summary>
         /// <param name="repository">The Unity repository to use.</param>
         /// <param name="directoryPath">The directory where to copy the generated xref maps.</param>
-        private static void GenerateXrefMaps(Repository repository, string directoryPath = GhPagesRepoPath)
+        private static void GenerateXrefMaps(Repository repository, string directoryPath = XrefMapsPath)
         {
             foreach (var tag in repository.Tags)
             {
@@ -207,7 +212,7 @@ namespace NormandErwan.DocFxForUnity
 
                 if (File.Exists(destXrefMapPath))
                 {
-                    Console.WriteLine($"Skip generating Unity {release} xref: already present on the {directoryPath}");
+                    Console.WriteLine($"Skip generating Unity {release}'s xref: already present on {directoryPath}");
                 }
                 else
                 {
@@ -276,7 +281,7 @@ namespace NormandErwan.DocFxForUnity
         /// <param name="commit">The commit of the xref map.</param>
         /// <param name="directoryPath">The directory where the commit has been generated.</param>
         /// <returns>The file path of the xref map.</returns>
-        private static string GetXrefMapPath(string commit, string directoryPath = GhPagesRepoPath)
+        private static string GetXrefMapPath(string commit, string directoryPath = XrefMapsPath)
         {
             string xrefMapsDirectoryPath = Path.Combine(directoryPath, commit);
             return Path.Combine(xrefMapsDirectoryPath, XrefMapFileName);
