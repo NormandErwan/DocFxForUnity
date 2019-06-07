@@ -65,7 +65,7 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// Entry point of this program.
         /// </summary>
-        private static void Main()
+        public static void Main()
         {
             using (var ghPagesRepo = GetSyncRepository(GhPagesRepoUrl, GhPagesRepoPath, GhPagesRepoBranch))
             {
@@ -77,6 +77,29 @@ namespace NormandErwan.DocFxForUnity
 
                 AddCommitChanges(ghPagesRepo, "Xrefmaps update", CommitIdentity);
             }
+        }
+
+        /// <summary>
+        /// Adds and commits all changes on the specified repository.
+        /// </summary>
+        /// <param name="repository">The repository to add, command and push changes.</param>
+        /// <param name="commitMessage">The message of the commit.</param>
+        /// <param name="commitIdentity">The identity of the author and of the committer.</param>
+        private static void AddCommitChanges(Repository repository, string commitMessage, Identity commitIdentity)
+        {
+            if (!repository.RetrieveStatus().IsDirty)
+            {
+                Console.WriteLine($"Nothing to commit on {GhPagesRepoPath}");
+                return;
+            }
+
+            Console.WriteLine($"Adding all changes on {GhPagesRepoPath}");
+            Commands.Stage(repository, "*");
+
+            Console.WriteLine($"Commit changes on {GhPagesRepoPath}");
+            var author = new Signature(commitIdentity, DateTime.Now);
+            var committer = author;
+            repository.Commit(commitMessage, author, committer);
         }
 
         /// <summary>
@@ -257,29 +280,6 @@ namespace NormandErwan.DocFxForUnity
         {
             string xrefMapsDirectoryPath = Path.Combine(directoryPath, commit);
             return Path.Combine(xrefMapsDirectoryPath, XrefMapFileName);
-        }
-
-        /// <summary>
-        /// Adds and commits all changes on the specified repository.
-        /// </summary>
-        /// <param name="repository">The repository to add, command and push changes.</param>
-        /// <param name="commitMessage">The message of the commit.</param>
-        /// <param name="commitIdentity">The identity of the author and of the committer.</param>
-        private static void AddCommitChanges(Repository repository, string commitMessage, Identity commitIdentity)
-        {
-            if (!repository.RetrieveStatus().IsDirty)
-            {
-                Console.WriteLine($"Nothing to commit on {GhPagesRepoPath}");
-                return;
-            }
-
-            Console.WriteLine($"Adding all changes on {GhPagesRepoPath}");
-            Commands.Stage(repository, "*");
-
-            Console.WriteLine($"Commit changes on {GhPagesRepoPath}");
-            var author = new Signature(commitIdentity, DateTime.Now);
-            var committer = author;
-            repository.Commit(commitMessage, author, committer);
         }
 
         /// <summary>
