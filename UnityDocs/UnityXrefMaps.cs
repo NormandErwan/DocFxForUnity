@@ -9,10 +9,12 @@ using LibGit2Sharp;
 namespace NormandErwan.DocFxForUnity
 {
     /// <summary>
-    /// Generates the xref map of all Unity versions then commit them to the `gh-pages` branch of
+    /// Generates the xref map of all Unity versions and commit them to the `gh-pages` branch of
     /// https://github.com/NormandErwan/DocFxForUnity.
     ///
     /// Usage: UnityXrefMaps
+    ///
+    /// You will need to manually push commits then.
     /// </summary>
     /// <remarks>
     /// .NET Core 2.x (https://dotnet.microsoft.com), Git (https://git-scm.com/) and
@@ -21,7 +23,7 @@ namespace NormandErwan.DocFxForUnity
     class Program
     {
         /// <summary>
-        /// File path where the documentation of the Unity repo will be generated.
+        /// File path where the documentation of the Unity repository will be generated.
         /// </summary>
         private const string GeneratedDocsPath = "_site";
 
@@ -73,7 +75,7 @@ namespace NormandErwan.DocFxForUnity
                     CopyVersionXrefMaps(unityRepo);
                 }
 
-                CommitAndPush(ghPagesRepo);
+                AddCommitChanges(ghPagesRepo, "Xrefmaps update", CommitIdentity);
             }
         }
 
@@ -141,7 +143,7 @@ namespace NormandErwan.DocFxForUnity
         /// <returns>The synced repository on the latest commit of the specified branch.</returns>
         private static Repository GetSyncRepository(string sourceUrl, string path, string branch = "master")
         {
-            // Clone this repo to the specified branch if it doesn't exist
+            // Clone this repository to the specified branch if it doesn't exist
             bool clone = !Directory.Exists(path);
             if (clone)
             {
@@ -258,27 +260,26 @@ namespace NormandErwan.DocFxForUnity
         }
 
         /// <summary>
-        /// Add, commit and push all changes on the specified repository.
+        /// Adds and commits all changes on the specified repository.
         /// </summary>
-        /// <param name="repo">The repository to add, command and push changes.</param>
-        private static void CommitAndPush(Repository repo)
+        /// <param name="repository">The repository to add, command and push changes.</param>
+        /// <param name="commitMessage">The message of the commit.</param>
+        /// <param name="commitIdentity">The identity of the author and of the committer.</param>
+        private static void AddCommitChanges(Repository repository, string commitMessage, Identity commitIdentity)
         {
-            if (repo.RetrieveStatus().IsDirty)
+            if (!repository.RetrieveStatus().IsDirty)
             {
-                Console.WriteLine($"Add, commit and push all changes on {GhPagesRepoPath}.");
-
-                Commands.Stage(repo, "*");
-
-                var author = new Signature(CommitIdentity, DateTime.Now);
-                var committer = author;
-                repo.Commit("Xrefmaps update", author, committer);
-
-                // TODO push
+                Console.WriteLine($"Nothing to commit on {GhPagesRepoPath}");
+                return;
             }
-            else
-            {
-                Console.WriteLine($"Nothing to commit on {GhPagesRepoPath}.");
-            }
+
+            Console.WriteLine($"Adding all changes on {GhPagesRepoPath}");
+            Commands.Stage(repository, "*");
+
+            Console.WriteLine($"Commit changes on {GhPagesRepoPath}");
+            var author = new Signature(commitIdentity, DateTime.Now);
+            var committer = author;
+            repository.Commit(commitMessage, author, committer);
         }
 
         /// <summary>
