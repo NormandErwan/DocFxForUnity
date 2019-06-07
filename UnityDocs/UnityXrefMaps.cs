@@ -100,18 +100,22 @@ namespace NormandErwan.DocFxForUnity
         private static void CopyVersionXrefMaps(Repository repository, string directoryPath = GhPagesRepoPath)
         {
             var versions = GetLatestReleases(repository, @"[abfp]");
-            var majorVersions = GetLatestReleases(repository, @"\.\d+[abfp]");
-            var allVersions = versions.Union(majorVersions);
 
-            foreach (var version in allVersions)
+            var majorVersions = GetLatestReleases(repository, @"\.\d+[abfp]");
+            versions = versions.Union(majorVersions);
+
+            var latestStableVersion = majorVersions
+                .OrderByDescending(version => version.name)
+                .First(version => version.release.Contains('f'));
+            latestStableVersion.name = ".";
+            versions = versions.Append(latestStableVersion);
+
+            versions = versions.OrderByDescending(version => version.name);
+            foreach (var version in versions)
             {
                 Console.WriteLine($"Copy {version.release}/xrefmap.yml to {version.name}/");
                 CopyXrefMap(version.release, version.name, directoryPath);
             }
-
-            var latestVersion = majorVersions.OrderByDescending(version => version.name).First();
-            Console.WriteLine($"Copy {latestVersion.release}/xrefmap.yml to {latestVersion.name}/");
-            CopyXrefMap(latestVersion.release, latestVersion.name, directoryPath);
         }
 
         /// <summary>
