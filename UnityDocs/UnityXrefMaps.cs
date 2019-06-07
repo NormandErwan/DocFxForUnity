@@ -23,6 +23,11 @@ namespace NormandErwan.DocFxForUnity
     class Program
     {
         /// <summary>
+        /// The identity to use to commit to the gh-pages branch.
+        /// </summary>
+        private static readonly Identity CommitIdentity = new Identity("Erwan Normand", "normand.erwan@protonmail.com");
+
+        /// <summary>
         /// File path where the documentation of the Unity repository will be generated.
         /// </summary>
         private const string GeneratedDocsPath = "_site";
@@ -41,11 +46,6 @@ namespace NormandErwan.DocFxForUnity
         /// Url of the <see cref="GhPagesRepoPath"/> repository.
         /// </summary>
         private const string GhPagesRepoUrl = "https://github.com/NormandErwan/DocFxForUnity.git";
-
-        /// <summary>
-        /// The identity to use to commit to the gh-pages branch.
-        /// </summary>
-        private static readonly Identity CommitIdentity = new Identity("Erwan Normand", "normand.erwan@protonmail.com");
 
         /// <summary>
         /// File path of the Unity repository.
