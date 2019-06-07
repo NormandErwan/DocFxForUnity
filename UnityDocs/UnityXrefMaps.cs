@@ -137,30 +137,29 @@ namespace NormandErwan.DocFxForUnity
         /// <returns>The synced repository on the latest commit of the specified branch.</returns>
         private static Repository GetSyncRepository(string sourceUrl, string path, string branch = "master")
         {
-            // Clone this repo if it doesn't exist
+            // Clone this repo to the specified branch if it doesn't exist
             bool clone = !Directory.Exists(path);
             if (clone)
             {
                 Console.WriteLine($"Clonning {sourceUrl} to {path}");
-                Repository.Clone(sourceUrl, path);
+                Repository.Clone(sourceUrl, path, new CloneOptions() { BranchName = branch });
             }
 
             var repository = new Repository(path);
 
-            // Otherwise fetch changes
+            // Otherwise fetch changes and checkout to the specified branch
             if (!clone)
             {
-                Console.WriteLine($"Fetching changes from {sourceUrl} to {path}");
+                Console.WriteLine($"Hard reset {path} to HEAD");
+                repository.Reset(ResetMode.Hard);
 
+                Console.WriteLine($"Fetching changes from origin to {path}");
                 var remote = repository.Network.Remotes["origin"];
                 Commands.Fetch(repository, remote.Name, new string[0], null, null); // WTF is this API libgit2sharp?
+
+                Console.WriteLine($"Checking out {path} to {branch} branch");
+                Commands.Checkout(repository, branch);
             }
-
-            // Reset to the specified branch
-            Console.WriteLine($"Hard reset {path} to {branch} branch");
-
-            var remoteBranch = repository.Branches[$"origin/{branch}"];
-            repository.Reset(ResetMode.Hard, remoteBranch.Tip);
 
             return repository;
         }
