@@ -25,11 +25,16 @@ namespace NormandErwan.DocFxForUnity
         public int Health { get; private set; }
 
         /// <summary>
-        /// Sets <see cref="Health"/> with <see cref="startingHealth"/>.
+        /// Gets the starting health of the player.
+        /// </summary>
+        public int StartingHealth { get { return startingHealth; } }
+
+        /// <summary>
+        /// Sets <see cref="Health"/> with <see cref="StartingHealth"/>.
         /// </summary>
         protected virtual void Start()
         {
-            Health = startingHealth;
+            Health = StartingHealth;
         }
 
         /// <summary>
