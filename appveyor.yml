@@ -1,21 +1,27 @@
+# Inspired by: https://github.com/docascode/docfx-seed/blob/master/appveyor.yml
 environment:
-  oauth_token:
-    secure: 6ofAZV1tmD6f2ubY3R3QNjkxAg+zyniEYixAia6FjzKNhcQeY+mYOFAx2vWi8hdp
   git_user_email: normand.erwan@protonmail.com
   git_user_name: Erwan Normand
-install: choco install docfx -y
-cache:
-- UnityDocs\gh-pages
-- UnityDocs\UnityCsReference
+  auth_token:
+    secure: 6ofAZV1tmD6f2ubY3R3QNjkxAg+zyniEYixAia6FjzKNhcQeY+mYOFAx2vWi8hdp
+install:
+- choco install docfx -y
 build_script:
-- cmd: dotnet run -p UnityDocs
-on_finish:
-- ps: >-
-    cd gh-pages
+- cp README.md Documentation/index.md
+- docfx Documentation/docfx.json
+after_build:
+- |
+  git config --global user.email $env:git_user_email
+  git config --global user.name $env:git_user_name
 
-    git config --global credential.helper store
-    Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:oauth_token):x-oauth-basic@github.com`n"
-    git config --global user.email $env:git_user_email
-    git config --global user.name $env:git_user_name
+  git clone https://$($env:oauth_token)@github.com/NormandErwan/DocFxForUnity -b gh-pages gh-pages
+  cd gh-pages
 
-    git push origin gh-pages -q
+  shopt -s extglob
+  rm -rf !(Unity)
+
+  cp -r ../_site/* .
+  git add --all 2>&1
+
+  git commit -m "Documentation update"
+  git push origin gh-pages
