@@ -3,13 +3,14 @@ environment:
     secure: 6ofAZV1tmD6f2ubY3R3QNjkxAg+zyniEYixAia6FjzKNhcQeY+mYOFAx2vWi8hdp
   git_user_email: normand.erwan@protonmail.com
   git_user_name: Erwan Normand
-install: choco install docfx -y
+install:
+- choco install docfx -y
 cache:
-- UnityDocs\gh-pages
-- UnityDocs\UnityCsReference
+- gh-pages
+- UnityCsReference
 build_script:
-- cmd: dotnet run -p UnityDocs
-on_finish:
+- dotnet run
+after_build:
 - ps: >-
     cd gh-pages
 
