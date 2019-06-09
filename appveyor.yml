@@ -4,11 +4,11 @@ environment:
   # TODO configure your own project by changing values of environment variables
   git_repo: NormandErwan/DocFxForUnity
   git_user_email: normand.erwan@protonmail.com
-  git_user_name: Erwan Normand
+  git_user_name: NormandErwan
   # See: https://help.github.com/en/articles/configuring-a-publishing-source-for-github-pages
   # Encrypt with: https://ci.appveyor.com/tools/encrypt
   auth_token:
-    secure: 6ofAZV1tmD6f2ubY3R3QNjkxAg+zyniEYixAia6FjzKNhcQeY+mYOFAx2vWi8hdp
+    secure: ja36GpJnR2SOrQ3E2c++Pni1GjS61c8MWotQP5FrqaVvR+FmL9AOmNHPvYiKIM+p
 install:
   - choco install docfx -y
 build_script:
