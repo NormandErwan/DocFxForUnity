@@ -1,9 +1,12 @@
 # Inspired by: https://github.com/docascode/docfx-seed/blob/master/appveyor.yml
+image: Visual Studio 2017
 environment:
   # TODO configure your own project by changing values of environment variables
   git_repo: NormandErwan/DocFxForUnity
   git_user_email: normand.erwan@protonmail.com
   git_user_name: Erwan Normand
+  # See: https://help.github.com/en/articles/configuring-a-publishing-source-for-github-pages
+  # Encrypt with: https://ci.appveyor.com/tools/encrypt
   auth_token:
     secure: 6ofAZV1tmD6f2ubY3R3QNjkxAg+zyniEYixAia6FjzKNhcQeY+mYOFAx2vWi8hdp
 install:
@@ -12,21 +15,23 @@ build_script:
   - cp README.md Documentation/index.md
   - docfx Documentation/docfx.json
 after_build:
-  # Clone repo's gh-pages branch (see: https://help.github.com/en/articles/configuring-a-publishing-source-for-github-pages)
-  - |
-    git clone https://$($env:oauth_token)@github.com/$env:git_repo -b gh-pages gh-pages
-    cd gh-pages
-  # Remove old docs, but keep the Unity's xref maps (specific to DocFxForUnity, you can remove it for you own project)
-  - |
-    shopt -s extglob
-    rm -rf !(Unity)
+  # Clone repo's gh-pages branch where docs are
+  - ps: |
+        git clone https://github.com/$env:git_repo -b gh-pages gh-pages --quiet
+        cd gh-pages
+  # Replace old docs (necessary to have clean new docs)
+  # But keep the Unity's xref maps folder (specific to DocFxForUnity, you can keep only the `rm -r` on you own project)
+  - ps: |
+        Get-ChildItem -exclude Unity | rm -r
+        cp -r ..\_site\* .
   # Add, commit and push new docs
-  - |
-    cp -r ../_site/* .
-    git add --all 2>&1
+  - ps: |
+        git add --all 2>&1 | out-null
 
-    git config --global user.email $env:git_user_email
-    git config --global user.name $env:git_user_name
-    git commit -m "Documentation update"
+        git config --global user.email $env:git_user_email
+        git config --global user.name $env:git_user_name
+        git commit -m "Documentation update"
 
-    git push origin gh-pages
+        git config --global credential.helper store
+        Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:auth_token):x-oauth-basic@github.com`n"
+        git push origin gh-pages
