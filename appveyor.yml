@@ -30,8 +30,8 @@ after_build:
 
         git config --global user.email $env:git_user_email
         git config --global user.name $env:git_user_name
-        git commit -m "Documentation update"
+        git commit -m "Documentation update" --quiet
 
         git config --global credential.helper store
         Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:auth_token):x-oauth-basic@github.com`n"
-        git push origin gh-pages
+        git push origin gh-pages --quiet
