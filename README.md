@@ -62,16 +62,3 @@ You can also found a [`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxFor
 if you're using GitLab instead of GitHub. Generated website is pushed to a `public/` directory. See the
 [GitLab Pages documentation](https://docs.gitlab.com/ee/user/project/pages/getting_started_part_four.html) for more
 details.
-
-## Details
-
-### docfx.json
-
-Copy and detail docfx.json
-
-### appveyor.yml
-
-Copy and detail appveyor.yml example
-
-https://github.blog/2012-09-21-easier-builds-and-deployments-using-git-over-https-and-oauth/
-https://www.appveyor.com/docs/how-to/git-push/ but errors
