@@ -1,0 +1,14 @@
+image: stefanscherer/chocolatey
+
+before_script:
+  - choco install -y docfx --version 2.42.4
+
+pages:
+  stage: deploy
+  script:
+    - mkdir public
+    - copy README.md Documentation\index.md
+    - docfx Documentation\docfx.json
+  artifacts:
+    paths:
+      - public
