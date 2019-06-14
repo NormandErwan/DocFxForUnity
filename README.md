@@ -15,19 +15,45 @@ Every refence to the C# API or to the Unity API will be automatically linked.
 
 | DocFxForUnity documentation manual | DocFxForUnity documentation scripting API |
 |------------------------------------|-------------------------------------------|
-| [![DocFxForUnity documentation manual](https://normanderwan.github.io/DocFxForUnity/images/ExampleManual.png)](https://normanderwan.github.io/DocFxForUnity/manual/coniunctis.html) | [![DocFxForUnity documentation scripting API](https://normanderwan.github.io/DocFxForUnity/images/ExampleScriptingApi.png)](https://normanderwan.github.io/DocFxForUnity/api/DocFxForUnity.Player.html) |
+| [![DocFxForUnity documentation manual](https://normanderwan.github.io/DocFxForUnity/resources/ExampleManual.png)](https://normanderwan.github.io/DocFxForUnity/manual/coniunctis.html) | [![DocFxForUnity documentation scripting API](https://normanderwan.github.io/DocFxForUnity/resources/ExampleScriptingApi.png)](https://normanderwan.github.io/DocFxForUnity/api/DocFxForUnity.Player.html) |
 
 ## Setup a Unity-like documentation on your project
 
 ### Install
 
-Copy the `Documentation/` folder from this repository to the root of your Unity project (at the same level than the `Assets/` folder).
+- Copy the `Documentation/` folder to your Unity project (at the same level than the `Assets/` folder).
+- Edit `Documentation/docfx.json` configuration file:
+
+```json
+  {
+    "metadata": [
+      ...
+    ],
+    "build": {
+      "globalMetadata": // Edit your documentation website info, see: https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html#322-reserved-metadata
+      {
+        "_appTitle": "Example Unity documentation",
+        "_appFooter": "Example Unity documentation",
+        "_enableSearch": true
+      },
+      "sitemap":
+      {
+        ...
+        "baseUrl": "https://normanderwan.github.io/DocFxForUnity" // The URL of your documentation website
+      }
+    }
+  }
+```
+- Write manual pages in Markdown on `Documentation/manual/`. You must keep a list of these pages on `Documentation/manual/toc.yml`.
+- Add resources such as images to `Documentation/resources/`
 
 ### Generate documentation locally
 
 - [Install DocFX](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-as-a-command-line-tool).
-- On a command line opened on your project, run: `docfx Documentation/docfx.json --serve`. The generated website will be
-visible at <http://localhost:8080>.
+- On a command line opened on your project, run:
+ - `cp README.md Documentation/index.md`.
+ - `docfx Documentation/docfx.json --serve`.
+ - The generated website will be visible at <http://localhost:8080>.
 
 ### Generate documentation automatically
 

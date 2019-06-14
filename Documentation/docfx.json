@@ -33,7 +33,7 @@
     ],
     "resource": [
       {
-        "files": [ "images/*" ]
+        "files": [ "resources/*" ]
       }
     ],
     "sitemap":
