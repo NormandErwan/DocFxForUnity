@@ -11,11 +11,11 @@ API (from the C# scripts of the project).
 This repository contains a simple example Unity project. Its documentation is automatically generated and deployed
 online with every `git push`: <https://normanderwan.github.io/DocFxForUnity/>.
 
-Every refence to C# API or to Unity API will be automatically linked. See the example class: <https://normanderwan.github.io/DocFxForUnity/api/NormandErwan.DocFxForUnity.Player.html>.
+Every refence to the C# API or to the Unity API will be automatically linked.
 
 | DocFxForUnity documentation manual | DocFxForUnity documentation scripting API |
 |------------------------------------|-------------------------------------------|
-| [![DocFxForUnity documentation manual](https://normanderwan.github.io/DocFxForUnity/images/ExampleManual.jpg)](https://normanderwan.github.io/DocFxForUnity/manual/coniunctis.html) | [![DocFxForUnity documentation scripting API](https://normanderwan.github.io/DocFxForUnity/images/ExampleScriptingApi.jpg)](https://normanderwan.github.io/DocFxForUnity/api/NormandErwan.DocFxForUnity.html) |
+| [![DocFxForUnity documentation manual](https://normanderwan.github.io/DocFxForUnity/images/ExampleManual.png)](https://normanderwan.github.io/DocFxForUnity/manual/coniunctis.html) | [![DocFxForUnity documentation scripting API](https://normanderwan.github.io/DocFxForUnity/images/ExampleScriptingApi.png)](https://normanderwan.github.io/DocFxForUnity/api/DocFxForUnity.Player.html) |
 
 ## Setup a Unity-like documentation on your project
 
