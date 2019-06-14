@@ -6,3 +6,4 @@
 **/gh-pages/
 **/obj/
 **/UnityCsReference/
+*.cache
