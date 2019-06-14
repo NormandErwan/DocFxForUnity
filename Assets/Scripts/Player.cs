@@ -14,6 +14,12 @@ namespace NormandErwan.DocFxForUnity
         [SerializeField]
         private int startingHealth;
 
+        [SerializeField]
+        private AudioSource audioSource;
+
+        [SerializeField]
+        private AudioClip hurtClip;
+
         /// <summary>
         /// Gets the list of the equipment carried by the player.
         /// </summary>
@@ -23,6 +29,11 @@ namespace NormandErwan.DocFxForUnity
         /// Gets the current health of the player.
         /// </summary>
         public int Health { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="AudioClip"/> that will be played when <see cref="Hit(int)"/> is called.
+        /// </summary>
+        public AudioClip HurtClip { get{ return hurtClip; } }
 
         /// <summary>
         /// Gets the starting health of the player.
@@ -45,6 +56,7 @@ namespace NormandErwan.DocFxForUnity
         public void Hit(int value)
         {
             Health -= value;
+            audioSource.PlayOneShot(hurtClip);
 
             if (Health <= 0)
             {
