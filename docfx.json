@@ -1,0 +1,27 @@
+{
+   "metadata": [
+    {
+      "src": [
+        {
+          "src": "UnityCsReference/",
+          "files": [ "**/*.cs" ]
+        }
+      ],
+      "properties": {
+        "TargetFramework": "net35"
+      },
+      "dest": "ScriptReference/"
+    }
+  ],
+  "build": {
+    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
+    "content": [
+      {
+        "src": "ScriptReference/",
+        "files": [ "*.yml" ],
+        "dest": "ScriptReference/"
+      }
+    ],
+    "dest": "_site"
+  }
+}
