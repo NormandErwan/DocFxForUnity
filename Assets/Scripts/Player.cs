@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace NormandErwan.DocFxForUnity
+namespace DocFxForUnity
 {
     /// <summary>
     /// The player of the game.
