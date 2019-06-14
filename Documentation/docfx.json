@@ -7,8 +7,8 @@
           "files": [ "*.csproj" ]
         }
       ],
-      "dest": "api/",
-      "filter": "filterConfig.yml"
+      "filter": "filterConfig.yml",
+      "dest": "api/"
     }
   ],
   "build": {
@@ -18,16 +18,17 @@
       "_appFooter": "Example Unity documentation",
       "_enableSearch": true
     },
-    "xref": [ "https://normanderwan.github.io/DocFxForUnity/Unity/xrefmap.yml" ],
-    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
     "content": [
+      {
+        "files": [ "api/*.yml" ]
+      },
       {
         "src": "manual/",
         "dest": "manual/",
         "files": [ "toc.yml", "*.md" ]
       },
       {
-        "files": [ "toc.yml", "index.md", "api/*.yml" ]
+        "files": [ "toc.yml", "index.md" ]
       }
     ],
     "resource": [
@@ -35,6 +36,8 @@
         "files": [ "images/*" ]
       }
     ],
-    "dest": "../_site"
+    "xref": [ "https://normanderwan.github.io/DocFxForUnity/Unity/xrefmap.yml" ],
+    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
+    "dest": "../_site/"
   }
 }
