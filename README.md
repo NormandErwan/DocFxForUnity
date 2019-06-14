@@ -8,10 +8,10 @@
 [Unity documentation](https://docs.unity3d.com/Manual/index.html) with a manual (written in Markdown) and a scripting
 API (from the C# scripts of the project).
 
-This repository contains a simple example Unity project. Its documentation is automatically generated and deployed
+This repository contains a simple Unity project as example. Its documentation is automatically generated and deployed
 online with every `git push`: <https://normanderwan.github.io/DocFxForUnity/>.
 
-Every refence to the C# API or to the Unity API will be automatically linked.
+Every reference to the C# API or to the Unity API will be automatically linked.
 
 | DocFxForUnity documentation manual | DocFxForUnity documentation scripting API |
 |------------------------------------|-------------------------------------------|
@@ -24,7 +24,7 @@ Every refence to the C# API or to the Unity API will be automatically linked.
 - Copy the `Documentation/` folder to your Unity project (at the same level than the `Assets/` folder).
 - Edit `Documentation/docfx.json` configuration file:
 
-```json
+```javascript
   {
     "metadata": [
       ...
