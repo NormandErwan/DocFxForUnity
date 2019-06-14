@@ -10,7 +10,7 @@ environment:
   auth_token:
     secure: ja36GpJnR2SOrQ3E2c++Pni1GjS61c8MWotQP5FrqaVvR+FmL9AOmNHPvYiKIM+p
 install:
-  - choco install docfx -y
+  - choco install docfx -y --version 2.42.4
 build_script:
   - cp README.md Documentation/index.md
   - docfx Documentation/docfx.json
