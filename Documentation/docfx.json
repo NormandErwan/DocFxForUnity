@@ -36,6 +36,17 @@
         "files": [ "images/*" ]
       }
     ],
+    "sitemap":
+    {
+      "baseUrl": "https://normanderwan.github.io/DocFxForUnity",
+      "changefreq": "weekly",
+      "fileOptions": {
+        "api/*":
+        {
+          "changefreq": "daily"
+        }
+      }
+    },
     "xref": [ "https://normanderwan.github.io/DocFxForUnity/Unity/xrefmap.yml" ],
     "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
     "dest": "../_site/"
