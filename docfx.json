@@ -4,7 +4,11 @@
       "src": [
         {
           "src": "UnityCsReference/",
-          "files": [ "**/*.cs" ]
+          "files": [
+            "Editor/**/*.cs",
+            "Modules/**/*.cs",
+            "Runtime/**/*.cs"
+          ]
         }
       ],
       "filter": "filterConfig.yml",
