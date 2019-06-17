@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using LibGit2Sharp;
-using YamlDotNet.RepresentationModel;
+using YamlDotNet.Serialization;
 
 namespace NormandErwan.DocFxForUnity
 {
@@ -49,6 +49,11 @@ namespace NormandErwan.DocFxForUnity
         private const string GhPagesRepoUrl = "https://github.com/NormandErwan/DocFxForUnity.git";
 
         /// <summary>
+        /// Url of the public API of Unity.
+        /// </summary>
+        private const string UnityApiUrl = "https://docs.unity3d.com/ScriptReference/";
+
+        /// <summary>
         /// File path of the Unity repository.
         /// </summary>
         private const string UnityRepoPath = "UnityCsReference";
@@ -73,6 +78,13 @@ namespace NormandErwan.DocFxForUnity
         /// </summary>
         public static void Main()
         {
+            string sourceXrefMapPath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
+            string destXrefMapPath = Path.Combine(".", XrefMapFileName);
+            //CopyFile(sourceXrefMapPath, destXrefMapPath);
+
+            FixXrefMapHrefs(destXrefMapPath, UnityApiUrl);
+
+            return;
             using (var ghPagesRepo = GetSyncRepository(GhPagesRepoUrl, GhPagesRepoPath, GhPagesRepoBranch))
             {
                 using (var unityRepo = GetSyncRepository(UnityRepoUrl, UnityRepoPath))
@@ -223,23 +235,57 @@ namespace NormandErwan.DocFxForUnity
                     string sourceXrefMapPath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
                     CopyFile(sourceXrefMapPath, destXrefMapPath);
 
-                    FixXrefMapHrefs(destXrefMapPath);
+                    FixXrefMapHrefs(destXrefMapPath, UnityApiUrl);
                 }
             }
         }
 
-        private static void FixXrefMapHrefs(string xrefMapPath)
+        private static readonly List<string> NamespacesToRemove = new List<string> { "UnityEditor", "UnityEngine" };
+
+        private static void FixXrefMapHrefs(string xrefMapPath, string apiUrl)
         {
-            // TODO regex to remove `:` char on the xrefmap
+            // Remove `0:` strings on the xrefmap that make crash Deserializer
+            string xrefMapText = File.ReadAllText(xrefMapPath);
+            //xrefMapText = Regex.Replace(xrefMapText, @"(\d):", "$1");
 
-            using (var reader = File.OpenText(xrefMapPath))
+            // Load xref map
+            var deserializer = new Deserializer();
+            var xrefMap = deserializer.Deserialize<UnityXrefMap>(xrefMapText);
+
+            foreach (var reference in xrefMap.references)
             {
-                var yamlStream = new YamlStream();
-                yamlStream.Load(reader);
+                string href;
 
-                var yaml = yamlStream.Documents[0].RootNode as YamlMappingNode;
-                Console.WriteLine(yaml.Children.Count);
+                if (reference.commentId.Contains("N:"))
+                {
+                    href = "index.html";
+                }
+                else
+                {
+                    href = reference.uid;
+
+                    foreach (var namespaceToRemove in NamespacesToRemove)
+                    {
+                        href = href.Replace(namespaceToRemove + ".", "");
+                    }
+
+                    href = href.Replace(".#ctor", "-ctor");
+
+                    href = href.Replace("`", "_");
+
+                    href = href.Replace("*", "");
+
+                    href = Regex.Replace(href, @"\(.*\)", "");
+                }
+
+                reference.href = apiUrl + href + ".html";
             }
+
+            // Save xref map
+            var serializer = new Serializer();
+            xrefMapText = "### YamlMime:XRefMap" + "\n"
+                + serializer.Serialize(xrefMap);
+            File.WriteAllText("output.yml", xrefMapText);
         }
 
         /// <summary>
