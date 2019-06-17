@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using LibGit2Sharp;
+using YamlDotNet.RepresentationModel;
 
 namespace NormandErwan.DocFxForUnity
 {
@@ -217,11 +218,27 @@ namespace NormandErwan.DocFxForUnity
                 else
                 {
                     Console.WriteLine($"Generating Unity {release} xref");
-                    GenerateXrefMap(repository, release);
+                    GenerateXrefMap(repository, release, GeneratedDocsPath);
 
                     string sourceXrefMapPath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
                     CopyFile(sourceXrefMapPath, destXrefMapPath);
+
+                    FixXrefMapHrefs(destXrefMapPath);
                 }
+            }
+        }
+
+        private static void FixXrefMapHrefs(string xrefMapPath)
+        {
+            // TODO regex to remove `:` char on the xrefmap
+
+            using (var reader = File.OpenText(xrefMapPath))
+            {
+                var yamlStream = new YamlStream();
+                yamlStream.Load(reader);
+
+                var yaml = yamlStream.Documents[0].RootNode as YamlMappingNode;
+                Console.WriteLine(yaml.Children.Count);
             }
         }
 

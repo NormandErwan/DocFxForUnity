@@ -1,0 +1,5 @@
+apiRules:
+- exclude:
+    uidRegex: ^AOT
+- exclude:
+    uidRegex: ^JetBrains
