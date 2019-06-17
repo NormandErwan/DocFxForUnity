@@ -5,8 +5,10 @@ _site/
 Assets/**/obj*
 
 # UnityXrefMaps branch
-ScriptReference/
 bin/
+gh-pages/
+ScriptReference/
+UnityCsReference/
 *.cache
 
 # OS and IDEs
