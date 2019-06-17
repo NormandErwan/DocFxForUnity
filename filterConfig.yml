@@ -3,3 +3,5 @@ apiRules:
     uidRegex: ^AOT
 - exclude:
     uidRegex: ^JetBrains
+- exclude:
+    uidRegex: ^UnityEngineInternal
