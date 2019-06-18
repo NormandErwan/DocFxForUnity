@@ -10,7 +10,7 @@ using YamlDotNet.Serialization;
 namespace NormandErwan.DocFxForUnity
 {
     /// <summary>
-    /// Generates the xref map of all Unity versions and commit them to the `gh-pages` branch of
+    /// Generates the xref maps of all Unity versions and commit them to the `gh-pages` branch of
     /// https://github.com/NormandErwan/DocFxForUnity.
     ///
     /// Usage: UnityXrefMaps
@@ -78,22 +78,36 @@ namespace NormandErwan.DocFxForUnity
         /// </summary>
         public static void Main()
         {
-            string sourceXrefMapPath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
-            string destXrefMapPath = Path.Combine(".", XrefMapFileName);
-            //CopyFile(sourceXrefMapPath, destXrefMapPath);
-
-            FixXrefMapHrefs(destXrefMapPath, UnityApiUrl);
-
-            return;
             using (var ghPagesRepo = GetSyncRepository(GhPagesRepoUrl, GhPagesRepoPath, GhPagesRepoBranch))
             {
                 using (var unityRepo = GetSyncRepository(UnityRepoUrl, UnityRepoPath))
                 {
-                    GenerateXrefMaps(unityRepo);
-                    CopyVersionXrefMaps(unityRepo);
+                    // Get the latest tag of each Unity version (YYYY.X)
+                    var versions = GetLatestReleases(unityRepo, tag => Regex.Match(tag, @"\d{4}\.\d").Value);
+
+                    // The latest stable version is at the root
+                    var latestStableVersion = versions
+                        .OrderByDescending(version => version.name)
+                        .First(version => version.release.Contains('f'));
+
+                    string xrefMapsPathRootDirectory = ".";
+                    versions = versions.Append((xrefMapsPathRootDirectory, latestStableVersion.release));
+
+                    // Generate and copy xref map to the gh-pages branch
+                    foreach (var version in versions)
+                    {
+                        Console.WriteLine($"Generating Unity {version.name} xref map from {version.release} release");
+                        GenerateXrefMap(unityRepo, version.release);
+
+                        string sourceXrefMapPath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
+                        string destXrefMapPath = Path.Combine(XrefMapsPath, version.name, XrefMapFileName);
+                        CopyFile(sourceXrefMapPath, destXrefMapPath);
+
+                        FixXrefMapHrefs(destXrefMapPath, UnityApiUrl);
+                    }
                 }
 
-                AddCommitChanges(ghPagesRepo, "Xrefmaps update", CommitIdentity);
+                AddCommitChanges(ghPagesRepo, "Xref maps update", CommitIdentity);
             }
         }
 
@@ -134,47 +148,6 @@ namespace NormandErwan.DocFxForUnity
         }
 
         /// <summary>
-        /// Copies the xref map of each Unity version (`YYYY.X.Y`), each major Unity version (`YYYY.X`) from the latest
-        /// corresponding release to their dedicated folder, and the latest release of the latest version to the root
-        /// folder.
-        /// </summary>
-        /// <param name="repository">The Unity repository to use.</param>
-        /// <param name="directoryPath">The directory where the xref maps have been generated.</param>
-        private static void CopyVersionXrefMaps(Repository repository, string directoryPath = XrefMapsPath)
-        {
-            var versions = GetLatestReleases(repository, @"[abfp]");
-
-            var majorVersions = GetLatestReleases(repository, @"\.\d+[abfp]");
-            versions = versions.Union(majorVersions);
-
-            var latestStableVersion = majorVersions
-                .OrderByDescending(version => version.name)
-                .First(version => version.release.Contains('f'));
-            latestStableVersion.name = ".";
-            versions = versions.Append(latestStableVersion);
-
-            versions = versions.OrderByDescending(version => version.name);
-            foreach (var version in versions)
-            {
-                Console.WriteLine($"Copy {directoryPath}/{version.release}/xrefmap.yml to {directoryPath}/{version.name}");
-                CopyXrefMap(version.release, version.name, directoryPath);
-            }
-        }
-
-        /// <summary>
-        /// Copy a source xref map from to a destination directory path.
-        /// </summary>
-        /// <param name="sourceCommit">The commit of the source xref map.</param>
-        /// <param name="destCommit">The commit where to copy the source xref map.</param>
-        /// <param name="directoryPath">The directory where the xref maps have been generated.</param>
-        private static void CopyXrefMap(string sourceCommit, string destCommit, string directoryPath = XrefMapsPath)
-        {
-            string sourceXrefMapPath = GetXrefMapPath(sourceCommit, directoryPath);
-            string destXrefMapPath = GetXrefMapPath(destCommit, directoryPath);
-            CopyFile(sourceXrefMapPath, destXrefMapPath);
-        }
-
-        /// <summary>
         /// Fetches changes and hard resets the specified repository to the latest commit of a specified branch. If no
         /// repository is found, it will be cloned before.
         /// </summary>
@@ -209,35 +182,6 @@ namespace NormandErwan.DocFxForUnity
             }
 
             return repository;
-        }
-
-        /// <summary>
-        /// Generates the xref map of each Unity release.
-        /// </summary>
-        /// <param name="repository">The Unity repository to use.</param>
-        /// <param name="directoryPath">The directory where to copy the generated xref maps.</param>
-        private static void GenerateXrefMaps(Repository repository, string directoryPath = XrefMapsPath)
-        {
-            foreach (var tag in repository.Tags)
-            {
-                string release = tag.FriendlyName;
-                string destXrefMapPath = GetXrefMapPath(release, directoryPath);
-
-                if (File.Exists(destXrefMapPath))
-                {
-                    Console.WriteLine($"Skip generating Unity {release}'s xref: already present on {directoryPath}");
-                }
-                else
-                {
-                    Console.WriteLine($"Generating Unity {release} xref");
-                    GenerateXrefMap(repository, release, GeneratedDocsPath);
-
-                    string sourceXrefMapPath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
-                    CopyFile(sourceXrefMapPath, destXrefMapPath);
-
-                    FixXrefMapHrefs(destXrefMapPath, UnityApiUrl);
-                }
-            }
         }
 
         private static readonly List<string> NamespacesToRemove = new List<string> { "UnityEditor", "UnityEngine" };
@@ -311,43 +255,26 @@ namespace NormandErwan.DocFxForUnity
         }
 
         /// <summary>
-        /// Returns a collection of the latest tags of a specified repository grouped by with a regex pattern. Sort is
-        /// done by date of the tag's commit.
+        /// Returns a collection of the latest tags of a specified repository grouped by a name. Sort is done by date of
+        /// the tag's commit.
         /// </summary>
         /// <param name="repository">The repository to use.</param>
-        /// <param name="splitPattern">
-        /// The regex pattern to apply to each repository tag. The left part of the split will be used as tuple's
-        /// name.
-        /// </param>
+        /// <param name="tagToName">The function to apply to get the version's name of the input tag.</param>
         /// <returns>
-        /// A collection of tuples containing the left part of the split as tuple's name and the latest tag's name
-        /// matching this tuple's name.
+        /// A collection of tuples containing the version's name the latest tag matching this version.
         /// </returns>
         private static IEnumerable<(string name, string release)> GetLatestReleases(Repository repository,
-            string splitPattern)
+            Func<string, string> tagToName)
         {
             return repository.Tags
                 .OrderByDescending(tag => (tag.Target as Commit).Author.When)
                 .Select(tag =>
                 {
                     string release = tag.FriendlyName;
-                    string name = Regex.Split(release, splitPattern)[0];
-                    return (name, release);
+                    return (name: tagToName(release), release);
                 })
                 .GroupBy(version => version.name)
                 .Select(g => g.First());
-        }
-
-        /// <summary>
-        /// Returns the file path of a generated xref map of a specified commit of a repository.
-        /// </summary>
-        /// <param name="commit">The commit of the xref map.</param>
-        /// <param name="directoryPath">The directory where the commit has been generated.</param>
-        /// <returns>The file path of the xref map.</returns>
-        private static string GetXrefMapPath(string commit, string directoryPath = XrefMapsPath)
-        {
-            string xrefMapsDirectoryPath = Path.Combine(directoryPath, commit);
-            return Path.Combine(xrefMapsDirectoryPath, XrefMapFileName);
         }
 
         /// <summary>
