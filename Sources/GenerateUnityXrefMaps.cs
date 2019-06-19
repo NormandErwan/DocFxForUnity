@@ -33,7 +33,7 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// File path where the documentation of the Unity repository will be generated.
         /// </summary>
-        private const string GeneratedDocsPath = "../Temp/_site";
+        private const string GeneratedDocsPath = "../UnityCsReference/_site";
 
         /// <summary>
         /// Name of the branch to use on the <see cref="GhPagesRepoPath"/> repository.

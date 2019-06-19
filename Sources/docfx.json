@@ -25,6 +25,6 @@
         "dest": "ScriptReference/"
       }
     ],
-    "dest": "../Temp/_site"
+    "dest": "../UnityCsReference/_site"
   }
 }
