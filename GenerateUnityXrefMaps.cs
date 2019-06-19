@@ -33,7 +33,7 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// File path where the documentation of the Unity repository will be generated.
         /// </summary>
-        private const string GeneratedDocsPath = "../UnityCsReference/_site";
+        private const string GeneratedDocsPath = "UnityCsReference/_site";
 
         /// <summary>
         /// Name of the branch to use on the <see cref="GhPagesRepoPath"/> repository.
@@ -43,7 +43,7 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// File path where to clone the <see cref="GhPagesRepoPath"/> repository.
         /// </summary>
-        private const string GhPagesRepoPath = "../gh-pages";
+        private const string GhPagesRepoPath = "gh-pages";
 
         /// <summary>
         /// Url of the <see cref="GhPagesRepoPath"/> repository.
@@ -53,7 +53,7 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// File path of the Unity repository.
         /// </summary>
-        private const string UnityRepoPath = "../UnityCsReference";
+        private const string UnityRepoPath = "UnityCsReference";
 
         /// <summary>
         /// Url of the repository of the Unity repository.
@@ -68,7 +68,7 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// Directory path where to copy the xref maps.
         /// </summary>
-        private const string XrefMapsPath = "../gh-pages/Unity";
+        private const string XrefMapsPath = "gh-pages/Unity";
 
         /// <summary>
         /// Client for send HTTP requests and receiving HTTP responses.
@@ -98,7 +98,7 @@ namespace NormandErwan.DocFxForUnity
                     // Generate and copy xref map to the gh-pages branch
                     foreach (var version in versions)
                     {
-                        Console.WriteLine($"Generating Unity {version.name} xref map from {version.release} release");
+                        Console.WriteLine($"Generating Unity {version.name} xref map");
                         GenerateXrefMap(unityRepo, version.release);
 
                         string sourceXrefMapPath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
@@ -107,6 +107,8 @@ namespace NormandErwan.DocFxForUnity
 
                         FixXrefMapHrefs(destXrefMapPath);
                     }
+
+                    Console.WriteLine();
                 }
 
                 AddCommitChanges(ghPagesRepo, "Xref maps update", CommitIdentity);
@@ -199,6 +201,7 @@ namespace NormandErwan.DocFxForUnity
         private static void GenerateXrefMap(Repository repository, string commit,
             string generatedDocsPath = GeneratedDocsPath)
         {
+            Console.WriteLine($"Hard reset {repository.Info.WorkingDirectory} to {commit}");
             repository.Reset(ResetMode.Hard, commit);
             repository.RemoveUntrackedFiles();
 
@@ -208,6 +211,7 @@ namespace NormandErwan.DocFxForUnity
             }
 
             var output = RunCommand($"docfx");
+            Console.WriteLine(output);
         }
 
         /// <summary>
@@ -245,6 +249,7 @@ namespace NormandErwan.DocFxForUnity
         {
             // Clone this repository to the specified branch if it doesn't exist
             bool clone = !Directory.Exists(path);
+            Console.WriteLine(clone + " " + path);
             if (clone)
             {
                 Console.WriteLine($"Clonning {sourceUrl} to {path}");
@@ -268,6 +273,8 @@ namespace NormandErwan.DocFxForUnity
                 Commands.Checkout(repository, branch);
             }
 
+            Console.WriteLine();
+
             return repository;
         }
 
@@ -278,23 +285,24 @@ namespace NormandErwan.DocFxForUnity
         /// <returns>The output of the command.</returns>
         private static string RunCommand(string command)
         {
-            var process = new Process()
+            string output = "";
+
+            using (var process = new Process())
             {
-                StartInfo = new ProcessStartInfo()
+                process.StartInfo = new ProcessStartInfo()
                 {
                     FileName = "cmd.exe",
                     Arguments = "/C " + command,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
-                }
-            };
+                };
 
-            process.Start();
-            string output = process.StandardOutput.ReadToEnd();
+                process.Start();
+                output = process.StandardOutput.ReadToEnd();
 
-            process.WaitForExit();
-            process.Dispose();
+                process.WaitForExit();
+            }
 
             return output;
         }
