@@ -200,6 +200,7 @@ namespace NormandErwan.DocFxForUnity
             string generatedDocsPath = GeneratedDocsPath)
         {
             repository.Reset(ResetMode.Hard, commit);
+            repository.RemoveUntrackedFiles();
 
             if (Directory.Exists(generatedDocsPath))
             {
@@ -257,6 +258,7 @@ namespace NormandErwan.DocFxForUnity
             {
                 Console.WriteLine($"Hard reset {path} to HEAD");
                 repository.Reset(ResetMode.Hard);
+                repository.RemoveUntrackedFiles();
 
                 Console.WriteLine($"Fetching changes from origin to {path}");
                 var remote = repository.Network.Remotes["origin"];
