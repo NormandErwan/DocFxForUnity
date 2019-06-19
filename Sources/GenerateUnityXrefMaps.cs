@@ -33,7 +33,7 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// File path where the documentation of the Unity repository will be generated.
         /// </summary>
-        private const string GeneratedDocsPath = "_site";
+        private const string GeneratedDocsPath = "../_site";
 
         /// <summary>
         /// Name of the branch to use on the <see cref="GhPagesRepoPath"/> repository.
@@ -43,7 +43,7 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// File path where to clone the <see cref="GhPagesRepoPath"/> repository.
         /// </summary>
-        private const string GhPagesRepoPath = "gh-pages";
+        private const string GhPagesRepoPath = "../gh-pages";
 
         /// <summary>
         /// Url of the <see cref="GhPagesRepoPath"/> repository.
@@ -53,7 +53,7 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// File path of the Unity repository.
         /// </summary>
-        private const string UnityRepoPath = "UnityCsReference";
+        private const string UnityRepoPath = "../UnityCsReference";
 
         /// <summary>
         /// Url of the repository of the Unity repository.
@@ -68,7 +68,7 @@ namespace NormandErwan.DocFxForUnity
         /// <summary>
         /// Directory path where to copy the xref maps.
         /// </summary>
-        private const string XrefMapsPath = "gh-pages/Unity";
+        private const string XrefMapsPath = "../gh-pages/Unity";
 
         /// <summary>
         /// Client for send HTTP requests and receiving HTTP responses.
@@ -206,7 +206,7 @@ namespace NormandErwan.DocFxForUnity
                 Directory.Delete(generatedDocsPath, recursive: true);
             }
 
-            RunCommand($"docfx");
+            var output = RunCommand($"docfx");
         }
 
         /// <summary>

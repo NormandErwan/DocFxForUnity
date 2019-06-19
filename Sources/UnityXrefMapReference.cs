@@ -8,7 +8,6 @@ namespace NormandErwan.DocFxForUnity
     /// </summary>
     public class UnityXrefMapReference : XrefMapReference
     {
-
         /// <summary>
         /// URL of the online API documentation of Unity.
         /// </summary>

@@ -9,7 +9,7 @@ cache:
 - gh-pages
 - UnityCsReference
 build_script:
-- dotnet run
+- dotnet run -p Sources/GenerateUnityXrefMaps.csproj
 after_build:
 - ps: >-
     cd gh-pages
