@@ -149,6 +149,10 @@ namespace NormandErwan.DocFxForUnity
             File.Copy(sourcePath, destPath, overwrite: true);
         }
 
+        /// <summary>
+        /// Fix the href to of the specified Unity's xref map.
+        /// </summary>
+        /// <param name="xrefMapPath">The Unity's xref map.</param>
         private static void FixXrefMapHrefs(string xrefMapPath)
         {
             // Remove `0:` strings on the xrefmap that make crash Deserializer
