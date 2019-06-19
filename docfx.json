@@ -3,11 +3,9 @@
     {
       "src": [
         {
-          "src": "UnityCsReference/",
+          "src": "UnityCsReference/Projects/CSharp/",
           "files": [
-            "Editor/**/*.cs",
-            "Modules/**/*.cs",
-            "Runtime/**/*.cs"
+            "*.csproj"
           ]
         }
       ],
