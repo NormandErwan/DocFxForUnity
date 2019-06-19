@@ -2,7 +2,10 @@ using YamlDotNet.Serialization;
 
 namespace NormandErwan.DocFxForUnity
 {
-    public class UnityReference
+    /// <summary>
+    /// Represents a reference item on a <see cref="XrefMap"/> file.
+    /// </summary>
+    public class XrefMapReference
     {
         public string uid { get; set; }
 

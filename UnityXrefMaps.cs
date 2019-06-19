@@ -49,11 +49,6 @@ namespace NormandErwan.DocFxForUnity
         private const string GhPagesRepoUrl = "https://github.com/NormandErwan/DocFxForUnity.git";
 
         /// <summary>
-        /// Url of the public API of Unity.
-        /// </summary>
-        private const string UnityApiUrl = "https://docs.unity3d.com/ScriptReference/";
-
-        /// <summary>
         /// File path of the Unity repository.
         /// </summary>
         private const string UnityRepoPath = "UnityCsReference";
@@ -103,7 +98,7 @@ namespace NormandErwan.DocFxForUnity
                         string destXrefMapPath = Path.Combine(XrefMapsPath, version.name, XrefMapFileName);
                         CopyFile(sourceXrefMapPath, destXrefMapPath);
 
-                        FixXrefMapHrefs(destXrefMapPath, UnityApiUrl);
+                        FixXrefMapHrefs(destXrefMapPath);
                     }
                 }
 
@@ -184,45 +179,20 @@ namespace NormandErwan.DocFxForUnity
             return repository;
         }
 
-        private static readonly List<string> NamespacesToRemove = new List<string> { "UnityEditor", "UnityEngine" };
-
-        private static void FixXrefMapHrefs(string xrefMapPath, string apiUrl)
+        private static void FixXrefMapHrefs(string xrefMapPath)
         {
             // Remove `0:` strings on the xrefmap that make crash Deserializer
             string xrefMapText = File.ReadAllText(xrefMapPath);
-            //xrefMapText = Regex.Replace(xrefMapText, @"(\d):", "$1");
+            xrefMapText = Regex.Replace(xrefMapText, @"(\d):", "$1");
 
             // Load xref map
             var deserializer = new Deserializer();
-            var xrefMap = deserializer.Deserialize<UnityXrefMap>(xrefMapText);
+            var xrefMap = deserializer.Deserialize<XrefMap>(xrefMapText);
 
-            foreach (var reference in xrefMap.references)
+            // Fix reference hrefs
+            foreach (UnityXrefMapReference reference in xrefMap.references)
             {
-                string href;
-
-                if (reference.commentId.Contains("N:"))
-                {
-                    href = "index.html";
-                }
-                else
-                {
-                    href = reference.uid;
-
-                    foreach (var namespaceToRemove in NamespacesToRemove)
-                    {
-                        href = href.Replace(namespaceToRemove + ".", "");
-                    }
-
-                    href = href.Replace(".#ctor", "-ctor");
-
-                    href = href.Replace("`", "_");
-
-                    href = href.Replace("*", "");
-
-                    href = Regex.Replace(href, @"\(.*\)", "");
-                }
-
-                reference.href = apiUrl + href + ".html";
+                reference.FixHref();
             }
 
             // Save xref map
