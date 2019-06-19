@@ -149,43 +149,6 @@ namespace NormandErwan.DocFxForUnity
             File.Copy(sourcePath, destPath, overwrite: true);
         }
 
-        /// <summary>
-        /// Fetches changes and hard resets the specified repository to the latest commit of a specified branch. If no
-        /// repository is found, it will be cloned before.
-        /// </summary>
-        /// <param name="sourceUrl">The url of the repository.</param>
-        /// <param name="path">The directory path where to find/clone the repository.</param>
-        /// <param name="branch">The branch use on the repository.</param>
-        /// <returns>The synced repository on the latest commit of the specified branch.</returns>
-        private static Repository GetSyncRepository(string sourceUrl, string path, string branch = "master")
-        {
-            // Clone this repository to the specified branch if it doesn't exist
-            bool clone = !Directory.Exists(path);
-            if (clone)
-            {
-                Console.WriteLine($"Clonning {sourceUrl} to {path}");
-                Repository.Clone(sourceUrl, path, new CloneOptions() { BranchName = branch });
-            }
-
-            var repository = new Repository(path);
-
-            // Otherwise fetch changes and checkout to the specified branch
-            if (!clone)
-            {
-                Console.WriteLine($"Hard reset {path} to HEAD");
-                repository.Reset(ResetMode.Hard);
-
-                Console.WriteLine($"Fetching changes from origin to {path}");
-                var remote = repository.Network.Remotes["origin"];
-                Commands.Fetch(repository, remote.Name, new string[0], null, null); // WTF is this API libgit2sharp?
-
-                Console.WriteLine($"Checking out {path} to {branch} branch");
-                Commands.Checkout(repository, branch);
-            }
-
-            return repository;
-        }
-
         private static void FixXrefMapHrefs(string xrefMapPath)
         {
             // Remove `0:` strings on the xrefmap that make crash Deserializer
@@ -263,6 +226,43 @@ namespace NormandErwan.DocFxForUnity
                 })
                 .GroupBy(version => version.name)
                 .Select(g => g.First());
+        }
+
+        /// <summary>
+        /// Fetches changes and hard resets the specified repository to the latest commit of a specified branch. If no
+        /// repository is found, it will be cloned before.
+        /// </summary>
+        /// <param name="sourceUrl">The url of the repository.</param>
+        /// <param name="path">The directory path where to find/clone the repository.</param>
+        /// <param name="branch">The branch use on the repository.</param>
+        /// <returns>The synced repository on the latest commit of the specified branch.</returns>
+        private static Repository GetSyncRepository(string sourceUrl, string path, string branch = "master")
+        {
+            // Clone this repository to the specified branch if it doesn't exist
+            bool clone = !Directory.Exists(path);
+            if (clone)
+            {
+                Console.WriteLine($"Clonning {sourceUrl} to {path}");
+                Repository.Clone(sourceUrl, path, new CloneOptions() { BranchName = branch });
+            }
+
+            var repository = new Repository(path);
+
+            // Otherwise fetch changes and checkout to the specified branch
+            if (!clone)
+            {
+                Console.WriteLine($"Hard reset {path} to HEAD");
+                repository.Reset(ResetMode.Hard);
+
+                Console.WriteLine($"Fetching changes from origin to {path}");
+                var remote = repository.Network.Remotes["origin"];
+                Commands.Fetch(repository, remote.Name, new string[0], null, null); // WTF is this API libgit2sharp?
+
+                Console.WriteLine($"Checking out {path} to {branch} branch");
+                Commands.Checkout(repository, branch);
+            }
+
+            return repository;
         }
 
         /// <summary>
