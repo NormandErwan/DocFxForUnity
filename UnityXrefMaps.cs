@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using LibGit2Sharp;
 using YamlDotNet.Serialization;
@@ -67,6 +69,11 @@ namespace NormandErwan.DocFxForUnity
         /// Directory path where to copy the xref maps.
         /// </summary>
         private const string XrefMapsPath = "gh-pages/Unity";
+
+        /// <summary>
+        /// Client for send HTTP requests and receiving HTTP responses.
+        /// </summary>
+        private static readonly HttpClient httpClient = new HttpClient();
 
         /// <summary>
         /// Entry point of this program.
@@ -189,11 +196,22 @@ namespace NormandErwan.DocFxForUnity
             var deserializer = new Deserializer();
             var xrefMap = deserializer.Deserialize<XrefMap>(xrefMapText);
 
-            // Fix reference hrefs
+            // Test reference hrefs exist
+            var testHrefTasks = new List<Task>();
             foreach (UnityXrefMapReference reference in xrefMap.references)
             {
                 reference.FixHref();
+
+                var testUrlTask = TestUriExists(reference.href).ContinueWith(result =>
+                {
+                    if (result.Result == false)
+                    {
+                        Console.Error.WriteLine("Warning: invalid URL " + reference.href + " on " + xrefMapPath);
+                    }
+                });
+                testHrefTasks.Add(testUrlTask);
             }
+            Task.WaitAll(testHrefTasks.ToArray());
 
             // Save xref map
             var serializer = new Serializer();
@@ -273,6 +291,26 @@ namespace NormandErwan.DocFxForUnity
             process.Dispose();
 
             return output;
+        }
+
+        /// <summary>
+        /// Requests the specified URI with <see cref="httpClient"/> and returns if the response status code is in the
+        /// range 200-299.
+        /// </summary>
+        /// <param name="uri">The URI to request.</param>
+        /// <returns><c>true</c> if the response status code is in the range 200-299.</returns>
+        private static async Task<bool> TestUriExists(string uri)
+        {
+            try
+            {
+                var headRequest = new HttpRequestMessage(HttpMethod.Head, uri);
+                var response = await httpClient.SendAsync(headRequest);
+                return response.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException)
+            {
+                return false;
+            }
         }
     }
 }
