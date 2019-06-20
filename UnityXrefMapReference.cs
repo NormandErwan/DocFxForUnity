@@ -44,16 +44,17 @@ namespace NormandErwan.DocFxForUnity
                 href = href.Replace(".#ctor", "-ctor");
 
                 // Fix href of generics
+                href = Regex.Replace(href, @"`{2}\d", "");
                 href = href.Replace("`", "_");
 
                 // Fix href of methods
-                href = href.Replace("*", "");
+                href = Regex.Replace(href, @"\*$", "");
                 href = Regex.Replace(href, @"\(.*\)", "");
 
                 // Fix href of properties
-                if (commentId.Contains("P:"))
+                if (commentId.Contains("P:") || commentId.Contains("M:"))
                 {
-
+                    href = Regex.Replace(href, @"\.([a-z].*)$", "-$1");
                 }
             }
 
