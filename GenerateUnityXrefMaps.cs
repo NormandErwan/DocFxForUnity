@@ -165,22 +165,17 @@ namespace NormandErwan.DocFxForUnity
             var deserializer = new Deserializer();
             var xrefMap = deserializer.Deserialize<UnityXrefMap>(xrefMapText);
 
-            // Test reference hrefs exist
-            var testHrefTasks = new List<Task>();
-            foreach (UnityXrefMapReference reference in xrefMap.references)
+            // Fix and test reference hrefs exist
+            foreach (var reference in xrefMap.references)
             {
                 reference.FixHref();
 
-                var testUrlTask = TestUriExists(reference.href).ContinueWith(result =>
+                if (!TestUriExists(reference.href).Result)
                 {
-                    if (result.Result == false)
-                    {
-                        Console.Error.WriteLine("Warning: invalid URL " + reference.href + " on " + xrefMapPath);
-                    }
-                });
-                testHrefTasks.Add(testUrlTask);
+                    Console.WriteLine("Warning: invalid URL " + reference.href + " for " + reference.uid +
+                        " uid on " + xrefMapPath);
+                }
             }
-            Task.WaitAll(testHrefTasks.ToArray());
 
             // Save xref map
             var serializer = new Serializer();
@@ -319,10 +314,15 @@ namespace NormandErwan.DocFxForUnity
             {
                 var headRequest = new HttpRequestMessage(HttpMethod.Head, uri);
                 var response = await httpClient.SendAsync(headRequest);
+                if (!response.IsSuccessStatusCode && response.StatusCode != System.Net.HttpStatusCode.NotFound)
+                {
+                    Console.Error.WriteLine($"Error: HTTP response code on {uri} is {response.StatusCode}");
+                }
                 return response.IsSuccessStatusCode;
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException e)
             {
+                Console.WriteLine($"Exception on {uri}: {e.Message}");
                 return false;
             }
         }
