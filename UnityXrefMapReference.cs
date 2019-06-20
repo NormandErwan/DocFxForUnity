@@ -57,7 +57,7 @@ namespace NormandErwan.DocFxForUnity
                 }
             }
 
-            href = apiUrl + href + ".html";
+            this.href = apiUrl + href + ".html";
         }
     }
 }

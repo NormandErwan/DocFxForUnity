@@ -3,10 +3,10 @@ namespace NormandErwan.DocFxForUnity
     /// <summary>
     /// Represents a xref map file.
     /// </summary>
-    public class XrefMap
+    public class XrefMap<TReference> where TReference : XrefMapReference
     {
         public bool sorted { get; set; }
 
-        public XrefMapReference[] references { get; set; }
+        public TReference[] references { get; set; }
     }
 }

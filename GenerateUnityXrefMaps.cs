@@ -163,7 +163,7 @@ namespace NormandErwan.DocFxForUnity
 
             // Load xref map
             var deserializer = new Deserializer();
-            var xrefMap = deserializer.Deserialize<XrefMap>(xrefMapText);
+            var xrefMap = deserializer.Deserialize<UnityXrefMap>(xrefMapText);
 
             // Test reference hrefs exist
             var testHrefTasks = new List<Task>();
