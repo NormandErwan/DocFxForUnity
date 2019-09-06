@@ -80,22 +80,20 @@ namespace NormandErwan.DocFxForUnity
         /// </summary>
         public static void Main()
         {
+            // Clone gh-pages branch and Unity CS repository
             using (var ghPagesRepo = GetSyncRepository(GhPagesRepoUrl, GhPagesRepoPath, GhPagesRepoBranch))
             {
                 using (var unityRepo = GetSyncRepository(UnityRepoUrl, UnityRepoPath))
                 {
-                    // Get the latest tag of each Unity version (YYYY.X)
-                    var versions = GetLatestReleases(unityRepo, tag => Regex.Match(tag, @"\d{4}\.\d").Value);
+                    // Get the latest stable Unity versions
+                    var versions = GetLatestVersions(unityRepo, tag => Regex.Match(tag, @"\d{4}\.\d").Value);
 
-                    // The latest stable version is at the root
-                    var latestStableVersion = versions
+                    var latestUnityVersion = versions
                         .OrderByDescending(version => version.name)
                         .First(version => version.release.Contains('f'));
+                    versions.Append((name: ".", latestUnityVersion.release));
 
-                    string xrefMapsPathRootDirectory = ".";
-                    versions = versions.Append((xrefMapsPathRootDirectory, latestStableVersion.release));
-
-                    // Generate and copy xref map to the gh-pages branch
+                    // Generate and copy xref map to the gh-pages branch of each Unity version
                     foreach (var version in versions)
                     {
                         Console.WriteLine($"Generating Unity {version.name} xref map");
@@ -111,6 +109,7 @@ namespace NormandErwan.DocFxForUnity
                     Console.WriteLine();
                 }
 
+                // Commit new xref maps to gh-pages branch
                 AddCommitChanges(ghPagesRepo, "Xref maps update", CommitIdentity);
             }
         }
@@ -168,7 +167,7 @@ namespace NormandErwan.DocFxForUnity
             // Fix and test reference hrefs exist
             foreach (var reference in xrefMap.references)
             {
-                reference.FixHref();
+                reference.TryFixHref();
 
                 if (!TestUriExists(reference.href).Result)
                 {
@@ -210,15 +209,18 @@ namespace NormandErwan.DocFxForUnity
         }
 
         /// <summary>
-        /// Returns a collection of the latest tags of a specified repository grouped by a name. Sort is done by date of
-        /// the tag's commit.
+        /// Returns a collection of the latest tags of a specified repository.
         /// </summary>
         /// <param name="repository">The repository to use.</param>
-        /// <param name="tagToName">The function to apply to get the version's name of the input tag.</param>
+        /// <param name="tagToName">The function to apply to get the version's name of a tag.</param>
         /// <returns>
-        /// A collection of tuples containing the version's name the latest tag matching this version.
+        /// A collection of tuples containing the latest tags of <paramref name="repository"/>.
         /// </returns>
-        private static IEnumerable<(string name, string release)> GetLatestReleases(Repository repository,
+        /// <remarks>
+        /// Tags of the repository are grouped by name with <paramref name="tagToName"/> then sorted is done by date of
+        /// the tag's commit.
+        /// </remarks>
+        private static IEnumerable<(string name, string release)> GetLatestVersions(Repository repository,
             Func<string, string> tagToName)
         {
             return repository.Tags
