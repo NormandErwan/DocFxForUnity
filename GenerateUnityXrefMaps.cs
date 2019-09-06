@@ -246,7 +246,6 @@ namespace NormandErwan.DocFxForUnity
         {
             // Clone this repository to the specified branch if it doesn't exist
             bool clone = !Directory.Exists(path);
-            Console.WriteLine(clone + " " + path);
             if (clone)
             {
                 Console.WriteLine($"Clonning {sourceUrl} to {path}");
