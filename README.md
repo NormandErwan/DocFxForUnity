@@ -4,7 +4,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/00mejohk0tfxqy7x/branch/master?svg=true)](https://ci.appveyor.com/project/NormandErwan/docfxforunity/branch/master) Example documentation website
 
-[![Build status](https://ci.appveyor.com/api/projects/status/00mejohk0tfxqy7x/branch/UnityXrefMaps?svg=true)](https://ci.appveyor.com/project/NormandErwan/docfxforunity/branch/UnityXrefMaps) Unity Xref maps
+[![Build status](https://ci.appveyor.com/api/projects/status/00mejohk0tfxqy7x/branch/UnityXrefMaps?svg=true)](https://ci.appveyor.com/project/NormandErwan/docfxforunity/branch/UnityXrefMaps) Unity API xref maps
 
 [DocFX](https://dotnet.github.io/docfx/) tool generates a clean documentation that looks like the
 [Unity documentation](https://docs.unity3d.com/Manual/index.html) with a manual (written in Markdown) and a scripting
@@ -19,9 +19,7 @@ Every reference to the C# API or to the Unity API will be automatically linked.
 |:----------------------------------:|:-----------------------------------------:|
 | [![DocFxForUnity documentation manual](https://normanderwan.github.io/DocFxForUnity/resources/ExampleManual.png)](https://normanderwan.github.io/DocFxForUnity/manual/coniunctis.html) | [![DocFxForUnity documentation scripting API](https://normanderwan.github.io/DocFxForUnity/resources/ExampleScriptingApi.png)](https://normanderwan.github.io/DocFxForUnity/api/DocFxForUnity.Player.html) |
 
-## Setup a Unity-like documentation on your project
-
-### Install
+## Setup your documentation
 
 - Copy the `Documentation/` folder to your Unity project (at the same level than the `Assets/` folder).
 - Edit `Documentation/docfx.json` configuration file:
@@ -46,10 +44,11 @@ Every reference to the C# API or to the Unity API will be automatically linked.
     }
   }
 ```
-- Write manual pages in Markdown on `Documentation/manual/`. You must keep a list of these pages on `Documentation/manual/toc.yml`.
+- Write manual pages in Markdown on `Documentation/manual/`.You must keep a list of these pages on
+ `Documentation/manual/toc.yml`.
 - Add resources such as images to `Documentation/resources/`
 
-### Generate your documentation
+## Generate your documentation
 
 - [Install DocFX](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-as-a-command-line-tool).
 - On a command line opened on your project, run:
@@ -57,7 +56,7 @@ Every reference to the C# API or to the Unity API will be automatically linked.
   - `docfx Documentation/docfx.json --serve`.
   - The generated website will be visible at <http://localhost:8080>.
 
-### Generate automatically your documentation
+## Generate automatically your documentation
 
 It requires some steps but the setup is quick!
 
