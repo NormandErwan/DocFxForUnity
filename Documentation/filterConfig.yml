@@ -1,22 +1,7 @@
 apiRules:
+- include:
+    uidRegex: ^DocFxForUnity
+    type: Namespace
 - exclude:
-    uidRegex: ^UnityEngine\.Behaviour
-    type: Type
-- exclude:
-    uidRegex: ^UnityEngine\.Component
-    type: Type
-- exclude:
-    uidRegex: ^UnityEngine\.MonoBehaviour
-    type: Type
-- exclude:
-    uidRegex: ^UnityEngine\.NetworkBehaviour
-    type: Type
-- exclude:
-    uidRegex: ^UnityEngine\.Object
-    type: Type
-- exclude:
-    uidRegex: ^UnityEngine\.ScriptableObject
-    type: Type
-- exclude:
-    uidRegex: ^System\.Object
-    type: Type
+    uidRegex: .*
+    type: Namespace

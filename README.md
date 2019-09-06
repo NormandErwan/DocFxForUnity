@@ -22,7 +22,7 @@ Every reference to the C# API or to the Unity API will be automatically linked.
 ## Setup your documentation
 
 - Copy the `Documentation/` folder to your Unity project (at the same level than the `Assets/` folder).
-- Edit `Documentation/docfx.json` configuration file:
+- Edit `Documentation/docfx.json`:
 
 ```javascript
   {
@@ -44,6 +44,21 @@ Every reference to the C# API or to the Unity API will be automatically linked.
     }
   }
 ```
+
+- Edit `Documentation/filterConfig.yml`:
+
+```javascript
+apiRules:
+// The namespaces to generate
+- include:
+    uidRegex: ^Your\.Namespace
+    type: Namespace
+// Every other namespaces are ignored
+- exclude:
+    uidRegex: .*
+    type: Namespace
+```
+
 - Write manual pages in Markdown on `Documentation/manual/`.You must keep a list of these pages on
  `Documentation/manual/toc.yml`.
 - Add resources such as images to `Documentation/resources/`
