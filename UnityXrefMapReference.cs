@@ -22,10 +22,18 @@ namespace NormandErwan.DocFxForUnity
         /// Set <see cref="XrefMapReference.href"/> to link to the online API documentation of Unity.
         /// </summary>
         /// <param name="apiUrl">The URL of the online API documentation of Unity.</param>
-        public void TryFixHref(string apiUrl = UnityApiUrl)
+        /// <returns>If this reference is valid or not.</returns>
+        public bool TryFixHref(string apiUrl = UnityApiUrl)
         {
             string href;
 
+            // Remove overloads
+            if (commentId.Contains("Overload:"))
+            {
+                return false;
+            }
+
+            // Namespaces point to documentation index
             if (commentId.Contains("N:"))
             {
                 href = "index";
@@ -59,6 +67,7 @@ namespace NormandErwan.DocFxForUnity
             }
 
             this.href = apiUrl + href + ".html";
+            return true;
         }
     }
 }

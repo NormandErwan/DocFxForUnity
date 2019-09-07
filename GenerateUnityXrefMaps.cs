@@ -164,17 +164,24 @@ namespace NormandErwan.DocFxForUnity
             var deserializer = new Deserializer();
             var xrefMap = deserializer.Deserialize<UnityXrefMap>(xrefMapText);
 
-            // Fix and test reference hrefs exist
+            // Try to fix hrefs
+            var references = new List<UnityXrefMapReference>();
             foreach (var reference in xrefMap.references)
             {
-                reference.TryFixHref();
-
-                if (!TestUriExists(reference.href).Result)
+                if (reference.TryFixHref())
                 {
-                    Console.WriteLine("Warning: invalid URL " + reference.href + " for " + reference.uid +
-                        " uid on " + xrefMapPath);
+                    if (!TestUriExists(reference.href).Result)
+                    {
+                        Console.WriteLine("Warning: invalid URL " + reference.href + " for " + reference.uid +
+                            " uid on " + xrefMapPath);
+                    }
+                    else
+                    {
+                        references.Add(reference);
+                    }
                 }
             }
+            xrefMap.references = references.ToArray();
 
             // Save xref map
             var serializer = new Serializer();
