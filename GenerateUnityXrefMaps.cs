@@ -85,13 +85,10 @@ namespace NormandErwan.DocFxForUnity
             {
                 using (var unityRepo = GetSyncRepository(UnityRepoUrl, UnityRepoPath))
                 {
-                    // Get the latest stable Unity versions
-                    var versions = GetLatestVersions(unityRepo, tag => Regex.Match(tag, @"\d{4}\.\d").Value);
+                    string sourcePath, destPath;
 
-                    var latestUnityVersion = versions
-                        .OrderByDescending(version => version.name)
-                        .First(version => version.release.Contains('f'));
-                    versions.Append((name: ".", latestUnityVersion.release));
+                    // Get the list of latest stable Unity versions
+                    var versions = GetLatestVersions(unityRepo, tag => Regex.Match(tag, @"\d{4}\.\d").Value);
 
                     // Generate and copy xref map to the gh-pages branch of each Unity version
                     foreach (var version in versions)
@@ -99,14 +96,21 @@ namespace NormandErwan.DocFxForUnity
                         Console.WriteLine($"Generating Unity {version.name} xref map");
                         GenerateXrefMap(unityRepo, version.release);
 
-                        string sourceXrefMapPath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
-                        string destXrefMapPath = Path.Combine(XrefMapsPath, version.name, XrefMapFileName);
-                        CopyFile(sourceXrefMapPath, destXrefMapPath);
+                        sourcePath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
+                        destPath = Path.Combine(XrefMapsPath, version.name, XrefMapFileName);
+                        CopyFile(sourcePath, destPath);
 
-                        FixXrefMapHrefs(destXrefMapPath);
+                        FixXrefMapHrefs(destPath);
                     }
 
-                    Console.WriteLine();
+                    // Set the xref map of the latest final version as the default one (copy it at the root)
+                    var latestUnityVersion = versions
+                        .OrderByDescending(version => version.name)
+                        .First(version => version.release.Contains('f'));
+
+                    sourcePath = Path.Combine(XrefMapsPath, latestUnityVersion.name, XrefMapFileName);
+                    destPath = Path.Combine(XrefMapsPath, XrefMapFileName);
+                    CopyFile(sourcePath, destPath);
                 }
 
                 // Commit new xref maps to gh-pages branch
