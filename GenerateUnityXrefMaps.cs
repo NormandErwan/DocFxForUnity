@@ -17,7 +17,7 @@ namespace NormandErwan.DocFxForUnity
     ///
     /// Usage: UnityXrefMaps
     ///
-    /// You will need to manually push commits then.
+    /// You will need to manually push the commits then.
     /// </summary>
     /// <remarks>
     /// .NET Core 2.x (https://dotnet.microsoft.com), Git (https://git-scm.com/) and
@@ -29,6 +29,11 @@ namespace NormandErwan.DocFxForUnity
         /// The identity to use to commit to the gh-pages branch.
         /// </summary>
         private static readonly Identity CommitIdentity = new Identity("Erwan Normand", "normand.erwan@protonmail.com");
+
+        /// <summary>
+        /// The path where DocFx temp files are located.
+        /// </summary>
+        private const string DocFxTempPath = "Temp";
 
         /// <summary>
         /// File path where the documentation of the Unity repository will be generated.
@@ -206,15 +211,22 @@ namespace NormandErwan.DocFxForUnity
         private static void GenerateXrefMap(Repository repository, string commit,
             string generatedDocsPath = GeneratedDocsPath)
         {
+            // Hard reset the repository
             Console.WriteLine($"Hard reset {repository.Info.WorkingDirectory} to {commit}");
             repository.Reset(ResetMode.Hard, commit);
             repository.RemoveUntrackedFiles();
 
-            if (Directory.Exists(generatedDocsPath))
+            // Clear DocFx's temp files and previous generated site
+            var pathsToClear = new string[] { DocFxTempPath, generatedDocsPath };
+            foreach (var path in pathsToClear)
             {
-                Directory.Delete(generatedDocsPath, recursive: true);
+                if (Directory.Exists(path))
+                {
+                    Directory.Delete(path, recursive: true);
+                }
             }
 
+            // Generate site and xref map
             var output = RunCommand($"docfx");
             Console.WriteLine(output);
         }
