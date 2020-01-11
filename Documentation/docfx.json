@@ -3,12 +3,12 @@
     {
       "src": [
         {
-          "src": "../",
+          "src": "..",
           "files": [ "*.csproj" ]
         }
       ],
       "filter": "filterConfig.yml",
-      "dest": "api/"
+      "dest": "api"
     }
   ],
   "build": {
@@ -20,20 +20,22 @@
     },
     "content": [
       {
-        "files": [ "api/*.yml" ]
-      },
-      {
-        "src": "manual/",
-        "dest": "manual/",
-        "files": [ "toc.yml", "*.md" ]
-      },
-      {
         "files": [ "toc.yml", "index.md" ]
+      },
+      {
+          "src": "api",
+          "files": [ "*.yml" ],
+          "dest": "api"
+      },
+      {
+          "src": "manual",
+          "files": [ "toc.yml", "*.md" ],
+          "dest": "manual"
       }
     ],
     "resource": [
       {
-        "files": [ "resources/*" ]
+        "files": [ "resources/**/*" ]
       }
     ],
     "sitemap":
@@ -49,6 +51,6 @@
     },
     "xref": [ "https://normanderwan.github.io/DocFxForUnity/Unity/xrefmap.yml" ],
     "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
-    "dest": "../_site/"
+    "dest": "../_site"
   }
 }
