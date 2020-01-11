@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleUnityProject", "ExampleUnityProject.csproj", "{F92DC590-88BE-6955-08A2-2A359971BFDF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocFxForUnity", "DocFxForUnity.csproj", "{F92DC590-88BE-6955-08A2-2A359971BFDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
