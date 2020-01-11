@@ -1,6 +1,6 @@
 # DocFX for Unity
 
-> DocFX usage example for Unity projects (Unity API xref map included)
+> [DocFX](https://dotnet.github.io/docfx/index.html) usage example for Unity projects (Unity API xref map included)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/00mejohk0tfxqy7x/branch/master?svg=true)](https://ci.appveyor.com/project/NormandErwan/docfxforunity/branch/master) Example documentation website
 
@@ -10,95 +10,119 @@
 [Unity documentation](https://docs.unity3d.com/Manual/index.html) with a manual (written in Markdown) and a scripting
 API (from the C# scripts of the project).
 
-This repository contains a simple Unity project as example. Its documentation is automatically generated and deployed
+This repository contains:
+
+1. A simple Unity project as example. Its documentation is automatically generated and deployed
 online with every `git push`: <https://normanderwan.github.io/DocFxForUnity/>.
+2. Every reference to the C# API and the Unity API (the so-called
+[xref maps](https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html#cross-reference-between-projects)).
+They are be automatically linked on the documentation.
 
-Every reference to the C# API or to the Unity API will be automatically linked.
+[![DocFxForUnity documentation manual](https://normanderwan.github.io/DocFxForUnity/resources/ExampleManual.png)](https://normanderwan.github.io/DocFxForUnity/manual/coniunctis.html)
 
-| DocFxForUnity documentation manual | DocFxForUnity documentation scripting API |
-|:----------------------------------:|:-----------------------------------------:|
-| [![DocFxForUnity documentation manual](https://normanderwan.github.io/DocFxForUnity/resources/ExampleManual.png)](https://normanderwan.github.io/DocFxForUnity/manual/coniunctis.html) | [![DocFxForUnity documentation scripting API](https://normanderwan.github.io/DocFxForUnity/resources/ExampleScriptingApi.png)](https://normanderwan.github.io/DocFxForUnity/api/DocFxForUnity.Player.html) |
+*DocFxForUnity documentation manual*
+
+[![DocFxForUnity documentation scripting API](https://normanderwan.github.io/DocFxForUnity/resources/ExampleScriptingApi.png)](https://normanderwan.github.io/DocFxForUnity/api/DocFxForUnity.Player.html)
+
+*DocFxForUnity documentation scripting API*
 
 ## Setup your documentation
 
-- Copy the `Documentation/` folder to your Unity project (at the same level than the `Assets/` folder).
-- Edit `Documentation/docfx.json`:
+1. [Install DocFX](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-as-a-command-line-tool).
+2. Copy the `Documentation/` folder to your Unity project:
 
-```javascript
-  {
-    "metadata": [
-      ...
-    ],
-    "build": {
-      "globalMetadata": // Edit your documentation website info, see: https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html#322-reserved-metadata
+    ```bash
+    .
+    ├── Assets
+    ├── Documentation # Copy it at the root of your project
+    ├── Package
+    ├── ProjectSettings
+    └── README.md
+    ```
+
+3. Edit the following properties in `Documentation/docfx.json`, keep the others as it is:
+
+    ```javascript
       {
-        "_appTitle": "Example Unity documentation",
-        "_appFooter": "Example Unity documentation",
-        "_enableSearch": true
-      },
-      "sitemap":
-      {
-        ...
-        "baseUrl": "https://normanderwan.github.io/DocFxForUnity" // The URL of your documentation website
+        "build": {
+          "globalMetadata": // Edit your documentation website info, see: https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html#322-reserved-metadata
+          {
+            "_appTitle": "Example Unity documentation",
+            "_appFooter": "Example Unity documentation",
+            "_enableSearch": true
+          },
+          "sitemap":
+          {
+            "baseUrl": "https://normanderwan.github.io/DocFxForUnity" // The URL of your documentation website
+          }
       }
-    }
-  }
-```
+    ```
 
-- Edit `Documentation/filterConfig.yml`:
+    It's the configuration file of your documentation.
+    See <https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html#3-docfxjson-format> for more details.
 
-```javascript
-apiRules:
-// The namespaces to generate
-- include:
-    uidRegex: ^Your\.Namespace
-    type: Namespace
-// Every other namespaces are ignored
-- exclude:
-    uidRegex: .*
-    type: Namespace
-```
+4. Edit `Documentation/filterConfig.yml`:
 
-- Write manual pages in Markdown on `Documentation/manual/`.You must keep a list of these pages on
- `Documentation/manual/toc.yml`.
-- Add resources such as images to `Documentation/resources/`
+    ```yaml
+    apiRules:
+    - include: # The namespaces to generate
+        uidRegex: ^Your\.Namespace1
+        type: Namespace
+    - include:
+        uidRegex: ^Your\.Namespace2
+        type: Namespace
+    - exclude:
+        uidRegex: .* # Every other namespaces are ignored
+        type: Namespace
+    ```
 
-## Generate your documentation
+    It tells DocFX which namespaces you want to generate the documentation.
+    See <https://dotnet.github.io/docfx/tutorial/howto_filter_out_unwanted_apis_attributes.html> for more details.
 
-- [Install DocFX](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-as-a-command-line-tool).
-- On a command line opened on your project, run:
-  - `cp README.md Documentation/index.md`.
-  - `docfx Documentation/docfx.json --serve`.
-  - The generated website will be visible at <http://localhost:8080>.
+5. Write your manual pages in Markdown in `Documentation/manual/`.
+You must keep a list of these pages on `Documentation/manual/toc.yml`.
+6. Add resources such as images to `Documentation/resources/`.
+7. Generate your documentation:
+    - On a command line opened on your project, run:
+
+        ```bash
+        cp README.md Documentation/index.md
+        docfx Documentation/docfx.json --serve
+        ```
+
+    - The generated website will be visible at <http://localhost:8080>.
 
 ## Generate automatically your documentation
 
 It requires some steps but the setup is quick!
 
-- Setup GitHub Pages:
-  - [Setup GitHub Pages](https://help.github.com/en/articles/configuring-a-publishing-source-for-github-pages) to use the `gh-branch` of your repository. The documentation will be generated as a static website that will be pushed on this branch.
-- Setup AppVeyor:
-  - Subscribes to [AppVeyor](https://www.appveyor.com/).
-  - Create an [AppVeyor project](https://ci.appveyor.com/projects/new) for you repository.
-- Setup `appveyor.yml` build instructions:
-  - Copy the [`appveyor.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/master/appveyor.yml) from this repository to the root of your Unity project.
-  - As AppVeyor will push on the `gh-pages` branch, it need an authentication token (you don't want to copy/paste your password!):
-    - Generate a new [personal access token](https://github.com/settings/tokens) with `public_repo` scope.
-    - Encrypt this token with <https://ci.appveyor.com/tools/encrypt> (now you can safely paste it on `appveyor.yml`).
-    - If this token is compromised, you can regenerate it at any time on GitHub.
-  - Edit all the `environment` variables on your `appveyor.yml`:
+1. Setup [Setup GitHub Pages](https://help.github.com/en/articles/configuring-a-publishing-source-for-github-pages)
+  to use the `gh-branch` of your repository. The documentation will be generated as a static website that will be
+  pushed on this branch.
+2. Setup AppVeyor:
+  1. Subscribes to [AppVeyor](https://www.appveyor.com/).
+  2. Create an [AppVeyor project](https://ci.appveyor.com/projects/new) for you repository.
+3. Setup `appveyor.yml` build instructions:
+  1. Copy the [`appveyor.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/master/appveyor.yml) from this
+  repository to the root of your Unity project.
+  2. Get an authentication token (as AppVeyor will push on the `gh-pages` branch, you don't want to copy/paste your
+  password!):
+    1. Generate a new [personal access token](https://github.com/settings/tokens) with `public_repo` scope.
+    2. Encrypt this token with <https://ci.appveyor.com/tools/encrypt> (now you can safely paste it on `appveyor.yml`).
+    3. If this token is compromised, you can regenerate it at any time on GitHub.
+  3. Edit all the `environment` variables on your `appveyor.yml`:
 
-  ```yaml
-  environment:
-    git_repo: <github_user_name/github_repo_name>
-    git_user_email: <github_user_email>
-    git_user_name: <github_user_name>
-    auth_token:
-      secure: <your_secure_token> # The secure, encrypted token!
-  ```
+    ```yaml
+    environment:
+      git_repo: <github_user_name/github_repo_name>
+      git_user_email: <github_user_email>
+      git_user_name: <github_user_name>
+      auth_token:
+        secure: <your_secure_token> # The secure, encrypted token!
+    ```
 
-  - Push `appveyor.yml` it to GitHub.
-- Try a build on your Appveyor project!
+  4. Push `appveyor.yml` it to GitHub.
+4. Commit and push to trigger your `appveyor.yml` build!
 
 You can also found a [`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/master/.gitlab-ci.yml)
 if you're using GitLab instead of GitHub. Generated website is pushed to a `public/` directory. See the
