@@ -1,56 +1,54 @@
 {
-  "metadata": [
-    {
-      "src": [
+    "metadata": [
         {
-          "src": "..",
-          "files": [ "*.csproj" ]
+            "src": [
+                {
+                    "src": "..",
+                    "files": [ "*.csproj" ]
+                }
+            ],
+            "filter": "filterConfig.yml",
+            "dest": "api"
         }
-      ],
-      "filter": "filterConfig.yml",
-      "dest": "api"
+    ],
+    "build": {
+        "globalMetadata": {
+            "_appTitle": "Example Unity documentation",
+            "_appFooter": "Example Unity documentation",
+            "_enableSearch": true
+        },
+        "content": [
+            {
+                "files": [ "toc.yml", "index.md" ]
+            },
+            {
+                "src": "api",
+                "files": [ "*.yml" ],
+                "dest": "api"
+            },
+            {
+                "src": "manual",
+                "files": [ "toc.yml", "*.md" ],
+                "dest": "manual"
+            }
+        ],
+        "resource": [
+            {
+                "files": [ "resources/**/*" ]
+            }
+        ],
+        "sitemap":
+        {
+            "baseUrl": "https://normanderwan.github.io/DocFxForUnity",
+            "changefreq": "weekly",
+            "fileOptions": {
+                "api/*": {
+                    "changefreq": "daily"
+                }
+            }
+        },
+        "xref": [ "https://normanderwan.github.io/DocFxForUnity/Unity/xrefmap.yml" ],
+        "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
+        "dest": "../_site"
     }
-  ],
-  "build": {
-    "globalMetadata":
-    {
-      "_appTitle": "Example Unity documentation",
-      "_appFooter": "Example Unity documentation",
-      "_enableSearch": true
-    },
-    "content": [
-      {
-        "files": [ "toc.yml", "index.md" ]
-      },
-      {
-          "src": "api",
-          "files": [ "*.yml" ],
-          "dest": "api"
-      },
-      {
-          "src": "manual",
-          "files": [ "toc.yml", "*.md" ],
-          "dest": "manual"
-      }
-    ],
-    "resource": [
-      {
-        "files": [ "resources/**/*" ]
-      }
-    ],
-    "sitemap":
-    {
-      "baseUrl": "https://normanderwan.github.io/DocFxForUnity",
-      "changefreq": "weekly",
-      "fileOptions": {
-        "api/*":
-        {
-          "changefreq": "daily"
-        }
-      }
-    },
-    "xref": [ "https://normanderwan.github.io/DocFxForUnity/Unity/xrefmap.yml" ],
-    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
-    "dest": "../_site"
-  }
 }
