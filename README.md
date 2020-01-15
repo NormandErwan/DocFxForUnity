@@ -128,3 +128,36 @@ You can also found a [`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxFor
 if you're using GitLab instead of GitHub. Generated website is pushed to a `public/` directory. See the
 [GitLab Pages documentation](https://docs.gitlab.com/ee/user/project/pages/getting_started_part_four.html) for more
 details.
+
+## Troubleshooting / FAQ
+
+- DocFx outputs: `Warning:[ExtractMetadata]No project detected for extracting metadata.`
+
+    Solution: On Unity, click [Asset > Open C# Project](https://docs.microsoft.com/fr-fr/visualstudio/cross-platform/media/vstu_open-csharp-project.png?view=vs-2019) to generate the required `.csproj`.
+
+- DocFx outputs: `Warning:[ExtractMetadata]No metadata is generated for Assembly-CSharp,Assembly-CSharp-Editor.`
+
+    Solutions:
+
+    1. Make sure your included your namespace in `Documentation/filterConfig.yml`:
+
+        ```yaml
+        - include:
+          uidRegex: ^Your\.Namespace1
+          type: Namespace
+        ```
+
+    2. If you don't want to use a namespace, remove this line on `Documentation/docfx.json`:
+
+        ```diff
+        {
+            "metadata": [
+                {
+                    ...
+        -           "filter": "filterConfig.yml",
+                    "dest": "api/"
+                }
+            ],
+            ...
+        }
+        ```
