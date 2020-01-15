@@ -97,31 +97,31 @@ You must keep a list of these pages on `Documentation/manual/toc.yml`.
 It requires some steps but the setup is quick!
 
 1. Setup [Setup GitHub Pages](https://help.github.com/en/articles/configuring-a-publishing-source-for-github-pages)
-  to use the `gh-branch` of your repository. The documentation will be generated as a static website that will be
-  pushed on this branch.
+to use the `gh-branch` of your repository. The documentation will be generated as a static website that will be
+pushed on this branch.
 2. Setup AppVeyor:
-  1. Subscribes to [AppVeyor](https://www.appveyor.com/).
-  2. Create an [AppVeyor project](https://ci.appveyor.com/projects/new) for you repository.
+    1. Subscribes to [AppVeyor](https://www.appveyor.com/).
+    2. Create an [AppVeyor project](https://ci.appveyor.com/projects/new) for you repository.
 3. Setup `appveyor.yml` build instructions:
-  1. Copy the [`appveyor.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/master/appveyor.yml) from this
+    1. Copy the [`appveyor.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/master/appveyor.yml) from this
   repository to the root of your Unity project.
-  2. Get an authentication token (as AppVeyor will push on the `gh-pages` branch, you don't want to copy/paste your
+    2. Get an authentication token (as AppVeyor will push on the `gh-pages` branch, you don't want to copy/paste your
   password!):
-    1. Generate a new [personal access token](https://github.com/settings/tokens) with `public_repo` scope.
-    2. Encrypt this token with <https://ci.appveyor.com/tools/encrypt> (now you can safely paste it on `appveyor.yml`).
-    3. If this token is compromised, you can regenerate it at any time on GitHub.
-  3. Edit all the `environment` variables on your `appveyor.yml`:
+        1. Generate a new [personal access token](https://github.com/settings/tokens) with `public_repo` scope.
+        2. Encrypt this token with <https://ci.appveyor.com/tools/encrypt> (now you can safely paste it on `appveyor.yml`).
+        3. If this token is compromised, you can regenerate it at any time on GitHub.
+    3. Edit all the `environment` variables on your `appveyor.yml`:
 
-    ```yaml
-    environment:
-      git_repo: <github_user_name/github_repo_name>
-      git_user_email: <github_user_email>
-      git_user_name: <github_user_name>
-      auth_token:
-        secure: <your_secure_token> # The secure, encrypted token!
-    ```
+        ```yaml
+        environment:
+        git_repo: <github_user_name/github_repo_name>
+        git_user_email: <github_user_email>
+        git_user_name: <github_user_name>
+        auth_token:
+            secure: <your_secure_token> # The secure, encrypted token!
+        ```
 
-  4. Push `appveyor.yml` it to GitHub.
+    4. Push `appveyor.yml` it to GitHub.
 4. Commit and push to trigger your `appveyor.yml` build!
 
 You can also found a [`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/master/.gitlab-ci.yml)
