@@ -1,7 +1,7 @@
 image: stefanscherer/chocolatey
 
 before_script:
-  - choco install -y docfx --version 2.42.4
+  - choco install -y docfx
 
 pages:
   stage: deploy
