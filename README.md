@@ -2,9 +2,7 @@
 
 > [DocFX](https://dotnet.github.io/docfx/index.html) usage example for Unity projects (Unity API xref map included)
 
-[![Build status](https://ci.appveyor.com/api/projects/status/00mejohk0tfxqy7x/branch/master?svg=true)](https://ci.appveyor.com/project/NormandErwan/docfxforunity/branch/master) Example documentation website
-
-[![Build status](https://ci.appveyor.com/api/projects/status/00mejohk0tfxqy7x/branch/UnityXrefMaps?svg=true)](https://ci.appveyor.com/project/NormandErwan/docfxforunity/branch/UnityXrefMaps) Unity API xref maps
+[![Build Status](https://github.com/NormandErwan/DocFxForUnity/workflows/Build%20and%20deploy%20documentation/badge.svg)](https://normanderwan.github.io/DocFxForUnity/)
 
 [DocFX](https://dotnet.github.io/docfx/) tool generates a clean documentation that looks like the
 [Unity documentation](https://docs.unity3d.com/Manual/index.html) with a manual (written in Markdown) and a scripting
@@ -12,32 +10,32 @@ API (from the C# scripts of the project).
 
 This repository contains:
 
-1. A simple Unity project as example. Its documentation is automatically generated and deployed
-online with every `git push`: <https://normanderwan.github.io/DocFxForUnity/>.
+1. A simple Unity project which documentation is automatically generated and deployed
+online: <https://normanderwan.github.io/DocFxForUnity/>.
 2. Every reference to the C# API and the Unity API (the so-called
 [xref maps](https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html#cross-reference-between-projects)).
 They are be automatically linked on the documentation.
 
-[![DocFxForUnity documentation manual](https://normanderwan.github.io/DocFxForUnity/resources/ExampleManual.png)](https://normanderwan.github.io/DocFxForUnity/manual/coniunctis.html)
+| DocFxForUnity documentation manual |
+|:----------------------------------:|
+| [![DocFxForUnity documentation manual](https://normanderwan.github.io/DocFxForUnity/resources/ExampleManual.png)](https://normanderwan.github.io/DocFxForUnity/manual/coniunctis.html) |
 
-*DocFxForUnity documentation manual*
-
-[![DocFxForUnity documentation scripting API](https://normanderwan.github.io/DocFxForUnity/resources/ExampleScriptingApi.png)](https://normanderwan.github.io/DocFxForUnity/api/DocFxForUnity.Player.html)
-
-*DocFxForUnity documentation scripting API*
+| DocFxForUnity documentation scripting API |
+|:----------------------------------:|
+| [![DocFxForUnity documentation scripting API](https://normanderwan.github.io/DocFxForUnity/resources/ExampleScriptingApi.png)](https://normanderwan.github.io/DocFxForUnity/api/DocFxForUnity.Player.html) |
 
 ## Setup your documentation
 
 1. [Install DocFX](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-as-a-command-line-tool).
 2. Copy the `Documentation/` folder to your Unity project:
 
-    ```bash
-    .
-    ├── Assets
-    ├── Documentation # Copy it at the root of your project
-    ├── Package
-    ├── ProjectSettings
-    └── README.md
+    ```diff
+      .
+      ├── Assets
+    + ├── Documentation
+      ├── Package
+      ├── ProjectSettings
+      └── README.md
     ```
 
 3. Edit the following properties in `Documentation/docfx.json`, keep the others as it is:
@@ -94,7 +92,7 @@ You must keep a list of these pages on `Documentation/manual/toc.yml`.
 
 ## Generate automatically your documentation
 
-If you're using GitLab, use the provide
+If you're using GitLab, use the provided
 [`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/master/.gitlab-ci.yml).
 Generated website is pushed to a `public/` directory. See the
 [GitLab Pages documentation](https://docs.gitlab.com/ee/user/project/pages/getting_started_part_four.html) for more
