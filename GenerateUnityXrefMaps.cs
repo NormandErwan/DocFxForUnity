@@ -12,24 +12,17 @@ using YamlDotNet.Serialization;
 namespace NormandErwan.DocFxForUnity
 {
     /// <summary>
-    /// Generates the xref maps of all Unity versions and commit them to the `gh-pages` branch of
-    /// https://github.com/NormandErwan/DocFxForUnity.
+    /// Generates the xref maps of the APIs of all the Unity versions.
     ///
     /// Usage: UnityXrefMaps
     ///
-    /// You will need to manually push the commits then.
     /// </summary>
     /// <remarks>
-    /// .NET Core 2.x (https://dotnet.microsoft.com), Git (https://git-scm.com/) and
-    /// DocFx (https://dotnet.github.io/docfx/) must be installed on your system.
+    /// [.NET Core](https://dotnet.microsoft.com) >= 2.0 and [DocFX](https://dotnet.github.io/docfx/) must be installed
+    /// on your system.
     /// </remarks>
     class Program
     {
-        /// <summary>
-        /// The identity to use to commit to the gh-pages branch.
-        /// </summary>
-        private static readonly Identity CommitIdentity = new Identity("Erwan Normand", "normand.erwan@protonmail.com");
-
         /// <summary>
         /// The path where DocFx temp files are located.
         /// </summary>
@@ -39,21 +32,6 @@ namespace NormandErwan.DocFxForUnity
         /// File path where the documentation of the Unity repository will be generated.
         /// </summary>
         private const string GeneratedDocsPath = "UnityCsReference/_site";
-
-        /// <summary>
-        /// Name of the branch to use on the <see cref="GhPagesRepoPath"/> repository.
-        /// </summary>
-        private const string GhPagesRepoBranch = "gh-pages";
-
-        /// <summary>
-        /// File path where to clone the <see cref="GhPagesRepoPath"/> repository.
-        /// </summary>
-        private const string GhPagesRepoPath = "gh-pages";
-
-        /// <summary>
-        /// Url of the <see cref="GhPagesRepoPath"/> repository.
-        /// </summary>
-        private const string GhPagesRepoUrl = "https://github.com/NormandErwan/DocFxForUnity.git";
 
         /// <summary>
         /// File path of the Unity repository.
@@ -85,65 +63,36 @@ namespace NormandErwan.DocFxForUnity
         /// </summary>
         public static void Main()
         {
-            // Clone gh-pages branch and Unity CS repository
-            using (var ghPagesRepo = GetSyncRepository(GhPagesRepoUrl, GhPagesRepoPath, GhPagesRepoBranch))
+            // Clone Unity CS repository
+            using (var unityRepo = GetSyncRepository(UnityRepoUrl, UnityRepoPath))
             {
-                using (var unityRepo = GetSyncRepository(UnityRepoUrl, UnityRepoPath))
+                string sourcePath, destPath;
+
+                // Get the list of latest stable Unity versions
+                var versions = GetLatestVersions(unityRepo, tag => Regex.Match(tag, @"\d{4}\.\d").Value);
+
+                // Generate and copy xref map to the gh-pages branch of each Unity version
+                foreach (var version in versions)
                 {
-                    string sourcePath, destPath;
+                    Console.WriteLine($"Generating Unity {version.name} xref map");
+                    GenerateXrefMap(unityRepo, version.release);
 
-                    // Get the list of latest stable Unity versions
-                    var versions = GetLatestVersions(unityRepo, tag => Regex.Match(tag, @"\d{4}\.\d").Value);
-
-                    // Generate and copy xref map to the gh-pages branch of each Unity version
-                    foreach (var version in versions)
-                    {
-                        Console.WriteLine($"Generating Unity {version.name} xref map");
-                        GenerateXrefMap(unityRepo, version.release);
-
-                        sourcePath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
-                        destPath = Path.Combine(XrefMapsPath, version.name, XrefMapFileName);
-                        CopyFile(sourcePath, destPath);
-
-                        FixXrefMapHrefs(destPath);
-                    }
-
-                    // Set the xref map of the latest final version as the default one (copy it at the root)
-                    var latestUnityVersion = versions
-                        .OrderByDescending(version => version.name)
-                        .First(version => version.release.Contains('f'));
-
-                    sourcePath = Path.Combine(XrefMapsPath, latestUnityVersion.name, XrefMapFileName);
-                    destPath = Path.Combine(XrefMapsPath, XrefMapFileName);
+                    sourcePath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
+                    destPath = Path.Combine(XrefMapsPath, version.name, XrefMapFileName);
                     CopyFile(sourcePath, destPath);
+
+                    FixXrefMapHrefs(destPath);
                 }
 
-                // Commit new xref maps to gh-pages branch
-                AddCommitChanges(ghPagesRepo, "Xref maps update", CommitIdentity);
+                // Set the xref map of the latest final version as the default one (copy it at the root)
+                var latestUnityVersion = versions
+                    .OrderByDescending(version => version.name)
+                    .First(version => version.release.Contains('f'));
+
+                sourcePath = Path.Combine(XrefMapsPath, latestUnityVersion.name, XrefMapFileName);
+                destPath = Path.Combine(XrefMapsPath, XrefMapFileName);
+                CopyFile(sourcePath, destPath);
             }
-        }
-
-        /// <summary>
-        /// Adds and commits all changes on the specified repository.
-        /// </summary>
-        /// <param name="repository">The repository to add, command and push changes.</param>
-        /// <param name="commitMessage">The message of the commit.</param>
-        /// <param name="commitIdentity">The identity of the author and of the committer.</param>
-        private static void AddCommitChanges(Repository repository, string commitMessage, Identity commitIdentity)
-        {
-            if (!repository.RetrieveStatus().IsDirty)
-            {
-                Console.WriteLine($"Nothing to commit on {GhPagesRepoPath}");
-                return;
-            }
-
-            Console.WriteLine($"Adding all changes on {GhPagesRepoPath}");
-            Commands.Stage(repository, "*");
-
-            Console.WriteLine($"Commit changes on {GhPagesRepoPath}");
-            var author = new Signature(commitIdentity, DateTime.Now);
-            var committer = author;
-            repository.Commit(commitMessage, author, committer);
         }
 
         /// <summary>
