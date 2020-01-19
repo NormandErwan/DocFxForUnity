@@ -92,6 +92,26 @@ You must keep a list of these pages on `Documentation/manual/toc.yml`.
 
 ## Generate automatically your documentation
 
+If you're using GitHub:
+
+1. Copy the `.github/workflows/documentation.yml` workflow to your Unity project:
+
+    ```diff
+      .
+    + ├── .github
+    + |   └── workflows
+    + |       └── documentation.yml
+      ├── Assets
+      ├── Documentation
+      ├── Package
+      ├── ProjectSettings
+      └── README.md
+    ```
+
+2. Generate a new [personal access token](https://github.com/settings/tokens) with `repo` scope.
+3. Copy this token on [your repository secrets]((https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets)) with name `AccessToken`.
+4. Next push on `master` branch will build and deploy your documentation to `https://<USERNAME>.github.io/<REPOSITORY>/`!
+
 If you're using GitLab, use the provided
 [`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/master/.gitlab-ci.yml).
 Generated website is pushed to a `public/` directory. See the
