@@ -27,7 +27,8 @@ jobs:
       - name: Upload site artifact
         uses: actions/upload-artifact@v1
         with:
-          name: _site # Must equals the 'build.dest' value on your docfx.json
+          name: site
+          path: _site # Must equals the 'build.dest' value on your docfx.json
 
   # Deploy the generated documentation to the gh-pages branch
   deploy:
@@ -38,12 +39,12 @@ jobs:
       - name: Download site artifact
         uses: actions/download-artifact@v1
         with:
-          name: _site # Must equals the 'build.dest' value on your docfx.json
+          name: site
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         env:
           ACCESS_TOKEN: ${{ secrets.PersonalAccessToken }} # You need some setup, see https://github.com/JamesIves/github-pages-deploy-action
           BRANCH: gh-pages
-          FOLDER: _site # Must equals the 'build.dest' value on your docfx.json
+          FOLDER: site
           CLEAN: true
