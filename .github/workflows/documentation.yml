@@ -44,7 +44,7 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         env:
-          ACCESS_TOKEN: ${{ secrets.PersonalAccessToken }} # You need some setup, see https://github.com/JamesIves/github-pages-deploy-action
+          ACCESS_TOKEN: ${{ secrets.AccessToken }} # You need some setup, see https://github.com/JamesIves/github-pages-deploy-action
           BRANCH: gh-pages
           FOLDER: site
           CLEAN: true
