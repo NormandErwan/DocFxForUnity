@@ -131,11 +131,11 @@ details.
 
 ## Troubleshooting / FAQ
 
-- DocFx outputs: `Warning:[ExtractMetadata]No project detected for extracting metadata.`
+- DocFX outputs: `Warning:[ExtractMetadata]No project detected for extracting metadata.`
 
     Solution: On Unity, click [Asset > Open C# Project](https://docs.microsoft.com/fr-fr/visualstudio/cross-platform/media/vstu_open-csharp-project.png?view=vs-2019) to generate the required `.csproj`.
 
-- DocFx outputs: `Warning:[ExtractMetadata]No metadata is generated for Assembly-CSharp,Assembly-CSharp-Editor.`
+- DocFX outputs: `Warning:[ExtractMetadata]No metadata is generated for Assembly-CSharp,Assembly-CSharp-Editor.`
 
     Solutions:
 
