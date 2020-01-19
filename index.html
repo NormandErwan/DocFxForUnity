@@ -8,7 +8,7 @@
     <title>DocFX for Unity | Example Unity documentation </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="DocFX for Unity | Example Unity documentation ">
-    <meta name="generator" content="docfx 2.42.4.0">
+    <meta name="generator" content="docfx 2.48.1.0">
     
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="styles/docfx.vendor.css">
@@ -149,51 +149,17 @@ docfx Documentation/docfx.json --serve
 </li>
 </ol>
 <h2 id="generate-automatically-your-documentation">Generate automatically your documentation</h2>
-<p>It requires some steps but the setup is quick!</p>
-<ol>
-<li>Setup <a href="https://help.github.com/en/articles/configuring-a-publishing-source-for-github-pages">Setup GitHub Pages</a>
-to use the <code>gh-branch</code> of your repository. The documentation will be generated as a static website that will be
-pushed on this branch.</li>
-<li>Setup AppVeyor:<ol>
-<li>Subscribes to <a href="https://www.appveyor.com/">AppVeyor</a>.</li>
-<li>Create an <a href="https://ci.appveyor.com/projects/new">AppVeyor project</a> for you repository.</li>
-</ol>
-</li>
-<li><p>Setup <code>appveyor.yml</code> build instructions:</p>
-<ol>
-<li>Copy the <a href="https://github.com/NormandErwan/DocFxForUnity/blob/master/appveyor.yml"><code>appveyor.yml</code></a> from this
-repository to the root of your Unity project.</li>
-<li>Get an authentication token (as AppVeyor will push on the <code>gh-pages</code> branch, you don&#39;t want to copy/paste your
-password!):<ol>
-<li>Generate a new <a href="https://github.com/settings/tokens">personal access token</a> with <code>public_repo</code> scope.</li>
-<li>Encrypt this token with <a href="https://ci.appveyor.com/tools/encrypt">https://ci.appveyor.com/tools/encrypt</a> (now you can safely paste it on <code>appveyor.yml</code>).</li>
-<li>If this token is compromised, you can regenerate it at any time on GitHub.</li>
-</ol>
-</li>
-<li><p>Edit all the <code>environment</code> variables on your <code>appveyor.yml</code>:</p>
-<pre><code class="lang-yaml">environment:
-git_repo: &lt;github_user_name/github_repo_name&gt;
-git_user_email: &lt;github_user_email&gt;
-git_user_name: &lt;github_user_name&gt;
-auth_token:
-    secure: &lt;your_secure_token&gt; # The secure, encrypted token!
-</code></pre></li>
-<li><p>Push <code>appveyor.yml</code> it to GitHub.</p>
-</li>
-</ol>
-</li>
-<li>Commit and push to trigger your <code>appveyor.yml</code> build!</li>
-</ol>
-<p>You can also found a <a href="https://github.com/NormandErwan/DocFxForUnity/blob/master/.gitlab-ci.yml"><code>.gitlab-ci.yml</code></a>
-if you&#39;re using GitLab instead of GitHub. Generated website is pushed to a <code>public/</code> directory. See the
+<p>If you&#39;re using GitLab, use the provide
+<a href="https://github.com/NormandErwan/DocFxForUnity/blob/master/.gitlab-ci.yml"><code>.gitlab-ci.yml</code></a>.
+Generated website is pushed to a <code>public/</code> directory. See the
 <a href="https://docs.gitlab.com/ee/user/project/pages/getting_started_part_four.html">GitLab Pages documentation</a> for more
 details.</p>
 <h2 id="troubleshooting--faq">Troubleshooting / FAQ</h2>
 <ul>
-<li><p>DocFx outputs: <code>Warning:[ExtractMetadata]No project detected for extracting metadata.</code></p>
+<li><p>DocFX outputs: <code>Warning:[ExtractMetadata]No project detected for extracting metadata.</code></p>
 <p>  Solution: On Unity, click <a href="https://docs.microsoft.com/fr-fr/visualstudio/cross-platform/media/vstu_open-csharp-project.png?view=vs-2019">Asset &gt; Open C# Project</a> to generate the required <code>.csproj</code>.</p>
 </li>
-<li><p>DocFx outputs: <code>Warning:[ExtractMetadata]No metadata is generated for Assembly-CSharp,Assembly-CSharp-Editor.</code></p>
+<li><p>DocFX outputs: <code>Warning:[ExtractMetadata]No metadata is generated for Assembly-CSharp,Assembly-CSharp-Editor.</code></p>
 <p>  Solutions:</p>
 <ol>
 <li><p>Make sure your included your namespace in <code>Documentation/filterConfig.yml</code>:</p>
@@ -224,7 +190,7 @@ details.</p>
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/NormandErwan/DocFxForUnity/blob/master/Documentation/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                    <a href="https://github.com/NormandErwan/DocFxForUnity/blob/1f2a560f5a8de5c2bb32b5df29f2e9cebec5b080/Documentation/index.md/#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
