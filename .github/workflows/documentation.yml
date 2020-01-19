@@ -35,6 +35,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest # Required by 'JamesIves/github-pages-deploy-action'
     steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        # with:
+        #   submodules: true
+
       # Download the generated documentation
       - name: Download site artifact
         uses: actions/download-artifact@v1
