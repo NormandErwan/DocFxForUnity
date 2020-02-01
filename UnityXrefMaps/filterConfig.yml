@@ -1,0 +1,22 @@
+apiRules:
+- exclude:
+    uidRegex: ^AOT
+- exclude:
+    uidRegex: ^JetBrains
+- exclude:
+    uidRegex: ^TreeEditor
+- exclude:
+    uidRegex: ^Unity\.CodeEditor
+- exclude:
+    uidRegex: ^UnityEditorInternal
+- exclude:
+    uidRegex: ^UnityEditor\.InspectorMode
+- exclude:
+    uidRegex: ^UnityEngineInternal
+- exclude:
+    uidRegex: ^UnityEngine.Internal
+- exclude:
+    uidRegex: Finalize$
+- exclude:
+    hasAttribute:
+        uid: UnityEngine.Internal.ExcludeFromDocsAttribute

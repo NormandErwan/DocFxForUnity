@@ -1,0 +1,29 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "UnityCsReference/Projects/CSharp/",
+          "files": [ "*.csproj" ]
+        }
+      ],
+      "filter": "filterConfig.yml",
+      "properties": {
+        "TargetFramework": "net35"
+      },
+      "dest": "Temp/ScriptReference/"
+    }
+  ],
+  "build":
+  {
+    "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
+    "content": [
+      {
+        "src": "Temp/ScriptReference/",
+        "files": [ "*.yml" ],
+        "dest": "ScriptReference/"
+      }
+    ],
+    "dest": "UnityCsReference/_site"
+  }
+}
