@@ -28,7 +28,7 @@
       "output": {
         ".html": {
           "relative_path": "api/DocFxForUnity.Player.html",
-          "hash": "WzQWBd3I9g2F9TqJOP2j6Q=="
+          "hash": "9LbVgamwCADhaPTSMTRtZg=="
         }
       },
       "is_incremental": false,
@@ -64,7 +64,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "gK8ykq++St7BZiQaA+8Tnw=="
+          "hash": "PkmuQezbnwTM4zHionCO8w=="
         }
       },
       "is_incremental": false,
@@ -76,7 +76,7 @@
       "output": {
         ".html": {
           "relative_path": "manual/coniunctis.html",
-          "hash": "1x3SxDpLQFbBt+njCmerwA=="
+          "hash": "SFmoR/33oZ7/9JL9H0/NYg=="
         }
       },
       "is_incremental": false,
@@ -88,7 +88,7 @@
       "output": {
         ".html": {
           "relative_path": "manual/etiam.html",
-          "hash": "5h6x2ahRQR7iInORQpvhYA=="
+          "hash": "NX1eSZSxP/ReQoneArrV2g=="
         }
       },
       "is_incremental": false,
@@ -152,9 +152,9 @@
         "full_build_reason_code": "NoAvailableBuildCache"
       },
       "processors": {
-        "TocDocumentProcessor": {
+        "ResourceDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
@@ -171,9 +171,9 @@
           "total_file_count": 2,
           "skipped_file_count": 0
         },
-        "ResourceDocumentProcessor": {
+        "TocDocumentProcessor": {
           "can_incremental": false,
-          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
           "incrementalPhase": "build",
           "total_file_count": 0,
           "skipped_file_count": 0
