@@ -126,27 +126,10 @@ details.
 
 - DocFX outputs: `Warning:[ExtractMetadata]No metadata is generated for Assembly-CSharp,Assembly-CSharp-Editor.`
 
-    Solutions:
-
-    1. Make sure your included your namespace in `Documentation/filterConfig.yml`:
+    Solution: Make sure your included your namespace in `Documentation/filterConfig.yml`:
 
         ```yaml
         - include:
           uidRegex: ^Your\.Namespace1
           type: Namespace
-        ```
-
-    2. If you don't want to use a namespace, remove this line on `Documentation/docfx.json`:
-
-        ```diff
-        {
-            "metadata": [
-                {
-                    ...
-        -           "filter": "filterConfig.yml",
-                    "dest": "api/"
-                }
-            ],
-            ...
-        }
         ```
