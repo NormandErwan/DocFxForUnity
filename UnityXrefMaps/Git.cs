@@ -42,7 +42,8 @@ namespace DocFxForUnity
                 Commands.Fetch(repository, remote.Name, new string[0], null, null); // WTF is this API libgit2sharp?
 
                 Console.WriteLine($"Checking out {path} to {branch} branch");
-                Commands.Checkout(repository, branch);
+                var remoteBranch = $"origin/{branch}";
+                Commands.Checkout(repository, remoteBranch);
             }
 
             Console.WriteLine();
