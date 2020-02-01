@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using LibGit2Sharp;
 using YamlDotNet.Serialization;
 
-namespace NormandErwan.DocFxForUnity
+namespace DocFxForUnity
 {
     /// <summary>
     /// Generates the xref maps of the APIs of all the Unity versions.

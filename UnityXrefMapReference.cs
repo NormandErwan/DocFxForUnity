@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace NormandErwan.DocFxForUnity
+namespace DocFxForUnity
 {
     /// <summary>
     /// Represents a <see cref="XrefMapReference"/> from a Unity's <see cref="XrefMap"/>.

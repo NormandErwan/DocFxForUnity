@@ -1,6 +1,6 @@
 using YamlDotNet.Serialization;
 
-namespace NormandErwan.DocFxForUnity
+namespace DocFxForUnity
 {
     /// <summary>
     /// Represents a reference item on a <see cref="XrefMap"/> file.

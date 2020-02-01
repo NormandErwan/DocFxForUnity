@@ -1,4 +1,4 @@
-namespace NormandErwan.DocFxForUnity
+namespace DocFxForUnity
 {
     /// <summary>
     /// Represents a xref map file.
