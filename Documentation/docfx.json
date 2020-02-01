@@ -7,6 +7,7 @@
                     "files": [ "**.csproj" ]
                 }
             ],
+            "globalNamespaceId": "Global",
             "filter": "filterConfig.yml",
             "dest": "api"
         }

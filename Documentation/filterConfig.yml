@@ -2,6 +2,9 @@ apiRules:
 - include:
     uidRegex: ^DocFxForUnity
     type: Namespace
+- include:
+    uidRegex: ^Global
+    type: Namespace
 - exclude:
     uidRegex: .*
     type: Namespace
