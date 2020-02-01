@@ -1,0 +1,7 @@
+Temp
+bin
+gh-pages
+obj
+UnityCsReference
+_site
+*.cache

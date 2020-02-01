@@ -1,12 +1,10 @@
 {
-   "metadata": [
+  "metadata": [
     {
       "src": [
         {
           "src": "UnityCsReference/Projects/CSharp/",
-          "files": [
-            "*.csproj"
-          ]
+          "files": [ "*.csproj" ]
         }
       ],
       "filter": "filterConfig.yml",
@@ -16,7 +14,8 @@
       "dest": "Temp/ScriptReference/"
     }
   ],
-  "build": {
+  "build":
+  {
     "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
     "content": [
       {

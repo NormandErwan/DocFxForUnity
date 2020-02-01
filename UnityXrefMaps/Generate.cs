@@ -14,7 +14,7 @@ namespace DocFxForUnity
     /// <summary>
     /// Generates the xref maps of the APIs of all the Unity versions.
     ///
-    /// Usage: UnityXrefMaps
+    /// Usage: Generate
     ///
     /// </summary>
     /// <remarks>
