@@ -120,10 +120,10 @@ namespace DocFxForUnity
 
             // Load xref map
             var deserializer = new Deserializer();
-            var xrefMap = deserializer.Deserialize<UnityXrefMap>(xrefMapText);
+            var xrefMap = deserializer.Deserialize<XrefMap>(xrefMapText);
 
             // Try to fix hrefs
-            var references = new List<UnityXrefMapReference>();
+            var references = new List<XrefMapReference>();
             foreach (var reference in xrefMap.references)
             {
                 if (reference.TryFixHref())
