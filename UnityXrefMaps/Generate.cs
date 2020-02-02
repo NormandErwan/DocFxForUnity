@@ -21,9 +21,9 @@ namespace DocFxForUnity
     class Program
     {
         /// <summary>
-        /// The path where DocFx temp files are located.
+        /// The path where the metadata files of DocFx are located.
         /// </summary>
-        private const string DocFxTempPath = "Temp";
+        private const string DocFxMetadataPath = "Temp";
 
         /// <summary>
         /// File path where the documentation of the Unity repository will be generated.
@@ -39,6 +39,7 @@ namespace DocFxForUnity
         /// Url of the repository of the Unity repository.
         /// </summary>
         private const string UnityRepoUrl = "https://github.com/Unity-Technologies/UnityCsReference.git";
+
 
         /// <summary>
         /// Filename of a xref map file.
@@ -143,7 +144,7 @@ namespace DocFxForUnity
             repository.RemoveUntrackedFiles();
 
             // Clear DocFx's temp files and previous generated site
-            var pathsToClear = new string[] { DocFxTempPath, generatedDocsPath };
+            var pathsToClear = new string[] { DocFxMetadataPath, generatedDocsPath };
             foreach (var path in pathsToClear)
             {
                 if (Directory.Exists(path))
