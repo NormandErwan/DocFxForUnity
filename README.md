@@ -128,8 +128,8 @@ details.
 
     Solution: Make sure your included your namespace in `Documentation/filterConfig.yml`:
 
-        ```yaml
-        - include:
-          uidRegex: ^Your\.Namespace1
-          type: Namespace
-        ```
+    ```yaml
+    - include:
+      uidRegex: ^Your\.Namespace1
+      type: Namespace
+    ```
