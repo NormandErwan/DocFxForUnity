@@ -7,6 +7,38 @@ references:
   commentId: N:DocFxForUnity
   fullName: DocFxForUnity
   nameWithType: DocFxForUnity
+- uid: DocFxForUnity.Git
+  name: Git
+  href: api/DocFxForUnity.Git.html
+  commentId: T:DocFxForUnity.Git
+  fullName: DocFxForUnity.Git
+  nameWithType: Git
+- uid: DocFxForUnity.Git.GetSyncRepository(System.String,System.String,System.String)
+  name: GetSyncRepository(String, String, String)
+  href: api/DocFxForUnity.Git.html#DocFxForUnity_Git_GetSyncRepository_System_String_System_String_System_String_
+  commentId: M:DocFxForUnity.Git.GetSyncRepository(System.String,System.String,System.String)
+  fullName: DocFxForUnity.Git.GetSyncRepository(System.String, System.String, System.String)
+  nameWithType: Git.GetSyncRepository(String, String, String)
+- uid: DocFxForUnity.Git.GetSyncRepository*
+  name: GetSyncRepository
+  href: api/DocFxForUnity.Git.html#DocFxForUnity_Git_GetSyncRepository_
+  commentId: Overload:DocFxForUnity.Git.GetSyncRepository
+  isSpec: "True"
+  fullName: DocFxForUnity.Git.GetSyncRepository
+  nameWithType: Git.GetSyncRepository
+- uid: DocFxForUnity.Git.GetTags(Repository)
+  name: GetTags(Repository)
+  href: api/DocFxForUnity.Git.html#DocFxForUnity_Git_GetTags_Repository_
+  commentId: M:DocFxForUnity.Git.GetTags(Repository)
+  fullName: DocFxForUnity.Git.GetTags(Repository)
+  nameWithType: Git.GetTags(Repository)
+- uid: DocFxForUnity.Git.GetTags*
+  name: GetTags
+  href: api/DocFxForUnity.Git.html#DocFxForUnity_Git_GetTags_
+  commentId: Overload:DocFxForUnity.Git.GetTags
+  isSpec: "True"
+  fullName: DocFxForUnity.Git.GetTags
+  nameWithType: Git.GetTags
 - uid: DocFxForUnity.Player
   name: Player
   href: api/DocFxForUnity.Player.html
@@ -91,6 +123,51 @@ references:
   isSpec: "True"
   fullName: DocFxForUnity.Player.StartingHealth
   nameWithType: Player.StartingHealth
+- uid: DocFxForUnity.Utils
+  name: Utils
+  href: api/DocFxForUnity.Utils.html
+  commentId: T:DocFxForUnity.Utils
+  fullName: DocFxForUnity.Utils
+  nameWithType: Utils
+- uid: DocFxForUnity.Utils.GetSyncRepository(System.String,System.String,System.String)
+  name: GetSyncRepository(String, String, String)
+  href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_GetSyncRepository_System_String_System_String_System_String_
+  commentId: M:DocFxForUnity.Utils.GetSyncRepository(System.String,System.String,System.String)
+  fullName: DocFxForUnity.Utils.GetSyncRepository(System.String, System.String, System.String)
+  nameWithType: Utils.GetSyncRepository(String, String, String)
+- uid: DocFxForUnity.Utils.GetSyncRepository*
+  name: GetSyncRepository
+  href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_GetSyncRepository_
+  commentId: Overload:DocFxForUnity.Utils.GetSyncRepository
+  isSpec: "True"
+  fullName: DocFxForUnity.Utils.GetSyncRepository
+  nameWithType: Utils.GetSyncRepository
+- uid: DocFxForUnity.Utils.RunCommand(System.String)
+  name: RunCommand(String)
+  href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_RunCommand_System_String_
+  commentId: M:DocFxForUnity.Utils.RunCommand(System.String)
+  fullName: DocFxForUnity.Utils.RunCommand(System.String)
+  nameWithType: Utils.RunCommand(String)
+- uid: DocFxForUnity.Utils.RunCommand*
+  name: RunCommand
+  href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_RunCommand_
+  commentId: Overload:DocFxForUnity.Utils.RunCommand
+  isSpec: "True"
+  fullName: DocFxForUnity.Utils.RunCommand
+  nameWithType: Utils.RunCommand
+- uid: DocFxForUnity.Utils.TestUriExists(System.String)
+  name: TestUriExists(String)
+  href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_TestUriExists_System_String_
+  commentId: M:DocFxForUnity.Utils.TestUriExists(System.String)
+  fullName: DocFxForUnity.Utils.TestUriExists(System.String)
+  nameWithType: Utils.TestUriExists(String)
+- uid: DocFxForUnity.Utils.TestUriExists*
+  name: TestUriExists
+  href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_TestUriExists_
+  commentId: Overload:DocFxForUnity.Utils.TestUriExists
+  isSpec: "True"
+  fullName: DocFxForUnity.Utils.TestUriExists
+  nameWithType: Utils.TestUriExists
 - uid: DocFxForUnity.XrefMap
   name: XrefMap
   href: api/DocFxForUnity.XrefMap.html
