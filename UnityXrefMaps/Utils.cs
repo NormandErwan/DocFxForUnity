@@ -19,7 +19,7 @@ namespace DocFxForUnity
         /// </summary>
         /// <param name="sourcePath">The path of the source file to copy.</param>
         /// <param name="destPath">The destination path of the copied file.</param>
-        private static void CopyFile(string sourcePath, string destPath)
+        public static void CopyFile(string sourcePath, string destPath)
         {
             var destDirectoryPath = Path.GetDirectoryName(destPath);
             Directory.CreateDirectory(destDirectoryPath);
