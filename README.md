@@ -133,3 +133,13 @@ details.
       uidRegex: ^Your\.Namespace1
       type: Namespace
     ```
+
+## Generate the xref maps of Unity
+
+1. Install [.NET Core](https://dotnet.microsoft.com) >= 2.0 and [DocFX](https://dotnet.github.io/docfx/).
+2. Run the commands:
+
+```bash
+cd UnityXrefMaps
+dotnet run
+```
