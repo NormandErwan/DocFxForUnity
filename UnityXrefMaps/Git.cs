@@ -33,15 +33,15 @@ namespace DocFxForUnity
             // Otherwise fetch changes and checkout to the specified branch
             if (!clone)
             {
-                Console.WriteLine($"Hard reset {path} to HEAD");
+                Console.WriteLine($"Hard reset '{path}' to HEAD");
                 repository.Reset(ResetMode.Hard);
                 repository.RemoveUntrackedFiles();
 
-                Console.WriteLine($"Fetching changes from origin to {path}");
+                Console.WriteLine($"Fetching changes from 'origin' in '{path}'");
                 var remote = repository.Network.Remotes["origin"];
                 Commands.Fetch(repository, remote.Name, new string[0], null, null); // WTF is this API libgit2sharp?
 
-                Console.WriteLine($"Checking out {path} to {branch} branch");
+                Console.WriteLine($"Checking out '{path}' to '{branch}' branch");
                 var remoteBranch = $"origin/{branch}";
                 Commands.Checkout(repository, remoteBranch);
             }
