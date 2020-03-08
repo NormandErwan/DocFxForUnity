@@ -20,32 +20,37 @@ namespace DocFxForUnity
     class Program
     {
         /// <summary>
-        /// Path where the metadata files of DocFx of the Unity repository will be generated.
+        /// The path where the metadata files of DocFx of the Unity repository will be generated.
         /// </summary>
         private const string DocFxMetadataPath = "Temp";
 
         /// <summary>
-        /// Path where the documentation of the Unity repository will be generated.
+        /// The path where the documentation of the Unity repository will be generated.
         /// </summary>
         private const string GeneratedDocsPath = "UnityCsReference/_site";
 
         /// <summary>
-        /// Path of the Unity repository.
+        /// The path of the Unity repository.
         /// </summary>
         private const string UnityRepoPath = "UnityCsReference";
 
         /// <summary>
-        /// Url of the Unity repository.
+        /// The URL of the Unity repository.
         /// </summary>
         private const string UnityRepoUrl = "https://github.com/Unity-Technologies/UnityCsReference.git";
 
         /// <summary>
-        /// Xref map filename.
+        /// Gets the URL of the online API documentation of Unity.
+        /// </summary>
+        private const string UnityApiUrl = "https://docs.unity3d.com/ScriptReference/";
+
+        /// <summary>
+        /// The xref map filename.
         /// </summary>
         private const string XrefMapFileName = "xrefmap.yml";
 
         /// <summary>
-        /// Path where to copy the xref maps.
+        /// The path where to copy the xref maps.
         /// </summary>
         private const string XrefMapsPath = "gh-pages/Unity";
 
@@ -65,6 +70,7 @@ namespace DocFxForUnity
                 {
                     string filePath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
                     string copyPath = Path.Combine(XrefMapsPath, version.name, XrefMapFileName); // ./<version>/xrefmap.yml
+                    string apiUrl = GetUnityApiUrl(version.name);
 
                     Console.WriteLine($"Generating Unity {version.name} xref map to '{copyPath}'");
                     GenerateXrefMap(unityRepo, version.release);
@@ -72,15 +78,23 @@ namespace DocFxForUnity
 
                     Console.WriteLine($"Fixing hrefs in '{copyPath}'");
                     var xrefMap = XrefMap.Load(copyPath);
-                    xrefMap.FixHrefs();
+                    xrefMap.FixHrefs(apiUrl);
                     xrefMap.Save(copyPath);
 
+                    // Set the last version's xref map as the default one
                     if (version == latestVersion)
                     {
                         string rootPath = Path.Combine(XrefMapsPath, XrefMapFileName); // ./xrefmap.yml
-                        Utils.CopyFile(copyPath, rootPath); // Set the last version's xref map as the default one
+
                         Console.WriteLine($"Copy '{copyPath}' to '{rootPath}'");
+                        Utils.CopyFile(filePath, rootPath);
+
+                        xrefMap = XrefMap.Load(rootPath);
+                        xrefMap.FixHrefs(UnityApiUrl);
+                        xrefMap.Save(rootPath);
                     }
+
+                    Console.WriteLine("\n");
                 }
             }
         }
@@ -128,6 +142,17 @@ namespace DocFxForUnity
                 .Select(release => (name: Regex.Match(release, @"\d{4}\.\d").Value, release))
                 .GroupBy(version => version.name)
                 .Select(version => version.First());
+        }
+
+
+        /// <summary>
+        /// Gets the URL of the online API documentation of Unity.
+        /// </summary>
+        /// <param name="version">The version of the API to use. If `null`, uses latest version.</param>
+        /// <returns>The URL of the API corresponding to <paramref name="version"/>.</returns>
+        private static string GetUnityApiUrl(string version)
+        {
+            return $"https://docs.unity3d.com/{version}/Documentation/ScriptReference/";
         }
     }
 }

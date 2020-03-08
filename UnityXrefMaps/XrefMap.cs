@@ -13,11 +13,6 @@ namespace DocFxForUnity
         private static readonly Deserializer Deserializer = new Deserializer();
         private static readonly Serializer Serializer = new Serializer();
 
-        /// <summary>
-        /// URL of the online API documentation of Unity.
-        /// </summary>
-        private const string UnityApiUrl = "https://docs.unity3d.com/ScriptReference/";
-
         public bool sorted { get; set; }
 
         public XrefMapReference[] references { get; set; }
@@ -40,7 +35,8 @@ namespace DocFxForUnity
         /// <summary>
         /// Fixs the <see cref="XrefMapReference.href"/> of <see cref="references"/> of this <see cref="XrefMap"/>.
         /// </summary>
-        public void FixHrefs()
+        /// <param name="apiUrl">The URL of the online API documentation of Unity.</param>
+        public void FixHrefs(string apiUrl)
         {
             var fixedReferences = new List<XrefMapReference>();
             foreach (var reference in references)
@@ -50,7 +46,7 @@ namespace DocFxForUnity
                     continue;
                 }
 
-                reference.FixHref(UnityApiUrl);
+                reference.FixHref(apiUrl);
                 fixedReferences.Add(reference);
 
                 /*if (!Utils.TestUriExists(reference.href).Result)
