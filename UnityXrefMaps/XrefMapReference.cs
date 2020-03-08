@@ -10,11 +10,6 @@ namespace DocFxForUnity
     public sealed class XrefMapReference
     {
         /// <summary>
-        /// URL of the online API documentation of Unity.
-        /// </summary>
-        private const string UnityApiUrl = "https://docs.unity3d.com/ScriptReference/";
-
-        /// <summary>
         /// The online API documentation of Unity doesn't show some namespaces.
         /// </summary>
         private static readonly List<string> HrefNamespacesToTrim = new List<string> { "UnityEditor", "UnityEngine" };
@@ -43,19 +38,17 @@ namespace DocFxForUnity
         public string nameWithTypeVb { get; set; }
 
         /// <summary>
+        /// Gets if this <see cref="XrefMapReference"/> is valid or not.
+        /// </summary>
+        public bool IsValid => commentId.Contains("Overload:");
+
+        /// <summary>
         /// Set <see cref="XrefMapReference.href"/> to link to the online API documentation of Unity.
         /// </summary>
         /// <param name="apiUrl">The URL of the online API documentation of Unity.</param>
-        /// <returns>If this reference is valid or not.</returns>
-        public bool TryFixHref(string apiUrl = UnityApiUrl)
+        public void FixHref(string apiUrl)
         {
             string href;
-
-            // Remove overloads
-            if (commentId.Contains("Overload:"))
-            {
-                return false;
-            }
 
             // Namespaces point to documentation index
             if (commentId.Contains("N:"))
@@ -91,7 +84,6 @@ namespace DocFxForUnity
             }
 
             this.href = apiUrl + href + ".html";
-            return true;
         }
     }
 }

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using LibGit2Sharp;
-using YamlDotNet.Serialization;
 
 namespace DocFxForUnity
 {
@@ -21,33 +20,32 @@ namespace DocFxForUnity
     class Program
     {
         /// <summary>
-        /// The path where the metadata files of DocFx are located.
+        /// Path where the metadata files of DocFx of the Unity repository will be generated.
         /// </summary>
         private const string DocFxMetadataPath = "Temp";
 
         /// <summary>
-        /// File path where the documentation of the Unity repository will be generated.
+        /// Path where the documentation of the Unity repository will be generated.
         /// </summary>
         private const string GeneratedDocsPath = "UnityCsReference/_site";
 
         /// <summary>
-        /// File path of the Unity repository.
+        /// Path of the Unity repository.
         /// </summary>
         private const string UnityRepoPath = "UnityCsReference";
 
         /// <summary>
-        /// Url of the repository of the Unity repository.
+        /// Url of the Unity repository.
         /// </summary>
         private const string UnityRepoUrl = "https://github.com/Unity-Technologies/UnityCsReference.git";
 
-
         /// <summary>
-        /// Filename of a xref map file.
+        /// Xref map filename.
         /// </summary>
         private const string XrefMapFileName = "xrefmap.yml";
 
         /// <summary>
-        /// Directory path where to copy the xref maps.
+        /// Path where to copy the xref maps.
         /// </summary>
         private const string XrefMapsPath = "gh-pages/Unity";
 
@@ -56,74 +54,35 @@ namespace DocFxForUnity
         /// </summary>
         public static void Main()
         {
-            // Clone Unity CS repository
             using (var unityRepo = Git.GetSyncRepository(UnityRepoUrl, UnityRepoPath))
             {
-                // Get the list of latest stable Unity versions
                 var versions = GetLatestVersions(unityRepo);
-
-                // Generate and copy xref map to the gh-pages branch of each Unity version
-                foreach (var version in versions)
-                {
-                    Console.WriteLine($"Generating Unity {version.name} xref map");
-                    /*GenerateXrefMap(unityRepo, version.release);
-
-                    string sourcePath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
-                    string destPath = Path.Combine(XrefMapsPath, version.name, XrefMapFileName);
-                    Utils.CopyFile(sourcePath, destPath);
-
-                    FixXrefMapHrefs(destPath);*/
-                }
-
-                // Set the xref map of the latest final version as the default one (copy it at the root)
-                /*var latestUnityVersion = versions
+                var latestVersion = versions
                     .OrderByDescending(version => version.name)
                     .First(version => version.release.Contains('f'));
 
-                string sourcePath = Path.Combine(XrefMapsPath, latestUnityVersion.name, XrefMapFileName);
-                string destPath = Path.Combine(XrefMapsPath, XrefMapFileName);
-                Utils.CopyFile(sourcePath, destPath);*/
-            }
-        }
-
-        /// <summary>
-        /// Fix the href to of the specified Unity's xref map.
-        /// </summary>
-        /// <param name="xrefMapPath">The Unity's xref map.</param>
-        private static void FixXrefMapHrefs(string xrefMapPath)
-        {
-            // Remove `0:` strings on the xrefmap that make crash Deserializer
-            string xrefMapText = File.ReadAllText(xrefMapPath);
-            xrefMapText = Regex.Replace(xrefMapText, @"(\d):", "$1");
-
-            // Load xref map
-            var deserializer = new Deserializer();
-            var xrefMap = deserializer.Deserialize<XrefMap>(xrefMapText);
-
-            // Try to fix hrefs
-            var references = new List<XrefMapReference>();
-            foreach (var reference in xrefMap.references)
-            {
-                if (reference.TryFixHref())
+                foreach (var version in versions)
                 {
-                    if (!Utils.TestUriExists(reference.href).Result)
+                    string filePath = Path.Combine(GeneratedDocsPath, XrefMapFileName);
+                    string copyPath = Path.Combine(XrefMapsPath, version.name, XrefMapFileName); // ./<version>/xrefmap.yml
+
+                    Console.WriteLine($"Generating Unity {version.name} xref map to '{copyPath}'");
+                    GenerateXrefMap(unityRepo, version.release);
+                    Utils.CopyFile(filePath, copyPath);
+
+                    Console.WriteLine($"Fixing hrefs in '{copyPath}'");
+                    var xrefMap = XrefMap.Load(copyPath);
+                    xrefMap.FixHrefs();
+                    xrefMap.Save(copyPath);
+
+                    if (version == latestVersion)
                     {
-                        Console.WriteLine("Warning: invalid URL " + reference.href + " for " + reference.uid +
-                            " uid on " + xrefMapPath);
-                    }
-                    else
-                    {
-                        references.Add(reference);
+                        string rootPath = Path.Combine(XrefMapsPath, XrefMapFileName); // ./xrefmap.yml
+                        Utils.CopyFile(copyPath, rootPath); // Set the last version's xref map as the default one
+                        Console.WriteLine($"Copy '{copyPath}' to '{rootPath}'");
                     }
                 }
             }
-            xrefMap.references = references.ToArray();
-
-            // Save xref map
-            var serializer = new Serializer();
-            xrefMapText = "### YamlMime:XRefMap" + "\n"
-                + serializer.Serialize(xrefMap);
-            File.WriteAllText("output.yml", xrefMapText);
         }
 
         /// <summary>
@@ -139,7 +98,7 @@ namespace DocFxForUnity
             string generatedDocsPath = GeneratedDocsPath)
         {
             // Hard reset the repository
-            Console.WriteLine($"Hard reset {repository.Info.WorkingDirectory} to {commit}");
+            Console.WriteLine($"Hard reset '{repository.Info.WorkingDirectory}' to '{commit}'");
             repository.Reset(ResetMode.Hard, commit);
             repository.RemoveUntrackedFiles();
 
@@ -162,7 +121,7 @@ namespace DocFxForUnity
         /// Returns a collection of the latest versions of a specified repository of Unity.
         /// </summary>
         /// <param name="unityRepository">The repository of Unity to use.</param>
-        /// <returns>The collection of versions.</returns>
+        /// <returns>The latest versions.</returns>
         private static IEnumerable<(string name, string release)> GetLatestVersions(Repository unityRepository)
         {
             return Git.GetTags(unityRepository)
