@@ -11,7 +11,7 @@
       "properties": {
         "TargetFramework": "net35"
       },
-      "dest": "Temp/ScriptReference/"
+      "dest": "Temp/ScriptReference"
     }
   ],
   "build":
@@ -19,9 +19,9 @@
     "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
     "content": [
       {
-        "src": "Temp/ScriptReference/",
+        "src": "Temp/ScriptReference",
         "files": [ "*.yml" ],
-        "dest": "ScriptReference/"
+        "dest": "ScriptReference"
       }
     ],
     "dest": "UnityCsReference/_site"
