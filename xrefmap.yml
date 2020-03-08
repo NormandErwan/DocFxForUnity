@@ -129,6 +129,19 @@ references:
   commentId: T:DocFxForUnity.Utils
   fullName: DocFxForUnity.Utils
   nameWithType: Utils
+- uid: DocFxForUnity.Utils.CopyFile(System.String,System.String)
+  name: CopyFile(String, String)
+  href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_CopyFile_System_String_System_String_
+  commentId: M:DocFxForUnity.Utils.CopyFile(System.String,System.String)
+  fullName: DocFxForUnity.Utils.CopyFile(System.String, System.String)
+  nameWithType: Utils.CopyFile(String, String)
+- uid: DocFxForUnity.Utils.CopyFile*
+  name: CopyFile
+  href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_CopyFile_
+  commentId: Overload:DocFxForUnity.Utils.CopyFile
+  isSpec: "True"
+  fullName: DocFxForUnity.Utils.CopyFile
+  nameWithType: Utils.CopyFile
 - uid: DocFxForUnity.Utils.GetSyncRepository(System.String,System.String,System.String)
   name: GetSyncRepository(String, String, String)
   href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_GetSyncRepository_System_String_System_String_System_String_
@@ -174,6 +187,32 @@ references:
   commentId: T:DocFxForUnity.XrefMap
   fullName: DocFxForUnity.XrefMap
   nameWithType: XrefMap
+- uid: DocFxForUnity.XrefMap.FixHrefs(System.String)
+  name: FixHrefs(String)
+  href: api/DocFxForUnity.XrefMap.html#DocFxForUnity_XrefMap_FixHrefs_System_String_
+  commentId: M:DocFxForUnity.XrefMap.FixHrefs(System.String)
+  fullName: DocFxForUnity.XrefMap.FixHrefs(System.String)
+  nameWithType: XrefMap.FixHrefs(String)
+- uid: DocFxForUnity.XrefMap.FixHrefs*
+  name: FixHrefs
+  href: api/DocFxForUnity.XrefMap.html#DocFxForUnity_XrefMap_FixHrefs_
+  commentId: Overload:DocFxForUnity.XrefMap.FixHrefs
+  isSpec: "True"
+  fullName: DocFxForUnity.XrefMap.FixHrefs
+  nameWithType: XrefMap.FixHrefs
+- uid: DocFxForUnity.XrefMap.Load(System.String)
+  name: Load(String)
+  href: api/DocFxForUnity.XrefMap.html#DocFxForUnity_XrefMap_Load_System_String_
+  commentId: M:DocFxForUnity.XrefMap.Load(System.String)
+  fullName: DocFxForUnity.XrefMap.Load(System.String)
+  nameWithType: XrefMap.Load(String)
+- uid: DocFxForUnity.XrefMap.Load*
+  name: Load
+  href: api/DocFxForUnity.XrefMap.html#DocFxForUnity_XrefMap_Load_
+  commentId: Overload:DocFxForUnity.XrefMap.Load
+  isSpec: "True"
+  fullName: DocFxForUnity.XrefMap.Load
+  nameWithType: XrefMap.Load
 - uid: DocFxForUnity.XrefMap.references
   name: references
   href: api/DocFxForUnity.XrefMap.html#DocFxForUnity_XrefMap_references
@@ -187,6 +226,19 @@ references:
   isSpec: "True"
   fullName: DocFxForUnity.XrefMap.references
   nameWithType: XrefMap.references
+- uid: DocFxForUnity.XrefMap.Save(System.String)
+  name: Save(String)
+  href: api/DocFxForUnity.XrefMap.html#DocFxForUnity_XrefMap_Save_System_String_
+  commentId: M:DocFxForUnity.XrefMap.Save(System.String)
+  fullName: DocFxForUnity.XrefMap.Save(System.String)
+  nameWithType: XrefMap.Save(String)
+- uid: DocFxForUnity.XrefMap.Save*
+  name: Save
+  href: api/DocFxForUnity.XrefMap.html#DocFxForUnity_XrefMap_Save_
+  commentId: Overload:DocFxForUnity.XrefMap.Save
+  isSpec: "True"
+  fullName: DocFxForUnity.XrefMap.Save
+  nameWithType: XrefMap.Save
 - uid: DocFxForUnity.XrefMap.sorted
   name: sorted
   href: api/DocFxForUnity.XrefMap.html#DocFxForUnity_XrefMap_sorted
@@ -219,6 +271,19 @@ references:
   isSpec: "True"
   fullName: DocFxForUnity.XrefMapReference.commentId
   nameWithType: XrefMapReference.commentId
+- uid: DocFxForUnity.XrefMapReference.FixHref(System.String)
+  name: FixHref(String)
+  href: api/DocFxForUnity.XrefMapReference.html#DocFxForUnity_XrefMapReference_FixHref_System_String_
+  commentId: M:DocFxForUnity.XrefMapReference.FixHref(System.String)
+  fullName: DocFxForUnity.XrefMapReference.FixHref(System.String)
+  nameWithType: XrefMapReference.FixHref(String)
+- uid: DocFxForUnity.XrefMapReference.FixHref*
+  name: FixHref
+  href: api/DocFxForUnity.XrefMapReference.html#DocFxForUnity_XrefMapReference_FixHref_
+  commentId: Overload:DocFxForUnity.XrefMapReference.FixHref
+  isSpec: "True"
+  fullName: DocFxForUnity.XrefMapReference.FixHref
+  nameWithType: XrefMapReference.FixHref
 - uid: DocFxForUnity.XrefMapReference.fullName
   name: fullName
   href: api/DocFxForUnity.XrefMapReference.html#DocFxForUnity_XrefMapReference_fullName
@@ -271,6 +336,19 @@ references:
   isSpec: "True"
   fullName: DocFxForUnity.XrefMapReference.isSpec
   nameWithType: XrefMapReference.isSpec
+- uid: DocFxForUnity.XrefMapReference.IsValid
+  name: IsValid
+  href: api/DocFxForUnity.XrefMapReference.html#DocFxForUnity_XrefMapReference_IsValid
+  commentId: P:DocFxForUnity.XrefMapReference.IsValid
+  fullName: DocFxForUnity.XrefMapReference.IsValid
+  nameWithType: XrefMapReference.IsValid
+- uid: DocFxForUnity.XrefMapReference.IsValid*
+  name: IsValid
+  href: api/DocFxForUnity.XrefMapReference.html#DocFxForUnity_XrefMapReference_IsValid_
+  commentId: Overload:DocFxForUnity.XrefMapReference.IsValid
+  isSpec: "True"
+  fullName: DocFxForUnity.XrefMapReference.IsValid
+  nameWithType: XrefMapReference.IsValid
 - uid: DocFxForUnity.XrefMapReference.name
   name: name
   href: api/DocFxForUnity.XrefMapReference.html#DocFxForUnity_XrefMapReference_name
@@ -323,19 +401,6 @@ references:
   isSpec: "True"
   fullName: DocFxForUnity.XrefMapReference.nameWithTypeVb
   nameWithType: XrefMapReference.nameWithTypeVb
-- uid: DocFxForUnity.XrefMapReference.TryFixHref(System.String)
-  name: TryFixHref(String)
-  href: api/DocFxForUnity.XrefMapReference.html#DocFxForUnity_XrefMapReference_TryFixHref_System_String_
-  commentId: M:DocFxForUnity.XrefMapReference.TryFixHref(System.String)
-  fullName: DocFxForUnity.XrefMapReference.TryFixHref(System.String)
-  nameWithType: XrefMapReference.TryFixHref(String)
-- uid: DocFxForUnity.XrefMapReference.TryFixHref*
-  name: TryFixHref
-  href: api/DocFxForUnity.XrefMapReference.html#DocFxForUnity_XrefMapReference_TryFixHref_
-  commentId: Overload:DocFxForUnity.XrefMapReference.TryFixHref
-  isSpec: "True"
-  fullName: DocFxForUnity.XrefMapReference.TryFixHref
-  nameWithType: XrefMapReference.TryFixHref
 - uid: DocFxForUnity.XrefMapReference.uid
   name: uid
   href: api/DocFxForUnity.XrefMapReference.html#DocFxForUnity_XrefMapReference_uid
