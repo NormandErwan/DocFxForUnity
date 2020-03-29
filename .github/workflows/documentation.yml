@@ -11,7 +11,7 @@ jobs:
     runs-on: windows-latest # Required by DocFX
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
         # with:
         #   submodules: true
 
@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest # Required by 'JamesIves/github-pages-deploy-action'
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
         # with:
         #   submodules: true
 
