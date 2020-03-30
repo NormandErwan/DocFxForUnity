@@ -1,0 +1,47 @@
+name: Generate and deploy Unity API xref map
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  # Generate the xref maps
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.201' # Latest on 2020-03-29
+
+      - name: Run
+        run: |
+          cp UnityXrefMaps
+          dotnet run
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: _site
+          path: _site
+
+  # Deploy the generated xref maps to the gh-pages branch
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download site artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: _site
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          ACCESS_TOKEN: ${{ secrets.AccessToken }}
+          BRANCH: gh-pages
+          FOLDER: _site
