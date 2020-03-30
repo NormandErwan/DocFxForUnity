@@ -45,4 +45,3 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.AccessToken }} # You need some setup, see https://github.com/JamesIves/github-pages-deploy-action
           BRANCH: gh-pages
           FOLDER: _site
-          CLEAN: true
