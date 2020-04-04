@@ -8,7 +8,7 @@ on:
 jobs:
   # Generate the xref maps
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -17,6 +17,9 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.201' # Latest on 2020-03-29
+
+      - name: Install DocFX
+        run: choco install -y docfx
 
       - name: Run
         run: |
