@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <DefaultItemExcludes>$(DefaultItemExcludes);gh-pages\**;UnityCsReference\**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);UnityCsReference*\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
