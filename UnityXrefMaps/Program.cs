@@ -30,6 +30,20 @@ namespace DocFxForUnity
         private const string GeneratedDocsPath = "UnityCsReference/_site";
 
         /// <summary>
+        /// Gets the URL of the online API documentation of Unity.
+        /// </summary>
+        private const string UnityApiUrl = "https://docs.unity3d.com/ScriptReference/";
+
+        /// <summary>
+        /// The path of the Unity's csproj.
+        /// </summary>
+        private static readonly string[] UnityCsprojPaths = new []
+        {
+            "Projects/CSharp/UnityEditor.csproj",
+            "Projects/CSharp/UnityEngine.csproj"
+        };
+
+        /// <summary>
         /// The path of the Unity repository.
         /// </summary>
         private const string UnityRepoPath = "UnityCsReference";
@@ -38,11 +52,6 @@ namespace DocFxForUnity
         /// The URL of the Unity repository.
         /// </summary>
         private const string UnityRepoUrl = "https://github.com/Unity-Technologies/UnityCsReference.git";
-
-        /// <summary>
-        /// Gets the URL of the online API documentation of Unity.
-        /// </summary>
-        private const string UnityApiUrl = "https://docs.unity3d.com/ScriptReference/";
 
         /// <summary>
         /// The xref map filename.
@@ -100,6 +109,17 @@ namespace DocFxForUnity
         }
 
         /// <summary>
+        /// Fix the specified csproj to be able to generate its metadata with DocFX.
+        /// </summary>
+        /// <param name="csprojPath">The path of the csproj.</param>
+        private static void FixCsprojForDocFx(string csprojPath)
+        {
+            string text = File.ReadAllText(csprojPath);
+            text = text.Replace("ItemGroup Condition=\" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' \"", "ItemGroup");
+            File.WriteAllText(csprojPath, text);
+        }
+
+        /// <summary>
         /// Generate the documentation and the associated xref map of a specified repository with DocFx.
         /// </summary>
         /// <param name="repository">The repository to generate docs from.</param>
@@ -125,6 +145,14 @@ namespace DocFxForUnity
                     Directory.Delete(path, recursive: true);
                 }
             }
+            
+            // Fix the csproj
+            Console.WriteLine($"Fixing the csproj of '{commit}'");
+            foreach (string csprojFilePath in UnityCsprojPaths)
+            {
+                string fullFilePath = Path.Combine(UnityRepoPath, csprojFilePath);
+                FixCsprojForDocFx(fullFilePath);
+            }
 
             // Generate site and xref map
             Console.WriteLine($"Running DocFX on '{commit}'");
@@ -144,7 +172,6 @@ namespace DocFxForUnity
                 .GroupBy(version => version.name)
                 .Select(version => version.First());
         }
-
 
         /// <summary>
         /// Gets the URL of the online API documentation of Unity.
