@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnityXrefMaps", "UnityXrefMaps.csproj", "{1AB6339A-6A21-4F21-A9E7-942BF8EB203F}"
 EndProject
 Global
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -30,5 +27,11 @@ Global
 		{1AB6339A-6A21-4F21-A9E7-942BF8EB203F}.Release|x64.Build.0 = Release|Any CPU
 		{1AB6339A-6A21-4F21-A9E7-942BF8EB203F}.Release|x86.ActiveCfg = Release|Any CPU
 		{1AB6339A-6A21-4F21-A9E7-942BF8EB203F}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {87E7C54A-9839-4F68-9DC7-50EDBB163488}
 	EndGlobalSection
 EndGlobal
