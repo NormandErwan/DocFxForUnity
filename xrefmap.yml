@@ -142,12 +142,15 @@ references:
   isSpec: "True"
   fullName: DocFxForUnity.Utils.CopyFile
   nameWithType: Utils.CopyFile
-- uid: DocFxForUnity.Utils.RunCommand(System.String)
-  name: RunCommand(String)
-  href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_RunCommand_System_String_
-  commentId: M:DocFxForUnity.Utils.RunCommand(System.String)
-  fullName: DocFxForUnity.Utils.RunCommand(System.String)
-  nameWithType: Utils.RunCommand(String)
+- uid: DocFxForUnity.Utils.RunCommand(System.String,System.Action{System.String},System.Action{System.String})
+  name: RunCommand(String, Action<String>, Action<String>)
+  href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_RunCommand_System_String_System_Action_System_String__System_Action_System_String__
+  commentId: M:DocFxForUnity.Utils.RunCommand(System.String,System.Action{System.String},System.Action{System.String})
+  name.vb: RunCommand(String, Action(Of String), Action(Of String))
+  fullName: DocFxForUnity.Utils.RunCommand(System.String, System.Action<System.String>, System.Action<System.String>)
+  fullName.vb: DocFxForUnity.Utils.RunCommand(System.String, System.Action(Of System.String), System.Action(Of System.String))
+  nameWithType: Utils.RunCommand(String, Action<String>, Action<String>)
+  nameWithType.vb: Utils.RunCommand(String, Action(Of String), Action(Of String))
 - uid: DocFxForUnity.Utils.RunCommand*
   name: RunCommand
   href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_RunCommand_

@@ -103,7 +103,7 @@
     <a href="https://github.com/NormandErwan/DocFxForUnity/new/master/apiSpec/new?filename=DocFxForUnity_Utils_CopyFile_System_String_System_String_.md&amp;value=---%0Auid%3A%20DocFxForUnity.Utils.CopyFile(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NormandErwan/DocFxForUnity/blob/master/UnityXrefMaps/Utils.cs/#L22">View Source</a>
+    <a href="https://github.com/NormandErwan/DocFxForUnity/blob/master/UnityXrefMaps/Utils.cs/#L21">View Source</a>
   </span>
   <a id="DocFxForUnity_Utils_CopyFile_" data-uid="DocFxForUnity.Utils.CopyFile*"></a>
   <h4 id="DocFxForUnity_Utils_CopyFile_System_String_System_String_" data-uid="DocFxForUnity.Utils.CopyFile(System.String,System.String)">CopyFile(String, String)</h4>
@@ -140,19 +140,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/NormandErwan/DocFxForUnity/new/master/apiSpec/new?filename=DocFxForUnity_Utils_RunCommand_System_String_.md&amp;value=---%0Auid%3A%20DocFxForUnity.Utils.RunCommand(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/NormandErwan/DocFxForUnity/new/master/apiSpec/new?filename=DocFxForUnity_Utils_RunCommand_System_String_System_Action_System_String__System_Action_System_String__.md&amp;value=---%0Auid%3A%20DocFxForUnity.Utils.RunCommand(System.String%2CSystem.Action%7BSystem.String%7D%2CSystem.Action%7BSystem.String%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/NormandErwan/DocFxForUnity/blob/master/UnityXrefMaps/Utils.cs/#L35">View Source</a>
   </span>
   <a id="DocFxForUnity_Utils_RunCommand_" data-uid="DocFxForUnity.Utils.RunCommand*"></a>
-  <h4 id="DocFxForUnity_Utils_RunCommand_System_String_" data-uid="DocFxForUnity.Utils.RunCommand(System.String)">RunCommand(String)</h4>
+  <h4 id="DocFxForUnity_Utils_RunCommand_System_String_System_Action_System_String__System_Action_System_String__" data-uid="DocFxForUnity.Utils.RunCommand(System.String,System.Action{System.String},System.Action{System.String})">RunCommand(String, Action&lt;String&gt;, Action&lt;String&gt;)</h4>
   <div class="markdown level1 summary"><p>Run a command in a hidden window and returns its output.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static string RunCommand(string command)</code></pre>
+    <pre><code class="lang-csharp hljs">public static void RunCommand(string command, Action&lt;string&gt; output, Action&lt;string&gt; error)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -170,20 +170,16 @@
         <td><p>The command to run.</p>
 </td>
       </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
       <tr>
-        <th>Type</th>
-        <th>Description</th>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The function to call with the output data of the command.</p>
+</td>
       </tr>
-    </thead>
-    <tbody>
       <tr>
-        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td><p>The output of the command.</p>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td><span class="parametername">error</span></td>
+        <td><p>The function to call with the error data of the command.</p>
 </td>
       </tr>
     </tbody>
@@ -193,7 +189,7 @@
     <a href="https://github.com/NormandErwan/DocFxForUnity/new/master/apiSpec/new?filename=DocFxForUnity_Utils_TestUriExists_System_String_.md&amp;value=---%0Auid%3A%20DocFxForUnity.Utils.TestUriExists(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/NormandErwan/DocFxForUnity/blob/master/UnityXrefMaps/Utils.cs/#L64">View Source</a>
+    <a href="https://github.com/NormandErwan/DocFxForUnity/blob/master/UnityXrefMaps/Utils.cs/#L65">View Source</a>
   </span>
   <a id="DocFxForUnity_Utils_TestUriExists_" data-uid="DocFxForUnity.Utils.TestUriExists*"></a>
   <h4 id="DocFxForUnity_Utils_TestUriExists_System_String_" data-uid="DocFxForUnity.Utils.TestUriExists(System.String)">TestUriExists(String)</h4>
@@ -250,7 +246,7 @@ range 200-299.</p>
                     <a href="https://github.com/NormandErwan/DocFxForUnity/new/master/apiSpec/new?filename=DocFxForUnity_Utils.md&amp;value=---%0Auid%3A%20DocFxForUnity.Utils%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/NormandErwan/DocFxForUnity/blob/master/UnityXrefMaps/Utils.cs/#L10" class="contribution-link">View Source</a>
+                    <a href="https://github.com/NormandErwan/DocFxForUnity/blob/master/UnityXrefMaps/Utils.cs/#L9" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
