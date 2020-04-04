@@ -40,8 +40,7 @@ namespace DocFxForUnity
             {
                 process.StartInfo = new ProcessStartInfo()
                 {
-                    FileName = "cmd.exe",
-                    Arguments = "/C " + command,
+                    FileName = command,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true

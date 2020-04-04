@@ -127,7 +127,7 @@ namespace DocFxForUnity
             }
 
             // Generate site and xref map
-            var output = Utils.RunCommand($"docfx");
+            var output = Utils.RunCommand("docfx");
             Console.WriteLine(output);
         }
 
