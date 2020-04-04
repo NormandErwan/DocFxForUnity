@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -33,10 +34,10 @@ namespace DocFxForUnity
         }
 
         /// <summary>
-        /// Fixs the <see cref="XrefMapReference.href"/> of <see cref="references"/> of this <see cref="XrefMap"/>.
+        /// Fix the <see cref="XrefMapReference.href"/> of <see cref="references"/> of this <see cref="XrefMap"/>.
         /// </summary>
         /// <param name="apiUrl">The URL of the online API documentation of Unity.</param>
-        public void FixHrefs(string apiUrl)
+        public void FixHrefs(string apiUrl, bool testUrls = false)
         {
             var fixedReferences = new List<XrefMapReference>();
             foreach (var reference in references)
@@ -49,11 +50,10 @@ namespace DocFxForUnity
                 reference.FixHref(apiUrl);
                 fixedReferences.Add(reference);
 
-                /*if (!Utils.TestUriExists(reference.href).Result)
+                if (testUrls && !Utils.TestUriExists(reference.href).Result)
                 {
-                    Console.WriteLine("Warning: invalid URL " + reference.href + " for " + reference.uid +
-                        " uid on " + xrefMapPath);
-                }*/
+                    Console.WriteLine("Warning: invalid URL " + reference.href + " for " + reference.uid + " uid");
+                }
             }
             references = fixedReferences.ToArray();
         }
