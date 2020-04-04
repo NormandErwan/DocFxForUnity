@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+  schedule:
+    - cron: '0 5 * * 0' # At 05:00 on Sunday
 
 jobs:
   # Generate the xref maps
