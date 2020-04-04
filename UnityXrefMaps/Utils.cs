@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using LibGit2Sharp;
 
 namespace DocFxForUnity
 {
@@ -31,28 +30,30 @@ namespace DocFxForUnity
         /// Run a command in a hidden window and returns its output.
         /// </summary>
         /// <param name="command">The command to run.</param>
-        /// <returns>The output of the command.</returns>
-        public static string RunCommand(string command)
+        /// <param name="output">The function to call with the output data of the command.</param>
+        /// <param name="error">The function to call with the error data of the command.</param>
+        public static void RunCommand(string command, Action<string> output, Action<string> error)
         {
-            string output = "";
-
             using (var process = new Process())
             {
                 process.StartInfo = new ProcessStartInfo()
                 {
                     FileName = command,
                     UseShellExecute = false,
+                    CreateNoWindow = true,
                     RedirectStandardOutput = true,
-                    CreateNoWindow = true
+                    RedirectStandardError = true
                 };
 
+                process.OutputDataReceived += (sender, args) => output(args.Data);
+                process.ErrorDataReceived += (sender, args) => error(args.Data);
+
                 process.Start();
-                output = process.StandardOutput.ReadToEnd();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
 
                 process.WaitForExit();
             }
-
-            return output;
         }
 
         /// <summary>
