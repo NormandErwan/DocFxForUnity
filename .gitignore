@@ -4,13 +4,6 @@ Documentation/index.*
 _site/
 Assets/**/obj*
 
-# UnityXrefMaps branch
-bin/
-gh-pages/
-ScriptReference/
-UnityCsReference/
-*.cache
-
 # OS and IDEs
 *.sublime-*
 .DS_Store
