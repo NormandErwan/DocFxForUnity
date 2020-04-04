@@ -1,4 +1,4 @@
-name: Generate and deploy Unity API xref map
+name: Unity xref maps
 
 on:
   push:

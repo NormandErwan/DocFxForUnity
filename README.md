@@ -2,7 +2,8 @@
 
 > [DocFX](https://dotnet.github.io/docfx/index.html) usage example for Unity projects (Unity API xref map included)
 
-[![Build Status](https://github.com/NormandErwan/DocFxForUnity/workflows/Build%20and%20deploy%20documentation/badge.svg)](https://normanderwan.github.io/DocFxForUnity/)
+[![Example documentation build Status](https://github.com/NormandErwan/DocFxForUnity/workflows/Example%20documentation/badge.svg)](https://normanderwan.github.io/DocFxForUnity/)
+[![Unity xref maps build Status](https://github.com/NormandErwan/DocFxForUnity/workflows/Unity%20xre%20maps/badge.svg)](https://normanderwan.github.io/DocFxForUnity/Unity)
 
 [DocFX](https://dotnet.github.io/docfx/) tool generates a clean documentation that looks like the
 [Unity documentation](https://docs.unity3d.com/Manual/index.html) with a manual (written in Markdown) and a scripting
