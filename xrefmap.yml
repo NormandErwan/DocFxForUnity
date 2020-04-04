@@ -174,12 +174,12 @@ references:
   commentId: T:DocFxForUnity.XrefMap
   fullName: DocFxForUnity.XrefMap
   nameWithType: XrefMap
-- uid: DocFxForUnity.XrefMap.FixHrefs(System.String)
-  name: FixHrefs(String)
-  href: api/DocFxForUnity.XrefMap.html#DocFxForUnity_XrefMap_FixHrefs_System_String_
-  commentId: M:DocFxForUnity.XrefMap.FixHrefs(System.String)
-  fullName: DocFxForUnity.XrefMap.FixHrefs(System.String)
-  nameWithType: XrefMap.FixHrefs(String)
+- uid: DocFxForUnity.XrefMap.FixHrefs(System.String,System.Boolean)
+  name: FixHrefs(String, Boolean)
+  href: api/DocFxForUnity.XrefMap.html#DocFxForUnity_XrefMap_FixHrefs_System_String_System_Boolean_
+  commentId: M:DocFxForUnity.XrefMap.FixHrefs(System.String,System.Boolean)
+  fullName: DocFxForUnity.XrefMap.FixHrefs(System.String, System.Boolean)
+  nameWithType: XrefMap.FixHrefs(String, Boolean)
 - uid: DocFxForUnity.XrefMap.FixHrefs*
   name: FixHrefs
   href: api/DocFxForUnity.XrefMap.html#DocFxForUnity_XrefMap_FixHrefs_
