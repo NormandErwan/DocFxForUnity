@@ -61,7 +61,7 @@ namespace DocFxForUnity
         /// <summary>
         /// The path where to copy the xref maps.
         /// </summary>
-        private const string XrefMapsPath = "_site/Unity";
+        private const string XrefMapsPath = "../_site/Unity";
 
         /// <summary>
         /// Entry point of this program.
