@@ -75,7 +75,7 @@
 <blockquote><p><a href="https://dotnet.github.io/docfx/index.html">DocFX</a> usage example for Unity projects (Unity API xref map included)</p>
 </blockquote>
 <p><a href="https://normanderwan.github.io/DocFxForUnity/"><img src="https://github.com/NormandErwan/DocFxForUnity/workflows/Example%20documentation/badge.svg" alt="Example documentation"></a>
-<a href="https://normanderwan.github.io/DocFxForUnity/Unity"><img src="https://github.com/NormandErwan/DocFxForUnity/workflows/Unity%20xref%20maps/badge.svg" alt="Unity xref maps"></a></p>
+<img src="https://github.com/NormandErwan/DocFxForUnity/workflows/Unity%20xref%20maps/badge.svg" alt="Unity xref maps"></p>
 <p><a href="https://dotnet.github.io/docfx/">DocFX</a> tool generates a clean documentation that looks like the
 <a href="https://docs.unity3d.com/Manual/index.html">Unity documentation</a> with a manual (written in Markdown) and a scripting
 API (from the C# scripts of the project).</p>
@@ -205,6 +205,10 @@ details.</p>
   uidRegex: ^Your\.Namespace1
   type: Namespace
 </code></pre></li>
+<li><p>If you want to reference a specific version of Unity, change this line on your <code>docfx.json</code>:</p>
+<pre><code>&quot;xref&quot;: [ &quot;https://normanderwan.github.io/DocFxForUnity/Unity/&lt;version&gt;/xrefmap.yml&quot; ],
+</code></pre><p>where <code>&lt;version&gt;</code> is a Unity version in the form of <code>YYYY.x</code> (<em>e.g.</em> 2017.4, 2018.4, 2019.3).</p>
+</li>
 </ul>
 <h2 id="disclaimer">Disclaimer</h2>
 <p>This repository is not sponsored by or affiliated with Unity Technologies or its affiliates.
