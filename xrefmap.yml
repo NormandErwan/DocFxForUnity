@@ -142,19 +142,6 @@ references:
   isSpec: "True"
   fullName: DocFxForUnity.Utils.CopyFile
   nameWithType: Utils.CopyFile
-- uid: DocFxForUnity.Utils.GetSyncRepository(System.String,System.String,System.String)
-  name: GetSyncRepository(String, String, String)
-  href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_GetSyncRepository_System_String_System_String_System_String_
-  commentId: M:DocFxForUnity.Utils.GetSyncRepository(System.String,System.String,System.String)
-  fullName: DocFxForUnity.Utils.GetSyncRepository(System.String, System.String, System.String)
-  nameWithType: Utils.GetSyncRepository(String, String, String)
-- uid: DocFxForUnity.Utils.GetSyncRepository*
-  name: GetSyncRepository
-  href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_GetSyncRepository_
-  commentId: Overload:DocFxForUnity.Utils.GetSyncRepository
-  isSpec: "True"
-  fullName: DocFxForUnity.Utils.GetSyncRepository
-  nameWithType: Utils.GetSyncRepository
 - uid: DocFxForUnity.Utils.RunCommand(System.String)
   name: RunCommand(String)
   href: api/DocFxForUnity.Utils.html#DocFxForUnity_Utils_RunCommand_System_String_
