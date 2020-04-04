@@ -3,7 +3,7 @@
 > [DocFX](https://dotnet.github.io/docfx/index.html) usage example for Unity projects (Unity API xref map included)
 
 [![Example documentation](https://github.com/NormandErwan/DocFxForUnity/workflows/Example%20documentation/badge.svg)](https://normanderwan.github.io/DocFxForUnity/)
-[![Unity xref maps](https://github.com/NormandErwan/DocFxForUnity/workflows/Unity%20xref%20maps/badge.svg)](https://normanderwan.github.io/DocFxForUnity/Unity)
+![Unity xref maps](https://github.com/NormandErwan/DocFxForUnity/workflows/Unity%20xref%20maps/badge.svg)
 
 [DocFX](https://dotnet.github.io/docfx/) tool generates a clean documentation that looks like the
 [Unity documentation](https://docs.unity3d.com/Manual/index.html) with a manual (written in Markdown) and a scripting

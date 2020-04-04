@@ -104,7 +104,6 @@ namespace DocFxForUnity
                     }
 
                     Console.WriteLine("\n");
-                    break; // TODO remove
                 }
             }
         }
