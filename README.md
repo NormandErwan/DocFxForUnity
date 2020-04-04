@@ -138,6 +138,14 @@ details.
       type: Namespace
     ```
 
+- If you want to reference a specific version of Unity, change this line on your `docfx.json`:
+
+  ```
+  "xref": [ "https://normanderwan.github.io/DocFxForUnity/Unity/<version>/xrefmap.yml" ],
+  ```
+
+  where `<version>` is a Unity version in the form of `YYYY.x` (*e.g.* 2017.4, 2018.4, 2019.3).
+
 ## Disclaimer
 
 This repository is not sponsored by or affiliated with Unity Technologies or its affiliates.
