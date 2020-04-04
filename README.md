@@ -90,6 +90,8 @@ You must keep a list of these pages on `Documentation/manual/toc.yml`.
 
     - The generated website will be visible at <http://localhost:8080>.
 
+You could have a look to the [UnityFX template for DocFX](https://github.com/code-beans/UnityFX).
+
 ## Generate automatically your documentation
 
 If you're using GitHub:
