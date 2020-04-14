@@ -33,6 +33,12 @@
                 "dest": "manual"
             }
         ],
+        "overwrite": [
+            {
+                "src": "..",
+                "files": [ "Assets/Scripts/**/*.md" ]
+            }
+        ],
         "resource": [
             {
                 "files": [ "resources/**/*" ]

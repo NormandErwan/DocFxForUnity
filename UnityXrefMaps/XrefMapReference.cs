@@ -41,7 +41,6 @@ namespace DocFxForUnity
         /// <summary>
         /// Gets if this <see cref="XrefMapReference"/> is valid or not.
         /// </summary>
-        [YamlIgnore]
         public bool IsValid => true;
 
         /// <summary>
