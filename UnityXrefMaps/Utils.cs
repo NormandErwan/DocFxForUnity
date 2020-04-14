@@ -32,7 +32,8 @@ namespace DocFxForUnity
         /// <param name="command">The command to run.</param>
         /// <param name="output">The function to call with the output data of the command.</param>
         /// <param name="error">The function to call with the error data of the command.</param>
-        public static void RunCommand(string command, Action<string> output, Action<string> error)
+        /// <returns>The exit code of the process.</returns>
+        public static int RunCommand(string command, Action<string> output, Action<string> error)
         {
             using (var process = new Process())
             {
@@ -53,6 +54,7 @@ namespace DocFxForUnity
                 process.BeginErrorReadLine();
 
                 process.WaitForExit();
+                return process.ExitCode;
             }
         }
 
@@ -76,7 +78,7 @@ namespace DocFxForUnity
             }
             catch (HttpRequestException e)
             {
-                Console.WriteLine($"Exception on {uri}: {e.Message}");
+                Console.WriteLine($"Exception on {uri}: {e.Message} {e.InnerException?.Message}");
                 return false;
             }
         }

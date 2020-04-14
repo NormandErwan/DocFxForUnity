@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using YamlDotNet.Serialization;
 
@@ -40,7 +41,8 @@ namespace DocFxForUnity
         /// <summary>
         /// Gets if this <see cref="XrefMapReference"/> is valid or not.
         /// </summary>
-        public bool IsValid => commentId.Contains("Overload:");
+        [YamlIgnore]
+        public bool IsValid => true;
 
         /// <summary>
         /// Set <see cref="XrefMapReference.href"/> to link to the online API documentation of Unity.
@@ -51,7 +53,7 @@ namespace DocFxForUnity
             string href;
 
             // Namespaces point to documentation index
-            if (commentId.Contains("N:"))
+            if (commentId.StartsWith("N:"))
             {
                 href = "index";
             }
@@ -77,13 +79,25 @@ namespace DocFxForUnity
                 href = Regex.Replace(href, @"\(.*\)", "");
 
                 // Fix href of properties
-                if (commentId.Contains("P:") || commentId.Contains("M:"))
+                if (commentId.StartsWith("P:") || commentId.StartsWith("M:"))
                 {
                     href = Regex.Replace(href, @"\.([a-z].*)$", "-$1");
                 }
             }
 
             this.href = apiUrl + href + ".html";
+        }
+
+        public void FixOverloadCommentId(XrefMapReference[] references)
+        {
+            if (!commentId.StartsWith("Overload:"))
+                return;
+
+            XrefMapReference otherReference = references.FirstOrDefault(otherRef => otherRef != this && otherRef.uid == fullName);
+            if (otherReference != null)
+            {
+                commentId = otherReference.commentId;
+            }
         }
     }
 }

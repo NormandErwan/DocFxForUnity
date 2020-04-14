@@ -5,3 +5,4 @@ obj/
 UnityCsReference/
 _site/
 *.cache
+.idea

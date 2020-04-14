@@ -22,7 +22,7 @@ namespace DocFxForUnity
             bool clone = !Directory.Exists(path);
             if (clone)
             {
-                Console.WriteLine($"Clonning {sourceUrl} to {path}");
+                Console.WriteLine($"Cloning {sourceUrl} to {path}");
 
                 var options = new CloneOptions() { BranchName = branch };
                 Repository.Clone(sourceUrl, path, options);

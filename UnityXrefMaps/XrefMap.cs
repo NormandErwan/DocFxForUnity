@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
 namespace DocFxForUnity
@@ -12,7 +14,14 @@ namespace DocFxForUnity
     public sealed class XrefMap
     {
         private static readonly Deserializer Deserializer = new Deserializer();
-        private static readonly Serializer Serializer = new Serializer();
+
+        private static readonly Serializer Serializer =
+            Serializer.FromValueSerializer(
+                new SerializerBuilder()
+                    .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitNull)
+                    .BuildValueSerializer(),
+                EmitterSettings.Default
+            );
 
         public bool sorted { get; set; }
 
@@ -47,15 +56,30 @@ namespace DocFxForUnity
                     continue;
                 }
 
+                reference.FixOverloadCommentId(references);
                 reference.FixHref(apiUrl);
                 fixedReferences.Add(reference);
-
-                if (testUrls && !Utils.TestUriExists(reference.href).Result)
-                {
-                    Console.WriteLine("Warning: invalid URL " + reference.href + " for " + reference.uid + " uid");
-                }
             }
             references = fixedReferences.ToArray();
+
+            if (testUrls) {
+                Console.WriteLine($"Testing URLs for {references.Length} references");
+
+                fixedReferences.Clear();
+                foreach (var reference in references) {
+                    Task<bool> testTask = Utils.TestUriExists(reference.href);
+                    testTask.Wait();
+                    if (testTask.Result) {
+                        fixedReferences.Add(reference);
+                    }
+                    else {
+                        Console.WriteLine("Warning: invalid URL " + reference.href + " for uid " + reference.uid);
+                    }
+                }
+
+                Console.WriteLine($"Removed {references.Length - fixedReferences.Count} invalid URLs");
+                references = fixedReferences.ToArray();
+            }
         }
 
         /// <summary>

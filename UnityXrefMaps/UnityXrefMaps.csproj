@@ -11,4 +11,13 @@
     <PackageReference Include="YamlDotNet" Version="8.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="docfx.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="filterConfig.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

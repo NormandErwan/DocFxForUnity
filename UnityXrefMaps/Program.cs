@@ -106,6 +106,8 @@ namespace DocFxForUnity
                     Console.WriteLine("\n");
                 }
             }
+
+            Console.Write("Done.");
         }
 
         /// <summary>
@@ -156,7 +158,13 @@ namespace DocFxForUnity
 
             // Generate site and xref map
             Console.WriteLine($"Running DocFX on '{commit}'");
-            Utils.RunCommand("docfx", output => Console.WriteLine(output), error => Console.WriteLine(error));
+            int docfxExitCode = Utils.RunCommand(
+                "docfx",
+                output => Console.WriteLine("[DocFX] " + output),
+                error => Console.WriteLine("[DocFX - Error] " + error)
+            );
+            if (docfxExitCode != 0)
+                throw new Exception($"docfx command returned exit code {docfxExitCode}");
         }
 
         /// <summary>
