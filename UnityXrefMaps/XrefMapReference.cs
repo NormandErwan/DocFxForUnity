@@ -40,7 +40,7 @@ namespace DocFxForUnity
         /// <summary>
         /// Gets if this <see cref="XrefMapReference"/> is valid or not.
         /// </summary>
-        public bool IsValid => commentId.Contains("Overload:");
+        public bool IsValid => !commentId.Contains("Overload:");
 
         /// <summary>
         /// Set <see cref="XrefMapReference.href"/> to link to the online API documentation of Unity.
