@@ -18,7 +18,7 @@ jobs:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '3.1.201' # Latest on 2020-03-29
+          dotnet-version: '3.1.x' # Latest 3.1
 
       - name: Install DocFX
         run: choco install -y docfx
