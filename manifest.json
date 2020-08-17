@@ -28,7 +28,7 @@
       "output": {
         ".html": {
           "relative_path": "api/DocFxForUnity.Git.html",
-          "hash": "sWWqVRXv96WFmX0Ak7aQCw=="
+          "hash": "D2r0hCP8Ebeo5zYnJ464BA=="
         }
       },
       "is_incremental": false,
@@ -40,7 +40,7 @@
       "output": {
         ".html": {
           "relative_path": "api/DocFxForUnity.Player.html",
-          "hash": "RrgCBETwh3YNNwyZgkCiLA=="
+          "hash": "dvVKqwMZHWF2Vty6SYLhGA=="
         }
       },
       "is_incremental": false,
@@ -52,7 +52,7 @@
       "output": {
         ".html": {
           "relative_path": "api/DocFxForUnity.Utils.html",
-          "hash": "MtkjxCSIKITx6y2jxf+7Sg=="
+          "hash": "Y+zlVAMvFuPq0iGDsyB2FA=="
         }
       },
       "is_incremental": false,
@@ -64,7 +64,7 @@
       "output": {
         ".html": {
           "relative_path": "api/DocFxForUnity.XrefMap.html",
-          "hash": "xsqWJQDkT67u3AO4IrFC+g=="
+          "hash": "OJMVY5oeqdQJsabUOAKmlQ=="
         }
       },
       "is_incremental": false,
@@ -76,7 +76,7 @@
       "output": {
         ".html": {
           "relative_path": "api/DocFxForUnity.XrefMapReference.html",
-          "hash": "CiZcXSQ+q3rwGZSFM5Bkbg=="
+          "hash": "DGKireFXDNIsHNIVsGgGBA=="
         }
       },
       "is_incremental": false,
@@ -88,7 +88,7 @@
       "output": {
         ".html": {
           "relative_path": "api/DocFxForUnity.html",
-          "hash": "EJr0qsmuFiARkYIGLmQYTw=="
+          "hash": "nQkpCgX6bnQALnG/o3Uhpg=="
         }
       },
       "is_incremental": false,
@@ -112,7 +112,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "5g84Y1VnrhTXlDUTva/vgQ=="
+          "hash": "KIO0aVR393A8uiqADR/Dyw=="
         }
       },
       "is_incremental": false,
@@ -124,7 +124,7 @@
       "output": {
         ".html": {
           "relative_path": "manual/coniunctis.html",
-          "hash": "o2GY7lueUKVCEIr5UMK04A=="
+          "hash": "AWDE+ozICqmELU2kM4KLug=="
         }
       },
       "is_incremental": false,
@@ -136,7 +136,7 @@
       "output": {
         ".html": {
           "relative_path": "manual/etiam.html",
-          "hash": "HarZYP/ju9OuwwhLfEPegw=="
+          "hash": "QrarCJQFsamOpxYqgsXZuA=="
         }
       },
       "is_incremental": false,
