@@ -37,7 +37,7 @@ namespace DocFxForUnity
         /// <summary>
         /// The path of the Unity's csproj.
         /// </summary>
-        private static readonly string[] UnityCsprojPaths = new []
+        private static readonly string[] UnityCsprojPaths = new[]
         {
             "Projects/CSharp/UnityEditor.csproj",
             "Projects/CSharp/UnityEngine.csproj"
@@ -133,8 +133,8 @@ namespace DocFxForUnity
         {
             // Hard reset the repository
             Console.WriteLine($"Hard reset '{repository.Info.WorkingDirectory}' to '{commit}'");
-            repository.Reset(ResetMode.Hard, commit);
             repository.RemoveUntrackedFiles();
+            repository.Reset(ResetMode.Hard, commit);
 
             // Clear DocFx's temp files and previous generated site
             var pathsToClear = new string[] { DocFxMetadataPath, generatedDocsPath };
@@ -145,7 +145,7 @@ namespace DocFxForUnity
                     Directory.Delete(path, recursive: true);
                 }
             }
-            
+
             // Fix the csproj
             Console.WriteLine($"Fixing the csproj of '{commit}'");
             foreach (string csprojFilePath in UnityCsprojPaths)
