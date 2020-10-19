@@ -133,8 +133,13 @@ namespace DocFxForUnity
         {
             // Hard reset the repository
             Console.WriteLine($"Hard reset '{repository.Info.WorkingDirectory}' to '{commit}'");
-            repository.RemoveUntrackedFiles();
             repository.Reset(ResetMode.Hard, commit);
+
+            try
+            {
+                repository.RemoveUntrackedFiles();
+            }
+            catch (LibGit2Sharp.NotFoundException) { }
 
             // Clear DocFx's temp files and previous generated site
             var pathsToClear = new string[] { DocFxMetadataPath, generatedDocsPath };
