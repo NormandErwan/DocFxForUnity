@@ -23,6 +23,14 @@ jobs:
       - name: Install DocFX
         run: choco install -y docfx
 
+      - name: Cache UnityCsReference
+        uses: actions/cache@v2
+        with:
+          path: ~/UnityCsReference
+          key: ${{ runner.os }}-unitycsreference
+          restore-keys: |
+            ${{ runner.os }}-unitycsreference
+
       - name: Run
         run: |
           cd UnityXrefMaps
