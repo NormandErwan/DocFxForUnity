@@ -16,7 +16,7 @@ namespace DocFxForUnity
         /// <param name="path">The directory path where to find/clone the repository.</param>
         /// <param name="branch">The branch use on the repository.</param>
         /// <returns>The synced repository on the latest commit of the specified branch.</returns>
-        public static Repository GetSyncRepository(string sourceUrl, string path, string branch = "master")
+        public static Repository GetSyncRepository(string sourceUrl, string path, string branch = "main")
         {
             // Clone this repository to the specified branch if it doesn't exist
             bool clone = !Directory.Exists(path);

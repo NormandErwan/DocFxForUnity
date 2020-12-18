@@ -114,10 +114,10 @@ If you're using GitHub:
 
 2. Generate a new [personal access token](https://github.com/settings/tokens) with `repo` scope.
 3. Copy this token on [your repository secrets]((https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets)) with name `AccessToken`.
-4. Next push on `master` branch will build and deploy your documentation to `https://<USERNAME>.github.io/<REPOSITORY>/`!
+4. Next push on `main` branch will build and deploy your documentation to `https://<USERNAME>.github.io/<REPOSITORY>/`!
 
 If you're using GitLab, use the provided
-[`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/master/.gitlab-ci.yml).
+[`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/main/.gitlab-ci.yml).
 Generated website is pushed to a `public/` directory. See the
 [GitLab Pages documentation](https://docs.gitlab.com/ee/user/project/pages/getting_started_part_four.html) for more
 details.

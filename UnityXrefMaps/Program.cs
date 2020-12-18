@@ -68,7 +68,7 @@ namespace DocFxForUnity
         /// </summary>
         public static void Main()
         {
-            using (var unityRepo = Git.GetSyncRepository(UnityRepoUrl, UnityRepoPath))
+            using (var unityRepo = Git.GetSyncRepository(UnityRepoUrl, UnityRepoPath, branch: "master"))
             {
                 var versions = GetLatestVersions(unityRepo);
                 var latestVersion = versions
