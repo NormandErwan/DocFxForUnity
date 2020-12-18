@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>DocFX for Unity | Example Unity documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="DocFX for Unity | Example Unity documentation ">
+    <meta name="generator" content="docfx 2.56.6.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="">
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="docfx-for-unity">DocFX for Unity</h1>
+
+<blockquote><p><a href="https://dotnet.github.io/docfx/index.html">DocFX</a> usage example for Unity projects (Unity API xref map included)</p>
+</blockquote>
+<p><a href="https://normanderwan.github.io/DocFxForUnity/"><img src="https://github.com/NormandErwan/DocFxForUnity/workflows/Example%20documentation/badge.svg" alt="Example documentation"></a>
+<img src="https://github.com/NormandErwan/DocFxForUnity/workflows/Unity%20xref%20maps/badge.svg" alt="Unity xref maps"></p>
+<p><a href="https://dotnet.github.io/docfx/">DocFX</a> tool generates a clean documentation that looks like the
+<a href="https://docs.unity3d.com/Manual/index.html">Unity documentation</a> with a manual (written in Markdown) and a scripting
+API (from the C# scripts of the project).</p>
+<p>This repository contains:</p>
+<ol>
+<li>A simple Unity project which documentation is automatically generated and deployed
+online: <a href="https://normanderwan.github.io/DocFxForUnity/">https://normanderwan.github.io/DocFxForUnity/</a>.</li>
+<li>Every reference to the C# API and the Unity API (the so-called
+<a href="https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html#cross-reference-between-projects">xref maps</a>).
+They are be automatically linked on the documentation.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">DocFxForUnity documentation manual</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><a href="https://normanderwan.github.io/DocFxForUnity/manual/coniunctis.html"><img src="https://normanderwan.github.io/DocFxForUnity/resources/ExampleManual.png" alt="DocFxForUnity documentation manual"></a></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">DocFxForUnity documentation scripting API</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><a href="https://normanderwan.github.io/DocFxForUnity/api/DocFxForUnity.Player.html"><img src="https://normanderwan.github.io/DocFxForUnity/resources/ExampleScriptingApi.png" alt="DocFxForUnity documentation scripting API"></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="setup-your-documentation">Setup your documentation</h2>
+<ol>
+<li><a href="https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-as-a-command-line-tool">Install DocFX</a>.</li>
+<li><p>Copy the <code>Documentation/</code> folder to your Unity project:</p>
+<pre><code class="lang-diff">  .
+  ├── Assets
++ ├── Documentation
+  ├── Package
+  ├── ProjectSettings
+  └── README.md
+</code></pre></li>
+<li><p>Edit the following properties in <code>Documentation/docfx.json</code>, keep the others as it is:</p>
+<pre><code class="lang-javascript">  {
+    &quot;build&quot;: {
+      &quot;globalMetadata&quot;: // Edit your documentation website info, see: https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html#322-reserved-metadata
+      {
+        &quot;_appTitle&quot;: &quot;Example Unity documentation&quot;,
+        &quot;_appFooter&quot;: &quot;Example Unity documentation&quot;,
+        &quot;_enableSearch&quot;: true
+      },
+      &quot;sitemap&quot;:
+      {
+        &quot;baseUrl&quot;: &quot;https://normanderwan.github.io/DocFxForUnity&quot; // The URL of your documentation website
+      }
+  }
+</code></pre><p> It&#39;s the configuration file of your documentation.
+ See <a href="https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html#3-docfxjson-format">https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html#3-docfxjson-format</a> for more details.</p>
+</li>
+<li><p>Edit <code>Documentation/filterConfig.yml</code>:</p>
+<pre><code class="lang-yaml">apiRules:
+- include: # The namespaces to generate
+    uidRegex: ^Your\.Namespace1
+    type: Namespace
+- include:
+    uidRegex: ^Your\.Namespace2
+    type: Namespace
+- exclude:
+    uidRegex: .* # Every other namespaces are ignored
+    type: Namespace
+</code></pre><p> It tells DocFX which namespaces you want to generate the documentation.
+ See <a href="https://dotnet.github.io/docfx/tutorial/howto_filter_out_unwanted_apis_attributes.html">https://dotnet.github.io/docfx/tutorial/howto_filter_out_unwanted_apis_attributes.html</a> for more details.</p>
+</li>
+<li><p>Write your manual pages in Markdown in <code>Documentation/manual/</code>.
+You must keep a list of these pages on <code>Documentation/manual/toc.yml</code>.</p>
+</li>
+<li>Add resources such as images to <code>Documentation/resources/</code>.</li>
+<li><p>Generate your documentation:</p>
+<ul>
+<li><p>On a command line opened on your project, run:</p>
+<pre><code class="lang-bash">cp README.md Documentation/index.md
+docfx Documentation/docfx.json --serve
+</code></pre></li>
+<li><p>The generated website will be visible at <a href="http://localhost:8080">http://localhost:8080</a>.</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>If you want to have a more similar look to the Unity documentation, see this UnityFX template for DocFX:
+<a href="https://github.com/code-beans/UnityFX">https://github.com/code-beans/UnityFX</a>.</p>
+<h2 id="generate-automatically-your-documentation">Generate automatically your documentation</h2>
+<p>If you&#39;re using GitHub:</p>
+<ol>
+<li><p>Copy the <code>.github/workflows/documentation.yml</code> workflow to your Unity project:</p>
+<pre><code class="lang-diff">  .
++ ├── .github
++ |   └── workflows
++ |       └── documentation.yml
+  ├── Assets
+  ├── Documentation
+  ├── Package
+  ├── ProjectSettings
+  └── README.md
+</code></pre></li>
+<li><p>Generate a new <a href="https://github.com/settings/tokens">personal access token</a> with <code>repo</code> scope.</p>
+</li>
+<li>Copy this token on <a href="(https://help.github.com/en/actions/automating-your-workflow-with-github-actions/creating-and-using-encrypted-secrets)">your repository secrets</a> with name <code>AccessToken</code>.</li>
+<li>Next push on <code>main</code> branch will build and deploy your documentation to <code>https://&lt;USERNAME&gt;.github.io/&lt;REPOSITORY&gt;/</code>!</li>
+</ol>
+<p>If you&#39;re using GitLab, use the provided
+<a href="https://github.com/NormandErwan/DocFxForUnity/blob/main/.gitlab-ci.yml"><code>.gitlab-ci.yml</code></a>.
+Generated website is pushed to a <code>public/</code> directory. See the
+<a href="https://docs.gitlab.com/ee/user/project/pages/getting_started_part_four.html">GitLab Pages documentation</a> for more
+details.</p>
+<h2 id="troubleshooting--faq">Troubleshooting / FAQ</h2>
+<ul>
+<li><p>DocFX outputs: <code>Warning:[ExtractMetadata]No project detected for extracting metadata.</code></p>
+<p>  Solution: On Unity, click <a href="https://docs.microsoft.com/fr-fr/visualstudio/cross-platform/media/vstu_open-csharp-project.png?view=vs-2019">Asset &gt; Open C# Project</a> to generate the required <code>.csproj</code>.</p>
+</li>
+<li><p>DocFX outputs: <code>Warning:[ExtractMetadata]No metadata is generated for Assembly-CSharp,Assembly-CSharp-Editor.</code></p>
+<p>  Solution: Make sure your included your namespace in <code>Documentation/filterConfig.yml</code>:</p>
+<pre><code class="lang-yaml">- include:
+  uidRegex: ^Your\.Namespace1
+  type: Namespace
+</code></pre></li>
+<li><p>If you want to reference a specific version of Unity, change this line on your <code>docfx.json</code>:</p>
+<pre><code>&quot;xref&quot;: [ &quot;https://normanderwan.github.io/DocFxForUnity/Unity/&lt;version&gt;/xrefmap.yml&quot; ],
+</code></pre><p>where <code>&lt;version&gt;</code> is a Unity version in the form of <code>YYYY.x</code> (<em>e.g.</em> 2017.4, 2018.4, 2019.3).</p>
+</li>
+</ul>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>This repository is not sponsored by or affiliated with Unity Technologies or its affiliates.
+“Unity” is a trademark or registered trademark of Unity Technologies or its affiliates in the U.S. and elsewhere.</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/NormandErwan/DocFxForUnity/blob/main/Documentation/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Example Unity documentation
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
