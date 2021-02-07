@@ -33,7 +33,7 @@ jobs:
   # Deploy the generated documentation to the gh-pages branch
   deploy:
     needs: build
-    runs-on: ubuntu-latest # Required by 'JamesIves/github-pages-deploy-action'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -47,8 +47,8 @@ jobs:
           name: _site
 
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          ACCESS_TOKEN: ${{ secrets.AccessToken }} # You need some setup, see https://github.com/JamesIves/github-pages-deploy-action
-          BRANCH: gh-pages
-          FOLDER: _site
+          personal_token: ${{ secrets.AccessToken }} # You need some setup, see https://github.com/peaceiris/actions-gh-pages
+          publish_branch: gh-pages
+          publish_dir: _site
