@@ -1,21 +1,13 @@
 # DocFX for Unity
 
-> [DocFX](https://dotnet.github.io/docfx/index.html) usage example for Unity projects (Unity API xref map included)
-
-[![Example documentation](https://github.com/NormandErwan/DocFxForUnity/workflows/Example%20documentation/badge.svg)](https://normanderwan.github.io/DocFxForUnity/)
-![Unity xref maps](https://github.com/NormandErwan/DocFxForUnity/workflows/Unity%20xref%20maps/badge.svg)
+> [DocFX](https://dotnet.github.io/docfx/index.html) usage example for Unity projects
 
 [DocFX](https://dotnet.github.io/docfx/) tool generates a clean documentation that looks like the
 [Unity documentation](https://docs.unity3d.com/Manual/index.html) with a manual (written in Markdown) and a scripting
 API (from the C# scripts of the project).
 
-This repository contains:
-
-1. A simple Unity project which documentation is automatically generated and deployed
-online: <https://normanderwan.github.io/DocFxForUnity/>.
-2. Every reference to the C# API and the Unity API (the so-called
-[xref maps](https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html#cross-reference-between-projects)).
-They are be automatically linked on the documentation.
+This repository contains a simple Unity example project which documentation is automatically generated and deployed
+online: <https://normanderwan.github.io/DocFxForUnity/>. It references both C# API and Unity API.
 
 | DocFxForUnity documentation manual |
 |:----------------------------------:|
