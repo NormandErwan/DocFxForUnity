@@ -22,7 +22,7 @@ jobs:
         run: cp README.md Documentation/index.md
 
       - name: Build
-          docfx Documentation/docfx.json
+        run: docfx Documentation/docfx.json
 
       # Upload the generated documentation
       - name: Upload site artifact
