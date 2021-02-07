@@ -4,7 +4,8 @@
             "src": [
                 {
                     "src": "..",
-                    "files": [ "*.csproj" ]
+                    "files": [ "Assets/**/*.cs" ],
+                    "exclude": [ "Assets/Plugins/**" ]
                 }
             ],
             "globalNamespaceId": "Global",
