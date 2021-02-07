@@ -70,10 +70,29 @@ online: <https://normanderwan.github.io/DocFxForUnity/>. It references both C# A
     It tells DocFX which namespaces you want to generate the documentation.
     See <https://dotnet.github.io/docfx/tutorial/howto_filter_out_unwanted_apis_attributes.html> for more details.
 
-5. Write your manual pages in Markdown in `Documentation/manual/`.
-You must keep a list of these pages on `Documentation/manual/toc.yml`.
-6. Add resources such as images to `Documentation/resources/`.
-7. Generate your documentation:
+5. Document your classes and methods. See <https://docs.microsoft.com/en-us/dotnet/csharp/codedoc> for more details.
+
+6. (Optional) Add your manual pages:
+    - Write a Markdown file for each page in `Documentation/manual/`.
+    - Keep a list of these pages on `Documentation/manual/toc.yml`.
+
+7. (Optional) Add resources such as images:
+    - Copy them to `Documentation/resources/`.
+    - Reference them on your docs or manual pages.
+    - See <https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html#link-to-a-file-using-relative-path> for more details.
+
+8. (Optional) Document your namespaces:
+    - For each namespace, add a `Assets/Scripts/Your/Namespace1/Your.Namespace1.md` file:
+
+        ```yaml
+        ---
+        uid: Your.Namespace1
+        summary: Description of the Your.Namespace1 namespace.
+        ---
+        ```
+    - See <https://dotnet.github.io/docfx/tutorial/intro_overwrite_files.html> to know how it works.
+
+9. Generate your documentation:
     - On a command line opened on your project, run:
 
         ```bash
