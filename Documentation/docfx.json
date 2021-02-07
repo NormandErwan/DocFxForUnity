@@ -4,8 +4,12 @@
             "src": [
                 {
                     "src": "..",
-                    "files": [ "Assets/**/*.cs" ],
-                    "exclude": [ "Assets/Plugins/**" ]
+                    "files": [
+                        "Assets/**/*.cs"
+                    ],
+                    "exclude": [
+                        "Assets/Plugins/**"
+                    ]
                 }
             ],
             "globalNamespaceId": "Global",
@@ -21,32 +25,43 @@
         },
         "content": [
             {
-                "files": [ "toc.yml", "index.md" ]
+                "files": [
+                    "toc.yml",
+                    "index.md"
+                ]
             },
             {
                 "src": "api",
-                "files": [ "*.yml" ],
+                "files": [
+                    "*.yml"
+                ],
                 "dest": "api"
             },
             {
                 "src": "manual",
-                "files": [ "toc.yml", "*.md" ],
+                "files": [
+                    "toc.yml",
+                    "*.md"
+                ],
                 "dest": "manual"
             }
         ],
         "overwrite": [
             {
                 "src": "..",
-                "files": [ "Assets/Scripts/**/*.md" ]
+                "files": [
+                    "Assets/Scripts/**/*.md"
+                ]
             }
         ],
         "resource": [
             {
-                "files": [ "resources/**/*" ]
+                "files": [
+                    "resources/**/*"
+                ]
             }
         ],
-        "sitemap":
-        {
+        "sitemap": {
             "baseUrl": "https://normanderwan.github.io/DocFxForUnity",
             "changefreq": "weekly",
             "fileOptions": {
@@ -55,8 +70,12 @@
                 }
             }
         },
-        "xref": [ "https://normanderwan.github.io/DocFxForUnity/Unity/xrefmap.yml" ],
-        "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
+        "xref": [
+            "https://normanderwan.github.io/DocFxForUnity/Unity/xrefmap.yml"
+        ],
+        "xrefService": [
+            "https://xref.docs.microsoft.com/query?uid={uid}"
+        ],
         "dest": "../_site"
     }
 }
