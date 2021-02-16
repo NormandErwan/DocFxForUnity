@@ -150,7 +150,7 @@ details.
 - If you want to reference a specific version of Unity, change this line on your `docfx.json`:
 
   ```json
-  "xref": [ "https://normanderwan.github.io/DocFxForUnity/Unity/<version>/xrefmap.yml" ],
+  "xref": [ "https://normanderwan.github.io/UnityXrefMaps/<version>/xrefmap.yml" ],
   ```
 
   where `<version>` is a Unity version in the form of `YYYY.x` (*e.g.* 2017.4, 2018.4, 2019.3).
