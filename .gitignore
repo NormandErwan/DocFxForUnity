@@ -23,6 +23,7 @@ Assets/AssetStoreTools*
 UnityPackageManager/*
 **/UnityCsReference*
 Packages/*
+[Ll]ogs/
 
 ## Visual Studio cache directory
 .vs/
