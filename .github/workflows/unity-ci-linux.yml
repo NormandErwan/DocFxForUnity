@@ -22,13 +22,15 @@ jobs:
           targetPlatform: StandaloneLinux64
 
       - name: Display csproj files
-        run: ls *.csproj
+        run: |
+          ls -l
+          ls -l build/StandaloneLinux64/
 
       - name: Upload csproj artifact
         uses: actions/upload-artifact@v2
         with:
           name: csproj
-          path: ./*.csproj
+          path: ./**/*.csproj
 
       #- name: Setup DocFX
       #  run: |
