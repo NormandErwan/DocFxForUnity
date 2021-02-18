@@ -5,7 +5,7 @@
                 {
                     "src": "..",
                     "files": [
-                        "Assets/**/*.cs"
+                        "*.csproj"
                     ],
                     "exclude": [
                         "Assets/Plugins/**"
