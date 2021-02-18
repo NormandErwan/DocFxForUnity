@@ -21,10 +21,11 @@ jobs:
           buildMethod: UnityEditor.SyncVS.SyncSolution
           targetPlatform: StandaloneLinux64
 
-      - name: Display csproj files
-        run: |
-          ls -l
-          ls -l build/StandaloneLinux64/
+      - name: Display root
+        run: ls -l
+
+      - name: Display build
+        run: ls -R build
 
       - name: Upload csproj artifact
         uses: actions/upload-artifact@v2
