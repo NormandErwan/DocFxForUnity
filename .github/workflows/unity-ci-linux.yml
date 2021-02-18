@@ -4,7 +4,7 @@ on: push
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     env:
       UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
     steps:
@@ -40,6 +40,9 @@ jobs:
 
       - name: Use README.md as index.md
         run: cp README.md Documentation/index.md
+
+      - name: Fix DocFX warnings
+        run: apt-get install libssl1.0
 
       - name: Build
         uses: nikeee/docfx-action@v1.0.0
