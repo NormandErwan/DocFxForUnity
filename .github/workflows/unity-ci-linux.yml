@@ -21,11 +21,8 @@ jobs:
           buildMethod: UnityEditor.SyncVS.SyncSolution
           targetPlatform: StandaloneLinux64
 
-      - name: Display root
-        run: ls -l
-
-      - name: Display build
-        run: ls -R build
+      - name: Display unity install
+        run: ls -R /opt/unity/Editor/Data/Tools/RoslynScripts
 
       - name: Upload csproj artifact
         uses: actions/upload-artifact@v2
@@ -33,16 +30,8 @@ jobs:
           name: csproj
           path: ./**/*.csproj
 
-      #- name: Setup DocFX
-      #  run: |
-      #    wget https://github.com/dotnet/docfx/releases/download/v2.56.6/docfx.zip
-      #    unzip docfx -d docfx
-
       - name: Use README.md as index.md
         run: cp README.md Documentation/index.md
-
-      - name: Fix DocFX warnings
-        run: apt-get install libssl1.0
 
       - name: Build
         uses: nikeee/docfx-action@v1.0.0
