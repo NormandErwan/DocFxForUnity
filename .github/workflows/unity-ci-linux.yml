@@ -11,37 +11,40 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Activate license
-        uses: MirrorNG/unity-runner@3.1.0
+      - uses: actions/cache@v2
         with:
-          entrypoint: /activate.sh
+          path: Library
+          key: Library
 
-      - name: Generate .csproj files
-        uses: MirrorNG/unity-runner@3.1.0
+      - uses: game-ci/unity-builder@2.0-alpha-6
         with:
-          args: -batchmode -nographics -quit -projectPath . -logFile - -executeMethod UnityEditor.SyncVS.SyncSolution
+          buildMethod: UnityEditor.SyncVS.SyncSolution
+          targetPlatform: StandaloneLinux64
 
-      - name: Setup DocFX
-        run: |
-          wget https://github.com/dotnet/docfx/releases/download/v2.56.6/docfx.zip
-          unzip docfx -d docfx
-
-      - name: Use README.md as index.md
-        run: cp README.md Documentation/index.md
-
-      - name: Build
-        uses: docker://mono:latest
-        with:
-          args: docfx Documentation/docfx.json
-
-      - name: Display files
-        run: ls -R
+      - name: Display csproj files
+        run: ls *.csproj
 
       - name: Upload csproj artifact
         uses: actions/upload-artifact@v2
         with:
           name: csproj
           path: ./*.csproj
+
+      #- name: Setup DocFX
+      #  run: |
+      #    wget https://github.com/dotnet/docfx/releases/download/v2.56.6/docfx.zip
+      #    unzip docfx -d docfx
+
+      - name: Use README.md as index.md
+        run: cp README.md Documentation/index.md
+
+      - name: Build
+        uses: tsgkadot/docker-docfx:latest
+        with:
+          args: docfx Documentation/docfx.json
+
+      - name: Display site files
+        run: ls -R _site
 
       - name: Upload site artifact
         uses: actions/upload-artifact@v2
