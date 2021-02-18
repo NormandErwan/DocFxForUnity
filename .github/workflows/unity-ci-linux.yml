@@ -16,7 +16,7 @@ jobs:
           path: Library
           key: Library
 
-      - uses: game-ci/unity-builder@2.0-alpha-6
+      - uses: game-ci/unity-builder@v2.0-alpha-6
         with:
           buildMethod: UnityEditor.SyncVS.SyncSolution
           targetPlatform: StandaloneLinux64
