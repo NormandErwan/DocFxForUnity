@@ -39,9 +39,9 @@ jobs:
         run: cp README.md Documentation/index.md
 
       - name: Build
-        uses: tsgkadot/docker-docfx:latest
+        uses: nikeee/docfx-action@v1.0.0
         with:
-          args: docfx Documentation/docfx.json
+          args: Documentation/docfx.json
 
       - name: Display site files
         run: ls -R _site
