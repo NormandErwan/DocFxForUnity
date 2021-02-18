@@ -1,0 +1,25 @@
+name: Request manual activation file
+
+on:
+  push:
+    paths:
+      - '.github/workflows/activate-unity.yml'
+
+jobs:
+  activation:
+    name: Request manual activation file 🔑
+    runs-on: ubuntu-latest
+    steps:
+      # Request manual activation file
+      - name: Request manual activation file
+        id: activationFile
+        uses: webbertakken/unity-request-manual-activation-file@v1.1
+        with:
+          unityVersion: 2019.4.19f1
+
+      # Upload artifact (Unity_v20XX.X.XXXX.alf)
+      - name: Expose as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.activationFile.outputs.filePath }}
+          path: ${{ steps.activationFile.outputs.filePath }}
