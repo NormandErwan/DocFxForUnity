@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: csproj
-          path: *.csproj
+          path: ./*.csproj
 
       - name: Upload site artifact
         uses: actions/upload-artifact@v2
