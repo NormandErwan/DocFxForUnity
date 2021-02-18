@@ -11,10 +11,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      #- name: Activate license
-      #  uses: MirrorNG/unity-runner@3.1.0
-      #  with:
-      #    entrypoint: /activate.sh
+      - name: Activate license
+        uses: MirrorNG/unity-runner@3.1.0
+        with:
+          entrypoint: /activate.sh
 
       - name: Generate .csproj files
         uses: MirrorNG/unity-runner@3.1.0
