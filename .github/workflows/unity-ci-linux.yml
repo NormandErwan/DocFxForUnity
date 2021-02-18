@@ -1,9 +1,6 @@
 name: Example documentation with Unity action
 
-on:
-  push:
-    branches:
-      - main
+on: push
 
 jobs:
   build:
@@ -34,7 +31,8 @@ jobs:
 
       - name: Build
         uses: docker://mono:latest
-        run: mono docfx Documentation/docfx.json
+        with:
+          args: docfx Documentation/docfx.json
 
       - name: Display files
         run: ls -R
