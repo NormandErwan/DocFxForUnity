@@ -71,7 +71,7 @@
             }
         },
         "xref": [
-            "https://normanderwan.github.io/UnityXrefMaps/xrefmap.yml"
+            "https://normanderwan.github.io/DocFxForUnity/xrefmap.yml"
         ],
         "xrefService": [
             "https://xref.docs.microsoft.com/query?uid={uid}"
