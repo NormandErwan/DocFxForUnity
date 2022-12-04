@@ -125,6 +125,11 @@ If you're using GitHub:
 
 2. Next push on `main` branch will build and deploy your documentation to `https://<USERNAME>.github.io/<REPOSITORY>/`!
 
+Note: For the fist time you should confiugre your repository page simply go to 
+`settings / Pages`<br>
+`Source: select Deploy from a branch`<br>
+`Branch: select gh-pages, select / (root) path and Save`
+
 If you're using GitLab, use the provided
 [`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/main/.gitlab-ci.yml).
 Generated website is pushed to a `public/` directory. See the
