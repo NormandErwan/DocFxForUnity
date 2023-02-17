@@ -123,7 +123,12 @@ If you're using GitHub:
       └── README.md
     ```
 
-2. Next push on `main` branch will build and deploy your documentation to `https://<USERNAME>.github.io/<REPOSITORY>/`!
+2. Commit and push on the `main` branch: your documentation will be built and deployed in the `gh-pages` branch.
+3. Configure the Pages of your repository:
+    - Go to `Settings` > `Pages`.
+    - Source: select `Deploy from a branch`.
+    - Branch: select `gh-pages` and `/(root)` and Save.
+5. Open `https://<USERNAME>.github.io/<REPOSITORY>/` to see your documentation.
 
 If you're using GitLab, use the provided
 [`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/main/.gitlab-ci.yml).
