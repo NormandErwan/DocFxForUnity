@@ -1,5 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <!--
+      In CI: Unity managed DLLs are extracted to lib/UnityEngine/ by the workflow.
+      Locally: set the UNITY_MANAGED_PATH environment variable to your Unity installation:
+        Windows: C:\Program Files\Unity\Hub\Editor\6000.0.73f1\Editor\Data\Managed\UnityEngine
+        macOS:   /Applications/Unity/Hub/Editor/6000.0.73f1/Unity.app/Contents/Managed/UnityEngine
+        Linux:   ~/Unity/Hub/Editor/6000.0.73f1/Editor/Data/Managed/UnityEngine
+    -->
+    <UnityManagedPath Condition="'$(UNITY_MANAGED_PATH)' != ''">$(UNITY_MANAGED_PATH)</UnityManagedPath>
+    <UnityManagedPath Condition="'$(UnityManagedPath)' == ''">lib/UnityEngine</UnityManagedPath>
   </PropertyGroup>
+
+  <Target Name="AddUnityReferences" BeforeTargets="ResolveAssemblyReferences">
+    <ItemGroup>
+      <_UnityDll Include="$(UnityManagedPath)/*.dll" />
+      <Reference Include="%(_UnityDll.Filename)">
+        <HintPath>%(_UnityDll.FullPath)</HintPath>
+        <Private>false</Private>
+      </Reference>
+    </ItemGroup>
+  </Target>
 </Project>
