@@ -1,14 +1,13 @@
-image: stefanscherer/chocolatey
-
-before_script:
-  - choco install -y docfx
+image: mcr.microsoft.com/dotnet/sdk:8.0
 
 pages:
   stage: deploy
   script:
-    - mkdir public
-    - copy README.md Documentation\index.md
-    - docfx Documentation\docfx.json
+    - dotnet tool install -g docfx --version 2.77.0
+    - export PATH="$HOME/.dotnet/tools:$PATH"
+    - cp README.md Documentation/index.md
+    - docfx Documentation/docfx.json
+    - mv _site public
   artifacts:
     paths:
       - public
