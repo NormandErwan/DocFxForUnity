@@ -5,16 +5,15 @@
                 {
                     "src": "..",
                     "files": [
-                        "Assets/**/*.cs"
-                    ],
-                    "exclude": [
-                        "Assets/Plugins/**"
+                        "DocFxForUnity.csproj"
                     ]
                 }
             ],
             "globalNamespaceId": "Global",
             "filter": "filterConfig.yml",
-            "dest": "api"
+            "dest": "api",
+            "allowCompilationErrors": true,
+            "disableGitFeatures": true
         }
     ],
     "build": {
@@ -71,10 +70,8 @@
             }
         },
         "xref": [
-            "https://normanderwan.github.io/UnityXrefMaps/xrefmap.yml"
-        ],
-        "xrefService": [
-            "https://xref.docs.microsoft.com/query?uid={uid}"
+            "https://normanderwan.github.io/UnityXrefMaps/xrefmap.yml",
+            "https://learn.microsoft.com/en-us/dotnet/.xrefmap.json"
         ],
         "dest": "../_site"
     }
