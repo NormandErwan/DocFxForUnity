@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -29,14 +32,16 @@ jobs:
       - name: Build
         run: docfx Documentation/docfx.json
 
-      # Upload the generated documentation
+      # Upload the generated documentation (only on main for deployment)
       - name: Upload site artifact
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site # Must equal the 'build.dest' value in docfx.json
 
   # Deploy the generated documentation to GitHub Pages
   deploy:
+    if: github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-latest
     environment:
