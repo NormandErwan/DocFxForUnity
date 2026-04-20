@@ -36,7 +36,8 @@ jobs:
       - name: Extract Unity managed DLLs from game-ci image
         if: steps.cache-unity-dlls.outputs.cache-hit != 'true'
         run: |
-          docker create --name unity-editor unityci/editor:ubuntu-6000.0.73f1-base-3
+          mkdir -p lib
+          docker create --name unity-editor unityci/editor:ubuntu-6000.0.73f1-linux-il2cpp-3.2.2
           docker cp unity-editor:/opt/unity/Editor/Data/Managed/UnityEngine lib/
           docker rm unity-editor
 
