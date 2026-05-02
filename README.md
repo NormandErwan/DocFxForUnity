@@ -20,16 +20,19 @@ online: <https://normanderwan.github.io/DocFxForUnity/>. It references both C# A
 ## Setup your documentation
 
 1. [Install DocFX](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-as-a-command-line-tool).
-2. Copy the `Documentation/` folder to your Unity project:
+2. Copy the `Documentation/` folder and `DocFxForUnity.csproj` to your Unity project:
 
     ```diff
       .
       ├── Assets
+    + ├── DocFxForUnity.csproj
     + ├── Documentation
       ├── Package
       ├── ProjectSettings
       └── README.md
     ```
+
+    You can rename `DocFxForUnity.csproj` to match your project — just update the filename in `Documentation/docfx.json` under `metadata[0].src[0].files` accordingly.
 
 3. Edit the following properties in `Documentation/docfx.json`, keep the others as it is:
 
@@ -136,11 +139,11 @@ details.
 
 - DocFX outputs: `Warning:[ExtractMetadata]No project detected for extracting metadata.`
 
-    Solution: On Unity, click [Asset > Open C# Project](https://docs.microsoft.com/fr-fr/visualstudio/cross-platform/media/vstu_open-csharp-project.png?view=vs-2019) to generate the required `.csproj`.
+    Solution: Make sure you copied `DocFxForUnity.csproj` (or your renamed version) to the root of your Unity project, and that the filename matches the entry in `Documentation/docfx.json` under `metadata[0].src[0].files`.
 
 - DocFX outputs: `Warning:[ExtractMetadata]No metadata is generated for Assembly-CSharp,Assembly-CSharp-Editor.`
 
-    Solution: Make sure your included your namespace in `Documentation/filterConfig.yml`:
+    Solution: Make sure you included your namespace in `Documentation/filterConfig.yml`:
 
     ```yaml
     - include:
@@ -148,13 +151,52 @@ details.
       type: Namespace
     ```
 
+- MSBuild outputs: `Unity managed DLLs not found.`
+
+    This means DocFX could not locate Unity's managed DLLs. It looks in three places, in order:
+    1. The `UNITY_MANAGED_PATH` environment variable (see below).
+    2. `lib/UnityEngine/` at the project root (populated automatically by the CI workflow).
+    3. The default Unity Hub installation directory for your OS.
+
+    If Unity Hub is installed at a non-default location, or you want to target a specific Unity version, set `UNITY_MANAGED_PATH` (see *Advanced: `UNITY_MANAGED_PATH`* below).
+
 - If you want to reference a specific version of Unity, change this line on your `docfx.json`:
 
   ```json
   "xref": [ "https://normanderwan.github.io/UnityXrefMaps/<version>/xrefmap.yml" ],
   ```
 
-  where `<version>` is a Unity version in the form of `YYYY.x` (*e.g.* 2017.4, 2018.4, 2019.3).
+  where `<version>` is a Unity version in the form of `YYYY.x` (*e.g.* 2022.3, 2023.2, 6000.0).
+
+## Advanced: `UNITY_MANAGED_PATH`
+
+By default, `DocFxForUnity.csproj` auto-detects the Unity managed DLLs from the standard Unity Hub installation directory. Set `UNITY_MANAGED_PATH` when you need to:
+
+- Use a Unity version installed at a non-default location.
+- Pin to a specific version when multiple Unity versions are installed.
+- Work without Unity Hub (standalone Unity install).
+
+Point it to the `UnityEngine` subfolder inside your Unity installation's `Managed` directory:
+
+| OS | Example path |
+|----|-------------|
+| Windows | `C:\Program Files\Unity\Hub\Editor\6000.0.73f1\Editor\Data\Managed\UnityEngine` |
+| macOS | `/Applications/Unity/Hub/Editor/6000.0.73f1/Unity.app/Contents/Managed/UnityEngine` |
+| Linux | `~/Unity/Hub/Editor/6000.0.73f1/Editor/Data/Managed/UnityEngine` |
+
+Set it in your shell before running DocFX:
+
+```bash
+# macOS / Linux
+export UNITY_MANAGED_PATH="/Applications/Unity/Hub/Editor/6000.0.73f1/Unity.app/Contents/Managed/UnityEngine"
+docfx Documentation/docfx.json --serve
+```
+
+```powershell
+# Windows (PowerShell)
+$env:UNITY_MANAGED_PATH = "C:\Program Files\Unity\Hub\Editor\6000.0.73f1\Editor\Data\Managed\UnityEngine"
+docfx Documentation/docfx.json --serve
+```
 
 ## Disclaimer
 
