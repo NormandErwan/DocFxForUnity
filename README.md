@@ -20,16 +20,20 @@ online: <https://normanderwan.github.io/DocFxForUnity/>. It references both C# A
 ## Setup your documentation
 
 1. [Install DocFX](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-as-a-command-line-tool).
-2. Copy the `Documentation/` folder to your Unity project:
+2. Copy the `Documentation/` folder and `DocFxForUnity.csproj` to your Unity project:
 
     ```diff
       .
       ├── Assets
     + ├── Documentation
+    + ├── DocFxForUnity.csproj
       ├── Package
       ├── ProjectSettings
       └── README.md
     ```
+
+    > **Tip:** You may rename `DocFxForUnity.csproj` to match your project name (*e.g.* `YourProject.csproj`).
+    > If you do, also update the `"files": ["DocFxForUnity.csproj"]` entry inside `Documentation/docfx.json`.
 
 3. Edit the following properties in `Documentation/docfx.json`, keep the others as it is:
 
@@ -93,6 +97,9 @@ online: <https://normanderwan.github.io/DocFxForUnity/>. It references both C# A
     - See <https://dotnet.github.io/docfx/tutorial/intro_overwrite_files.html> to know how it works.
 
 9. Generate your documentation:
+    - `DocFxForUnity.csproj` automatically resolves Unity DLLs — no extra setup is needed if Unity Hub is
+      installed at its default location (`C:\Program Files\Unity\Hub` on Windows,
+      `/Applications/Unity/Hub` on macOS, `~/Unity/Hub` on Linux).
     - On a command line opened on your project, run:
 
         ```bash
@@ -118,6 +125,7 @@ If you're using GitHub:
     + |       └── documentation.yml
       ├── Assets
       ├── Documentation
+    + ├── DocFxForUnity.csproj
       ├── Package
       ├── ProjectSettings
       └── README.md
@@ -132,11 +140,30 @@ Generated website is pushed to a `public/` directory. See the
 [GitLab Pages documentation](https://docs.gitlab.com/ee/user/project/pages/getting_started_part_four.html) for more
 details.
 
+## Advanced: custom Unity path (`UNITY_MANAGED_PATH`)
+
+`DocFxForUnity.csproj` resolves Unity DLLs using the following priority order:
+
+| Priority | Source | When used |
+|:--------:|--------|-----------|
+| 1 | `UNITY_MANAGED_PATH` environment variable | Explicit override — use when Unity is **not** in the default Hub path |
+| 2 | `lib/UnityEngine/` in the project root | CI path, automatically populated by the GitHub Actions workflow |
+| 3 | Default Unity Hub installation directory | Auto-detected at build time — no configuration required |
+
+If none of these paths yields any DLL, a build warning is shown with a clear, actionable message.
+
+To use `UNITY_MANAGED_PATH`, point it to the `Managed/UnityEngine` directory of your Unity installation
+before running DocFX:
+
+| OS | Command |
+|----|---------|
+| Windows | `set UNITY_MANAGED_PATH=C:\Program Files\Unity\Hub\Editor\6000.0.0f1\Editor\Data\Managed\UnityEngine` |
+| macOS | `export UNITY_MANAGED_PATH=/Applications/Unity/Hub/Editor/6000.0.0f1/Unity.app/Contents/Managed/UnityEngine` |
+| Linux | `export UNITY_MANAGED_PATH=$HOME/Unity/Hub/Editor/6000.0.0f1/Editor/Data/Managed/UnityEngine` |
+
+Replace `6000.0.0f1` with your installed Unity version, then run DocFX as normal.
+
 ## Troubleshooting / FAQ
-
-- DocFX outputs: `Warning:[ExtractMetadata]No project detected for extracting metadata.`
-
-    Solution: On Unity, click [Asset > Open C# Project](https://docs.microsoft.com/fr-fr/visualstudio/cross-platform/media/vstu_open-csharp-project.png?view=vs-2019) to generate the required `.csproj`.
 
 - DocFX outputs: `Warning:[ExtractMetadata]No metadata is generated for Assembly-CSharp,Assembly-CSharp-Editor.`
 
@@ -147,6 +174,12 @@ details.
       uidRegex: ^Your\.Namespace1
       type: Namespace
     ```
+
+- DocFX outputs a warning that Unity managed DLLs were not found.
+
+    Solution: Set `UNITY_MANAGED_PATH` to your Unity installation's `Managed/UnityEngine` directory
+    (see [Advanced: custom Unity path](#advanced-custom-unity-path-unity_managed_path) above),
+    or install Unity via Unity Hub at its default location.
 
 - If you want to reference a specific version of Unity, change this line on your `docfx.json`:
 
@@ -159,4 +192,4 @@ details.
 ## Disclaimer
 
 This repository is not sponsored by or affiliated with Unity Technologies or its affiliates.
-“Unity” is a trademark or registered trademark of Unity Technologies or its affiliates in the U.S. and elsewhere.
+"Unity" is a trademark or registered trademark of Unity Technologies or its affiliates in the U.S. and elsewhere.
