@@ -1,20 +1,48 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <!--
-      In CI: Unity managed DLLs are extracted to lib/UnityEngine/ by the workflow.
-      Locally: set the UNITY_MANAGED_PATH environment variable to your Unity installation:
-        Windows: C:\Program Files\Unity\Hub\Editor\6000.0.73f1\Editor\Data\Managed\UnityEngine
-        macOS:   /Applications/Unity/Hub/Editor/6000.0.73f1/Unity.app/Contents/Managed/UnityEngine
-        Linux:   ~/Unity/Hub/Editor/6000.0.73f1/Editor/Data/Managed/UnityEngine
-    -->
-    <UnityManagedPath Condition="'$(UNITY_MANAGED_PATH)' != ''">$(UNITY_MANAGED_PATH)</UnityManagedPath>
-    <UnityManagedPath Condition="'$(UnityManagedPath)' == ''">lib/UnityEngine</UnityManagedPath>
   </PropertyGroup>
 
   <Target Name="AddUnityReferences" BeforeTargets="ResolveAssemblyReferences">
-    <ItemGroup>
+    <!--
+      Priority 1: UNITY_MANAGED_PATH environment variable (explicit override).
+      Priority 2: lib/UnityEngine/ extracted by CI from the game-ci Docker image.
+      Priority 3: auto-detect from default Unity Hub installation paths (glob over installed versions).
+      If nothing is found, a MSBuild warning is emitted.
+    -->
+
+    <!-- Priorities 1 & 2: explicit path -->
+    <PropertyGroup>
+      <UnityManagedPath Condition="'$(UNITY_MANAGED_PATH)' != ''">$(UNITY_MANAGED_PATH)</UnityManagedPath>
+      <UnityManagedPath Condition="'$(UnityManagedPath)' == '' and Exists('$(MSBuildProjectDirectory)/lib/UnityEngine')">$(MSBuildProjectDirectory)/lib/UnityEngine</UnityManagedPath>
+    </PropertyGroup>
+
+    <!-- Collect DLLs from explicit path (priorities 1 or 2) -->
+    <ItemGroup Condition="'$(UnityManagedPath)' != ''">
       <_UnityDll Include="$(UnityManagedPath)/*.dll" />
+    </ItemGroup>
+
+    <!-- Priority 3: auto-detect on Windows -->
+    <ItemGroup Condition="'$(UnityManagedPath)' == '' and $([MSBuild]::IsOSPlatform('Windows'))">
+      <_UnityDll Include="C:\Program Files\Unity\Hub\Editor\*\Editor\Data\Managed\UnityEngine\*.dll" />
+    </ItemGroup>
+
+    <!-- Priority 3: auto-detect on macOS -->
+    <ItemGroup Condition="'$(UnityManagedPath)' == '' and $([MSBuild]::IsOSPlatform('OSX'))">
+      <_UnityDll Include="/Applications/Unity/Hub/Editor/*/Unity.app/Contents/Managed/UnityEngine/*.dll" />
+    </ItemGroup>
+
+    <!-- Priority 3: auto-detect on Linux -->
+    <ItemGroup Condition="'$(UnityManagedPath)' == '' and $([MSBuild]::IsOSPlatform('Linux'))">
+      <_UnityDll Include="$(HOME)/Unity/Hub/Editor/*/Editor/Data/Managed/UnityEngine/*.dll" />
+    </ItemGroup>
+
+    <!-- Warning if no Unity DLLs found at all -->
+    <Warning Condition="'@(_UnityDll)' == ''"
+             Text="Unity managed DLLs not found. Set UNITY_MANAGED_PATH to your Unity installation's Managed/UnityEngine directory (e.g. /Applications/Unity/Hub/Editor/6000.0.73f1/Unity.app/Contents/Managed/UnityEngine), or install Unity Hub at its default location." />
+
+    <!-- Add assembly references for all discovered DLLs -->
+    <ItemGroup>
       <Reference Include="%(_UnityDll.Filename)">
         <HintPath>%(_UnityDll.FullPath)</HintPath>
         <Private>false</Private>
