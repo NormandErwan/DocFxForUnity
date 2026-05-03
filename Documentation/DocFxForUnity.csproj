@@ -1,7 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../Assets/**/*.cs" />
+  </ItemGroup>
 
   <Target Name="AddUnityReferences" BeforeTargets="ResolveAssemblyReferences">
     <!--
@@ -14,7 +19,7 @@
     <!-- Priorities 1 & 2: explicit path -->
     <PropertyGroup>
       <UnityManagedPath Condition="'$(UNITY_MANAGED_PATH)' != ''">$(UNITY_MANAGED_PATH)</UnityManagedPath>
-      <UnityManagedPath Condition="'$(UnityManagedPath)' == '' and Exists('$(MSBuildProjectDirectory)/lib/UnityEngine')">$(MSBuildProjectDirectory)/lib/UnityEngine</UnityManagedPath>
+      <UnityManagedPath Condition="'$(UnityManagedPath)' == '' and Exists('$(MSBuildProjectDirectory)/../lib/UnityEngine')">$(MSBuildProjectDirectory)/../lib/UnityEngine</UnityManagedPath>
     </PropertyGroup>
 
     <!-- Collect DLLs from explicit path (priorities 1 or 2) -->
