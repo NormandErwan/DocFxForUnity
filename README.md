@@ -20,19 +20,18 @@ online: <https://normanderwan.github.io/DocFxForUnity/>. It references both C# A
 ## Setup your documentation
 
 1. [Install DocFX](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-as-a-command-line-tool).
-2. Copy the `Documentation/` folder and `DocFxForUnity.csproj` to your Unity project:
+2. Copy the `Documentation/` folder to your Unity project:
 
     ```diff
       .
       ├── Assets
-    + ├── DocFxForUnity.csproj
     + ├── Documentation
       ├── Package
       ├── ProjectSettings
       └── README.md
     ```
 
-    You can rename `DocFxForUnity.csproj` to match your project — just update the filename in `Documentation/docfx.json` under `metadata[0].src[0].files` accordingly.
+    You can rename `Documentation/DocFxForUnity.csproj` to match your project — just update the filename in `Documentation/docfx.json` under `metadata[0].src[0].files` accordingly.
 
 3. Edit the following properties in `Documentation/docfx.json`, keep the others as it is:
 
@@ -139,7 +138,7 @@ details.
 
 - DocFX outputs: `Warning:[ExtractMetadata]No project detected for extracting metadata.`
 
-    Solution: Make sure you copied `DocFxForUnity.csproj` (or your renamed version) to the root of your Unity project, and that the filename matches the entry in `Documentation/docfx.json` under `metadata[0].src[0].files`.
+    Solution: Make sure `DocFxForUnity.csproj` (or your renamed version) is inside the `Documentation/` folder, and that the filename matches the entry in `Documentation/docfx.json` under `metadata[0].src[0].files`.
 
 - DocFX outputs: `Warning:[ExtractMetadata]No metadata is generated for Assembly-CSharp,Assembly-CSharp-Editor.`
 
@@ -170,7 +169,7 @@ details.
 
 ## Advanced: `UNITY_MANAGED_PATH`
 
-By default, `DocFxForUnity.csproj` auto-detects the Unity managed DLLs from the standard Unity Hub installation directory. Set `UNITY_MANAGED_PATH` when you need to:
+By default, `Documentation/DocFxForUnity.csproj` auto-detects the Unity managed DLLs from the standard Unity Hub installation directory. Set `UNITY_MANAGED_PATH` when you need to:
 
 - Use a Unity version installed at a non-default location.
 - Pin to a specific version when multiple Unity versions are installed.
