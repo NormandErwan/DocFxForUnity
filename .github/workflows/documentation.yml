@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest # DocFX v2+ is cross-platform; no longer requires Windows
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         # with:
         #   submodules: true
 
