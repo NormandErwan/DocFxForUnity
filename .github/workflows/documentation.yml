@@ -51,7 +51,7 @@ jobs:
       # Upload the generated documentation (only on main for deployment)
       - name: Upload site artifact
         if: github.ref == 'refs/heads/main'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: _site # Must equal the 'build.dest' value in docfx.json
 
