@@ -29,7 +29,7 @@ jobs:
 
       - name: Cache Unity managed DLLs
         id: cache-unity-dlls
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: lib/UnityEngine
           key: unity-managed-dlls-6000.0.73f1-v1
