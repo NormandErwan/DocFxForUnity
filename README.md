@@ -19,7 +19,7 @@ online: <https://normanderwan.github.io/DocFxForUnity/>. It references both C# A
 
 ## Setup your documentation
 
-1. [Install DocFX](https://dotnet.github.io/docfx/tutorial/docfx_getting_started.html#2-use-docfx-as-a-command-line-tool).
+1. [Install DocFX](https://dotnet.github.io/docfx/index.html).
 2. Copy the `Documentation/` folder to your Unity project:
 
     ```diff
@@ -38,7 +38,7 @@ online: <https://normanderwan.github.io/DocFxForUnity/>. It references both C# A
     ```javascript
       {
         "build": {
-          "globalMetadata": // Edit your documentation website info, see: https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html#322-reserved-metadata
+          "globalMetadata": // Edit your documentation website info, see: https://dotnet.github.io/docfx/reference/docfx-json-reference.html#predefined-metadata
           {
             "_appTitle": "Example Unity documentation",
             "_appFooter": "Example Unity documentation",
@@ -52,7 +52,7 @@ online: <https://normanderwan.github.io/DocFxForUnity/>. It references both C# A
     ```
 
     It's the configuration file of your documentation.
-    See <https://dotnet.github.io/docfx/tutorial/docfx.exe_user_manual.html#3-docfxjson-format> for more details.
+    See <https://dotnet.github.io/docfx/reference/docfx-json-reference.html> for more details.
 
 4. Edit `Documentation/filterConfig.yml`:
 
@@ -70,9 +70,9 @@ online: <https://normanderwan.github.io/DocFxForUnity/>. It references both C# A
     ```
 
     It tells DocFX which namespaces you want to generate the documentation.
-    See <https://dotnet.github.io/docfx/tutorial/howto_filter_out_unwanted_apis_attributes.html> for more details.
+    See <https://dotnet.github.io/docfx/docs/dotnet-api-docs.html#filter-apis> for more details.
 
-5. Document your classes and methods. See <https://docs.microsoft.com/en-us/dotnet/csharp/codedoc> for more details.
+5. Document your classes and methods. See <https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/xmldoc/> for more details.
 
 6. (Optional) Add your manual pages:
     - Write a Markdown file for each page in `Documentation/manual/`.
@@ -81,7 +81,7 @@ online: <https://normanderwan.github.io/DocFxForUnity/>. It references both C# A
 7. (Optional) Add resources such as images:
     - Copy them to `Documentation/resources/`.
     - Reference them on your docs or manual pages.
-    - See <https://dotnet.github.io/docfx/tutorial/links_and_cross_references.html#link-to-a-file-using-relative-path> for more details.
+    - See <https://dotnet.github.io/docfx/docs/links-and-cross-references.html> for more details.
 
 8. (Optional) Document your namespaces:
     - For each namespace, add a `Assets/Scripts/Your/Namespace1/Your.Namespace1.md` file:
@@ -131,7 +131,7 @@ If you're using GitHub:
 If you're using GitLab, use the provided
 [`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/main/.gitlab-ci.yml).
 Generated website is pushed to a `public/` directory. See the
-[GitLab Pages documentation](https://docs.gitlab.com/ee/user/project/pages/getting_started_part_four.html) for more
+[GitLab Pages documentation](https://docs.gitlab.com/user/project/pages/) for more
 details.
 
 ## Troubleshooting / FAQ
