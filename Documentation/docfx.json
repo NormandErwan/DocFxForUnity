@@ -69,7 +69,7 @@
             }
         },
         "xref": [
-            "https://normanderwan.github.io/UnityXrefMaps/6000.0/xrefmap.yml",
+            "https://normanderwan.github.io/UnityXrefMaps/6000.3/xrefmap.yml",
             "https://learn.microsoft.com/en-us/dotnet/.xrefmap.json"
         ],
         "dest": "../_site"

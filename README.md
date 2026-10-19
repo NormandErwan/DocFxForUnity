@@ -165,7 +165,7 @@ details.
   "xref": [ "https://normanderwan.github.io/UnityXrefMaps/<version>/xrefmap.yml" ],
   ```
 
-  where `<version>` is a Unity version in the form of `YYYY.x` (*e.g.* 2022.3, 2023.2, 6000.0).
+  where `<version>` is a Unity version in the form of `YYYY.x` (*e.g.* 2022.3, 2023.2, 6000.3).
 
 ## Advanced: `UNITY_MANAGED_PATH`
 
@@ -179,21 +179,21 @@ Point it to the `UnityEngine` subfolder inside your Unity installation's `Manage
 
 | OS | Example path |
 |----|-------------|
-| Windows | `C:\Program Files\Unity\Hub\Editor\6000.0.73f1\Editor\Data\Managed\UnityEngine` |
-| macOS | `/Applications/Unity/Hub/Editor/6000.0.73f1/Unity.app/Contents/Managed/UnityEngine` |
-| Linux | `~/Unity/Hub/Editor/6000.0.73f1/Editor/Data/Managed/UnityEngine` |
+| Windows | `C:\Program Files\Unity\Hub\Editor\6000.3.26f1\Editor\Data\Managed\UnityEngine` |
+| macOS | `/Applications/Unity/Hub/Editor/6000.3.26f1/Unity.app/Contents/Managed/UnityEngine` |
+| Linux | `~/Unity/Hub/Editor/6000.3.26f1/Editor/Data/Managed/UnityEngine` |
 
 Set it in your shell before running DocFX:
 
 ```bash
 # macOS / Linux
-export UNITY_MANAGED_PATH="/Applications/Unity/Hub/Editor/6000.0.73f1/Unity.app/Contents/Managed/UnityEngine"
+export UNITY_MANAGED_PATH="/Applications/Unity/Hub/Editor/6000.3.26f1/Unity.app/Contents/Managed/UnityEngine"
 docfx Documentation/docfx.json --serve
 ```
 
 ```powershell
 # Windows (PowerShell)
-$env:UNITY_MANAGED_PATH = "C:\Program Files\Unity\Hub\Editor\6000.0.73f1\Editor\Data\Managed\UnityEngine"
+$env:UNITY_MANAGED_PATH = "C:\Program Files\Unity\Hub\Editor\6000.3.26f1\Editor\Data\Managed\UnityEngine"
 docfx Documentation/docfx.json --serve
 ```
 
