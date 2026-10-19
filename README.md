@@ -130,6 +130,21 @@ Every combination below is built by the [CI workflow](https://github.com/Normand
 If you want to have a more similar look to the Unity documentation, see this UnityFX template for DocFX:
 <https://github.com/code-beans/UnityFX>.
 
+### Unity package layout
+
+A [Unity package](https://docs.unity3d.com/Manual/cus-layout.html) has no `Assets/` folder. To document one:
+
+1. Copy the folder as `Documentation~/` at the package root: Unity ignores folders whose name ends with `~`.
+2. In `Documentation~/DocFxForUnity.csproj`, point the sources to your package scripts:
+
+    ```xml
+    <Compile Include="../Runtime/**/*.cs" />
+    ```
+
+3. In `Documentation~/docfx.json`, point the namespace pages under `build.overwrite[0].files` to the same folder:
+   `"Runtime/**/*.md"`.
+4. Use `Documentation~/` instead of `Documentation/` in the commands and CI files.
+
 ## Generate automatically your documentation
 
 If you're using GitHub:
