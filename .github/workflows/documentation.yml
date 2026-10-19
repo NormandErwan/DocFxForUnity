@@ -17,40 +17,75 @@ permissions:
 jobs:
   # Build the documentation
   build:
+    name: build (docfx ${{ matrix.docfx }}, Unity ${{ matrix.unity }})
     runs-on: ubuntu-latest # DocFX v2+ is cross-platform; no longer requires Windows
+    strategy:
+      fail-fast: false
+      matrix:
+        # Every tested DocFX version on the reference Unity version,
+        # then the latest DocFX on every other supported Unity version.
+        include:
+          - { docfx: 2.60.0, unity: 6000.3.26f1 }
+          - { docfx: 2.64.0, unity: 6000.3.26f1 }
+          - { docfx: 2.77.0, unity: 6000.3.26f1 }
+          - { docfx: 2.81.0, unity: 6000.3.26f1, deploy: true }
+          - { docfx: 2.81.0, unity: 6000.6.6f1 }
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         # with:
         #   submodules: true
 
+      # DocFX 2.60 cannot load the project with the .NET 8 SDK alone (NuGet.Frameworks load failure)
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            6.0.x
+            8.0.x
+
       - name: Install DocFX
-        run: dotnet tool install -g docfx --version 2.77.0
+        run: dotnet tool install -g docfx --version ${{ matrix.docfx }}
 
       - name: Cache Unity managed DLLs
         id: cache-unity-dlls
         uses: actions/cache@v6
         with:
           path: lib/UnityEngine
-          key: unity-managed-dlls-6000.0.73f1-v1
+          key: unity-managed-dlls-${{ matrix.unity }}-v1
 
       - name: Extract Unity managed DLLs from game-ci image
         if: steps.cache-unity-dlls.outputs.cache-hit != 'true'
         run: |
           mkdir -p lib
-          docker create --name unity-editor unityci/editor:ubuntu-6000.0.73f1-linux-il2cpp-3.2.2
+          docker create --name unity-editor unityci/editor:ubuntu-${{ matrix.unity }}-linux-il2cpp-3.2.2
           docker cp unity-editor:/opt/unity/Editor/Data/Managed/UnityEngine lib/
           docker rm unity-editor
+
+      - name: Use the Unity xref map of the tested version
+        run: |
+          unity='${{ matrix.unity }}'
+          sed -i "s#UnityXrefMaps/[0-9.]*/#UnityXrefMaps/${unity%.*}/#" Documentation/docfx.json
 
       - name: Use README.md as index.md
         run: cp README.md Documentation/index.md
 
       - name: Build
-        run: docfx Documentation/docfx.json
+        run: docfx Documentation/docfx.json --warningsAsErrors
+
+      # A build can succeed without resolving Unity types: check the generated links
+      - name: Check Unity API links
+        run: |
+          unity='${{ matrix.unity }}'
+          page=_site/api/DocFxForUnity.Player.html
+          for type in Object Component Behaviour MonoBehaviour AudioClip; do
+            grep -q "href=\"https://docs.unity3d.com/${unity%.*}/Documentation/ScriptReference/$type.html\"" $page \
+              || { echo "::error::Missing link to Unity $type in $page"; exit 1; }
+          done
 
       # Upload the generated documentation (only on main for deployment)
       - name: Upload site artifact
-        if: github.ref == 'refs/heads/main'
+        if: matrix.deploy && github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v5
         with:
           path: _site # Must equal the 'build.dest' value in docfx.json
