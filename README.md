@@ -17,9 +17,32 @@ online: <https://normanderwan.github.io/DocFxForUnity/>. It references both C# A
 |:----------------------------------:|
 | [![DocFxForUnity documentation scripting API](https://normanderwan.github.io/DocFxForUnity/resources/ExampleScriptingApi.png)](https://normanderwan.github.io/DocFxForUnity/api/DocFxForUnity.Player.html) |
 
+## Compatibility
+
+Every combination below is built by the [CI workflow](https://github.com/NormandErwan/DocFxForUnity/blob/main/.github/workflows/documentation.yml) on each change.
+
+| DocFX | Unity 6000.3 (6.3 LTS) | Unity 6000.6 (6.6) |
+|-------|:----------------------:|:------------------:|
+| 2.60.0 (unsupported, see below) | ✓ | |
+| 2.64.0 | ✓ | |
+| 2.77.0 | ✓ | |
+| 2.81.0 | ✓ | ✓ |
+
+- Use DocFX **2.64 or later**, with the **.NET SDK 8.0 or later**.
+- Since DocFX 2.62, a C# compilation error stops the build. DocFX must therefore find the Unity managed DLLs,
+  see [Troubleshooting](#troubleshooting--faq). DocFX 2.60 and 2.61 build without them with only warnings, and emit pages with
+  no link to the Unity API.
+- Unity 6000.3 is the version of this example project. The CI also builds against Unity 6000.6 with its own xref
+  map, see [Reference another Unity version](#reference-another-unity-version).
+
 ## Setup your documentation
 
-1. [Install DocFX](https://dotnet.github.io/docfx/index.html).
+1. Install the [.NET SDK](https://dotnet.microsoft.com/download) 8.0 or later, then [DocFX](https://dotnet.github.io/docfx/index.html):
+
+    ```bash
+    dotnet tool update -g docfx
+    ```
+
 2. Copy the `Documentation/` folder to your Unity project:
 
     ```diff
@@ -125,14 +148,20 @@ If you're using GitHub:
       └── README.md
     ```
 
+    The workflow builds every DocFX and Unity version of the [Compatibility](#compatibility) table. For your project,
+    keep a single entry in `jobs.build.strategy.matrix.include`, with `deploy: true` and your Unity version.
+    The `Check Unity API links` step reads `_site/api/DocFxForUnity.Player.html`: point it to one of your pages, or delete it.
+
 2. [Configure the Pages of your repository to use GitHub Actions.](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow)
 3. Commit and push on the `main` branch: your documentation will be built and deployed to `https://<username>.github.io/<repository>`.
 
+The workflow reads the Unity managed DLLs from the public [game-ci](https://game.ci/) editor Docker image
+`unityci/editor:ubuntu-<unity version>-linux-il2cpp-3.2.2`. Unity is never activated, so no license is needed.
+
 If you're using GitLab, use the provided
-[`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/main/.gitlab-ci.yml).
-Generated website is pushed to a `public/` directory. See the
-[GitLab Pages documentation](https://docs.gitlab.com/user/project/pages/) for more
-details.
+[`.gitlab-ci.yml`](https://github.com/NormandErwan/DocFxForUnity/blob/main/.gitlab-ci.yml). It runs in the same
+game-ci image. Set its `image` to your Unity version. Generated website is pushed to a `public/` directory. See the
+[GitLab Pages documentation](https://docs.gitlab.com/user/project/pages/) for more details.
 
 ## Troubleshooting / FAQ
 
@@ -150,7 +179,7 @@ details.
       type: Namespace
     ```
 
-- MSBuild outputs: `Unity managed DLLs not found.`
+- DocFX outputs `error CS0246: The type or namespace name 'UnityEngine' could not be found`, or MSBuild outputs `Unity managed DLLs not found.`
 
     This means DocFX could not locate Unity's managed DLLs. It looks in three places, in order:
     1. The `UNITY_MANAGED_PATH` environment variable (see below).
@@ -159,13 +188,16 @@ details.
 
     If Unity Hub is installed at a non-default location, or you want to target a specific Unity version, set `UNITY_MANAGED_PATH` (see *Advanced: `UNITY_MANAGED_PATH`* below).
 
-- If you want to reference a specific version of Unity, change this line on your `docfx.json`:
+### Reference another Unity version
 
-  ```json
-  "xref": [ "https://normanderwan.github.io/UnityXrefMaps/<version>/xrefmap.yml" ],
-  ```
+The links to the Unity API come from the xref map of [UnityXrefMaps](https://github.com/NormandErwan/UnityXrefMaps).
+To link to the documentation of your Unity version, change this line on your `docfx.json`:
 
-  where `<version>` is a Unity version in the form of `YYYY.x` (*e.g.* 2022.3, 2023.2, 6000.3).
+```json
+"xref": [ "https://normanderwan.github.io/UnityXrefMaps/<version>/xrefmap.yml" ],
+```
+
+where `<version>` is a Unity version in the form of `YYYY.x` (*e.g.* 2022.3, 6000.3, 6000.6).
 
 ## Advanced: `UNITY_MANAGED_PATH`
 
