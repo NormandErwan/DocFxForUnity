@@ -1,12 +1,18 @@
-image: mcr.microsoft.com/dotnet/sdk:8.0
+# The game-ci editor image ships the Unity managed DLLs that DocFX needs to resolve
+# Unity types. Unity is never activated: only its files are read.
+image: unityci/editor:ubuntu-6000.3.26f1-linux-il2cpp-3.2.2
 
 pages:
   stage: deploy
+  variables:
+    UNITY_MANAGED_PATH: /opt/unity/Editor/Data/Managed/UnityEngine
+    DOTNET_ROOT: /opt/dotnet
   script:
-    - dotnet tool install -g docfx --version 2.77.0
-    - export PATH="$HOME/.dotnet/tools:$PATH"
+    - curl -sSL https://dot.net/v1/dotnet-install.sh | bash -s -- --channel 8.0 --install-dir "$DOTNET_ROOT"
+    - export PATH="$DOTNET_ROOT:$HOME/.dotnet/tools:$PATH"
+    - dotnet tool install -g docfx --version 2.81.0
     - cp README.md Documentation/index.md
-    - docfx Documentation/docfx.json
+    - docfx Documentation/docfx.json --warningsAsErrors
     - mv _site public
   artifacts:
     paths:
