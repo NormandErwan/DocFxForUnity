@@ -39,7 +39,7 @@ jobs:
 
       # DocFX 2.60 cannot load the project with the .NET 8 SDK alone (NuGet.Frameworks load failure)
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: |
             6.0.x
