@@ -26,7 +26,7 @@ Every combination below is built by the [CI workflow](https://github.com/Normand
 | 2.60.0 (unsupported, see below) | ✓ | |
 | 2.64.0 | ✓ | |
 | 2.77.0 | ✓ | |
-| 2.81.0 | ✓ | ✓ |
+| 2.81.0 <!-- renovate: docfx --> | ✓ | ✓ |
 
 - Use DocFX **2.64 or later**, with the **.NET SDK 8.0 or later**.
 - Since DocFX 2.62, a C# compilation error stops the build. DocFX must therefore find the Unity managed DLLs,
