@@ -2,5 +2,65 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Unity LTS version in CI files, on lines marked `# renovate: ... unity-lts`",
+      "managerFilePatterns": ["/^\\.github/workflows/documentation\\.yml$/", "/^\\.gitlab-ci\\.yml$/"],
+      "matchStrings": ["(?<currentValue>\\d+\\.\\d+\\.\\d+f\\d+)[^\\n]*# renovate:[^\\n]*\\bunity-lts\\b"],
+      "depNameTemplate": "Unity Editor",
+      "datasourceTemplate": "unity3d"
+    },
+    {
+      "customType": "regex",
+      "description": "Unity Update (SUPPORTED stream) version in CI files, on lines marked `# renovate: ... unity-supported`",
+      "managerFilePatterns": ["/^\\.github/workflows/documentation\\.yml$/"],
+      "matchStrings": ["(?<currentValue>\\d+\\.\\d+\\.\\d+f\\d+)[^\\n]*# renovate:[^\\n]*\\bunity-supported\\b"],
+      "depNameTemplate": "Unity Editor (Update)",
+      "datasourceTemplate": "unity3d",
+      "registryUrlTemplate": "https://services.api.unity.com/unity/editor/release/v1/releases?stream=SUPPORTED"
+    },
+    {
+      "customType": "regex",
+      "description": "Unity xref map of the reference Unity version",
+      "managerFilePatterns": ["/^Documentation/docfx\\.json$/"],
+      "matchStrings": ["UnityXrefMaps/(?<currentValue>\\d+\\.\\d+)/xrefmap\\.yml"],
+      "depNameTemplate": "Unity Editor",
+      "datasourceTemplate": "unity3d",
+      "versioningTemplate": "loose",
+      "extractVersionTemplate": "^(?<version>\\d+\\.\\d+)\\."
+    },
+    {
+      "customType": "regex",
+      "description": "Latest DocFX, on lines marked `# renovate: docfx`; the older tested versions stay pinned",
+      "managerFilePatterns": ["/^\\.github/workflows/documentation\\.yml$/", "/^\\.gitlab-ci\\.yml$/", "/^README\\.md$/"],
+      "matchStrings": [
+        "docfx: (?<currentValue>\\d+\\.\\d+\\.\\d+)[^\\n]*# renovate:[^\\n]*\\bdocfx\\b",
+        "docfx --version (?<currentValue>\\d+\\.\\d+\\.\\d+) # renovate: docfx",
+        "\\| (?<currentValue>\\d+\\.\\d+\\.\\d+) <!-- renovate: docfx -->"
+      ],
+      "depNameTemplate": "docfx",
+      "datasourceTemplate": "nuget",
+      "versioningTemplate": "semver"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Update Unity version, game-ci image and xref map together",
+      "matchDepNames": ["Unity Editor"],
+      "groupName": "Unity LTS"
+    },
+    {
+      "description": "SUPPORTED stream releases are not flagged stable by the unity3d datasource",
+      "matchDepNames": ["Unity Editor (Update)"],
+      "groupName": "Unity Update",
+      "ignoreUnstable": false
+    },
+    {
+      "description": "Update every latest-DocFX occurrence together",
+      "matchDepNames": ["docfx"],
+      "groupName": "DocFX"
+    }
   ]
 }

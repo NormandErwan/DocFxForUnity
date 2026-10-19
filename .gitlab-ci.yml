@@ -1,6 +1,6 @@
 # The game-ci editor image ships the Unity managed DLLs that DocFX needs to resolve
 # Unity types. Unity is never activated: only its files are read.
-image: unityci/editor:ubuntu-6000.3.26f1-linux-il2cpp-3.2.2
+image: unityci/editor:ubuntu-6000.3.26f1-linux-il2cpp-3.2.2 # renovate: unity-lts
 
 pages:
   stage: deploy
@@ -10,7 +10,7 @@ pages:
   script:
     - curl -sSL https://dot.net/v1/dotnet-install.sh | bash -s -- --channel 8.0 --install-dir "$DOTNET_ROOT"
     - export PATH="$DOTNET_ROOT:$HOME/.dotnet/tools:$PATH"
-    - dotnet tool install -g docfx --version 2.81.0
+    - dotnet tool install -g docfx --version 2.81.0 # renovate: docfx
     - cp README.md Documentation/index.md
     - docfx Documentation/docfx.json --warningsAsErrors
     - mv _site public

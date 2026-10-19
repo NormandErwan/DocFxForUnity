@@ -24,12 +24,13 @@ jobs:
       matrix:
         # Every tested DocFX version on the reference Unity version,
         # then the latest DocFX on every other supported Unity version.
+        # The `renovate:` comments tell renovate.json which values to update.
         include:
-          - { docfx: 2.60.0, unity: 6000.3.26f1 }
-          - { docfx: 2.64.0, unity: 6000.3.26f1 }
-          - { docfx: 2.77.0, unity: 6000.3.26f1 }
-          - { docfx: 2.81.0, unity: 6000.3.26f1, deploy: true }
-          - { docfx: 2.81.0, unity: 6000.6.6f1 }
+          - { docfx: 2.60.0, unity: 6000.3.26f1 } # renovate: unity-lts
+          - { docfx: 2.64.0, unity: 6000.3.26f1 } # renovate: unity-lts
+          - { docfx: 2.77.0, unity: 6000.3.26f1 } # renovate: unity-lts
+          - { docfx: 2.81.0, unity: 6000.3.26f1, deploy: true } # renovate: docfx unity-lts
+          - { docfx: 2.81.0, unity: 6000.6.6f1 } # renovate: docfx unity-supported
     steps:
       - name: Checkout
         uses: actions/checkout@v7
