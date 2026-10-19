@@ -44,7 +44,7 @@
 
     <!-- Warning if no Unity DLLs found at all -->
     <Warning Condition="'@(_UnityDll)' == ''"
-             Text="Unity managed DLLs not found. Set UNITY_MANAGED_PATH to your Unity installation's Managed/UnityEngine directory (e.g. /Applications/Unity/Hub/Editor/6000.0.73f1/Unity.app/Contents/Managed/UnityEngine), or install Unity Hub at its default location." />
+             Text="Unity managed DLLs not found. Set UNITY_MANAGED_PATH to your Unity installation's Managed/UnityEngine directory (e.g. /Applications/Unity/Hub/Editor/6000.3.26f1/Unity.app/Contents/Managed/UnityEngine), or install Unity Hub at its default location." />
 
     <!-- Add assembly references for all discovered DLLs -->
     <ItemGroup>
