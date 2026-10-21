@@ -1,6 +1,6 @@
 # The game-ci editor image ships the Unity managed DLLs that DocFX needs to resolve
 # Unity types. Unity is never activated: only its files are read.
-image: unityci/editor:ubuntu-6000.3.26f1-linux-il2cpp-3.2.2 # renovate: unity-lts
+image: unityci/editor:ubuntu-6000.3.27f1-linux-il2cpp-3.2.2 # renovate: unity-lts
 
 pages:
   stage: deploy
